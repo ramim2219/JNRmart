@@ -1,0 +1,2 @@
+import { Truck, ShieldCheck, Headphones } from 'lucide-react';
+export default function AnnouncementBar(){return <div className="announcement"><div className="container announce-inner"><span><Truck size={14}/> Delivery across Bangladesh</span><span className="announce-center"><ShieldCheck size={14}/> Quality products, trusted shopping</span><span><Headphones size={14}/> Customer support</span></div></div>}
