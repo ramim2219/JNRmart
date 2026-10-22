@@ -1,0 +1,227 @@
+/* JNRmart product-deals theme. Only styles .jnr-deals-* names; the shared
+   SectionCarousel continues to be used independently by CategorySlider etc. */
+.jnr-carousel-section.jnr-deals-section {
+  --jnr-carousel-accent: #1398ed;
+  --jnr-carousel-gap: 9px;
+  margin-block: clamp(17px, 2vw, 27px);
+  padding: 12px 10px 11px;
+  border: 1px solid #e6e8ee;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 31, 61, .07);
+  min-width: 0;
+}
+.jnr-deals-section .jnr-carousel-header {
+  align-items: center;
+  gap: 14px;
+  margin: 0 2px 12px;
+}
+.jnr-deals-section .jnr-carousel-title {
+  color: #102944;
+  font-weight: 750;
+  font-size: clamp(17px, 1.35vw, 22px);
+  line-height: 1.35;
+  letter-spacing: -.025em;
+}
+.jnr-deals-section .jnr-carousel-subtitle {
+  margin-top: 3px;
+  font-size: 12px;
+}
+.jnr-deals-section .jnr-carousel-view-all {
+  display: inline-flex;
+  gap: 5px;
+  min-height: 34px;
+  padding: 0 14px;
+  background: #1499ec;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  transition: background .2s ease;
+  text-decoration: none;
+}
+.jnr-deals-section .jnr-carousel-view-all:hover { background: #0879c5; text-decoration: none; }
+.jnr-deals-section .jnr-carousel-view-all:focus-visible { outline-color: #223773; }
+
+/* Edge-to-edge cards with arrows on top of the track, as in the reference. */
+.jnr-deals-section .jnr-carousel-frame { padding-inline: 0; }
+.jnr-deals-section .jnr-carousel-track {
+  gap: var(--jnr-carousel-gap);
+  padding: 0 2px 4px;
+  scroll-padding-inline: 2px;
+}
+.jnr-deals-section .jnr-carousel-cell { padding: 0 0 3px; }
+.jnr-deals-section .jnr-carousel-arrow {
+  top: 47%;
+  width: 34px;
+  height: 34px;
+  background: #fff;
+  color: #223773;
+  border: 1px solid #e0e5ef;
+  box-shadow: 0 2px 9px rgba(13, 27, 51, .15);
+  backdrop-filter: none;
+}
+.jnr-deals-section .jnr-carousel-arrow--prev { left: 1px; }
+.jnr-deals-section .jnr-carousel-arrow--next { right: 1px; }
+.jnr-deals-section .jnr-carousel-arrow:hover:not(:disabled) { background: #223773; color: #fff; }
+.jnr-deals-section .jnr-carousel-arrow:disabled { opacity: 0; pointer-events: none; }
+
+.jnr-deal-card {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  min-width: 0;
+  padding: 8px 9px 0;
+  background: #fff;
+  border: 1px solid #edf0f5;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(13, 37, 69, .04);
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+.jnr-deal-card:hover { border-color: #d7e5f5; box-shadow: 0 5px 16px rgba(14, 41, 77, .1); }
+.jnr-deal-card__link {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none;
+  min-width: 0;
+}
+.jnr-deal-card__link:hover { text-decoration: none; }
+.jnr-deal-card__link:focus-visible { outline: 2px solid #223773; outline-offset: 2px; border-radius: 5px; }
+.jnr-deal-card__image-wrap {
+  position: relative;
+  height: clamp(140px, 12.7vw, 191px);
+  width: 100%;
+  flex: none;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fff;
+}
+.jnr-deal-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+}
+.jnr-deal-card__image-empty {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  font-size: 58px;
+  background: #f4f7fb;
+}
+.jnr-deal-card__badge,
+.jnr-deal-card__discount {
+  position: absolute;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  line-height: 1;
+}
+.jnr-deal-card__badge {
+  top: 4px;
+  left: 4px;
+  max-width: 64%;
+  padding: 5px 6px;
+  font-size: 9px;
+  background: #e8f5ff;
+  color: #0479be;
+  border-radius: 3px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.jnr-deal-card__badge--navy { background: #223773; color: #fff; }
+.jnr-deal-card__discount {
+  top: 4px;
+  right: 3px;
+  padding: 5px 7px;
+  font-size: 10px;
+  color: #fff;
+  background: #fb660c;
+  border-radius: 15px;
+}
+.jnr-deal-card__details { padding: 8px 1px 11px; flex: 1; display: flex; flex-direction: column; }
+.jnr-deal-card__title {
+  color: #0e2947;
+  margin: 0 0 7px;
+  font-size: clamp(11px, .94vw, 13px);
+  font-weight: 700;
+  line-height: 1.37;
+  min-height: 2.74em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.jnr-deal-card__link:hover .jnr-deal-card__title { color: #098cdf; }
+.jnr-deal-card__prices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 6px;
+  margin-top: auto;
+}
+.jnr-deal-card__price { color: #1199ef; font-size: clamp(13px, 1.13vw, 16px); font-weight: 800; white-space: nowrap; }
+.jnr-deal-card__old-price { font-size: 10px; color: #87909e; white-space: nowrap; }
+.jnr-deal-card__rating-row {
+  display: flex;
+  flex-wrap: nowrap;
+  min-height: 19px;
+  align-items: center;
+  gap: 5px;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+.jnr-deal-card__stars { display: inline-block; position: relative; font-size: 12px; line-height: 1; letter-spacing: -.6px; }
+.jnr-deal-card__stars-base { color: #dce2e9; }
+.jnr-deal-card__stars-filled { position: absolute; inset: 0 auto auto 0; display: block; overflow: hidden; white-space: nowrap; color: #ffb100; }
+.jnr-deal-card__rating { font-weight: 700; color: #132e4d; font-size: 10px; }
+.jnr-deal-card__reviews { color: #7c8da6; font-size: 10px; }
+.jnr-deal-card__no-rating { display: block; width: 100%; }
+.jnr-deal-card__delivery {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  min-width: 0;
+  min-height: 34px;
+  padding: 7px 0;
+  border-top: 1px solid #ecedf2;
+  color: #385473;
+  font-size: clamp(9px, .72vw, 11px);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.jnr-deal-card__delivery svg { flex-shrink: 0; color: #1499ed; }
+.jnr-deal-card__delivery span { overflow: hidden; text-overflow: ellipsis; }
+
+@media (max-width: 1199px) {
+  .jnr-deal-card__image-wrap { height: clamp(148px, 15.4vw, 185px); }
+}
+@media (max-width: 767px) {
+  .jnr-carousel-section.jnr-deals-section { padding: 11px 9px; }
+  .jnr-deal-card { padding: 6px 6px 0; }
+  .jnr-deal-card__image-wrap { height: clamp(126px, 27vw, 180px); }
+  .jnr-deals-section .jnr-carousel-header { margin-bottom: 10px; }
+}
+@media (max-width: 550px) {
+  .jnr-carousel-section.jnr-deals-section { margin-block: 17px; }
+  .jnr-deals-section .jnr-carousel-arrow { display: none; }
+  .jnr-deals-section .jnr-carousel-view-all { min-height: 31px; padding: 0 9px; font-size: 11px; }
+  .jnr-deals-section .jnr-carousel-title { font-size: 16px; }
+  .jnr-deal-card__image-wrap { height: clamp(122px, 38vw, 165px); }
+  .jnr-deal-card__title { font-size: 11px; }
+  .jnr-deal-card__delivery { font-size: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jnr-deal-card, .jnr-deals-section .jnr-carousel-view-all { transition: none; }
+}

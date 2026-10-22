@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80"><defs>
+      <linearGradient id="fryer" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#434d5c"/><stop offset=".35" stop-color="#151c2c"/><stop offset="1" stop-color="#060c17"/></linearGradient>
+      <linearGradient id="silver" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#fff"/><stop offset=".48" stop-color="#e3ebf1"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#bbcbd6"/></linearGradient>
+      <linearGradient id="cool" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9fbff"/><stop offset=".5" stop-color="#b4eaf5"/><stop offset="1" stop-color="#f1fafe"/></linearGradient>
+      <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#192d63"/><stop offset=".6" stop-color="#2e539f"/><stop offset="1" stop-color="#739acc"/></linearGradient>
+      <linearGradient id="peach" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7d8"/><stop offset=".55" stop-color="#ffe0ca"/><stop offset="1" stop-color="#e8efff"/></linearGradient>
+      <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffbb5f"/><stop offset="1" stop-color="#f67e36"/></linearGradient>
+      <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2a9f9"/><stop offset=".5" stop-color="#556ec8"/><stop offset="1" stop-color="#1c2259"/></linearGradient>
+      <filter id="drop" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs><path d="M23 5 H60 L57 45 H28Z" fill="#d3f1f8" stroke="#536b88" stroke-width="3"/><path d="M24 16 H59" stroke="#96bcde" stroke-width="3"/><rect x="24" y="46" width="36" height="26" rx="8" fill="#263e6f"/><circle cx="42" cy="58" r="6" fill="#ffac69"/></svg>

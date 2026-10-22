@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 714" width="1100" height="714"><defs>
+      <linearGradient id="fryer" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#434d5c"/><stop offset=".35" stop-color="#151c2c"/><stop offset="1" stop-color="#060c17"/></linearGradient>
+      <linearGradient id="silver" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#fff"/><stop offset=".48" stop-color="#e3ebf1"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#bbcbd6"/></linearGradient>
+      <linearGradient id="cool" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9fbff"/><stop offset=".5" stop-color="#b4eaf5"/><stop offset="1" stop-color="#f1fafe"/></linearGradient>
+      <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#192d63"/><stop offset=".6" stop-color="#2e539f"/><stop offset="1" stop-color="#739acc"/></linearGradient>
+      <linearGradient id="peach" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7d8"/><stop offset=".55" stop-color="#ffe0ca"/><stop offset="1" stop-color="#e8efff"/></linearGradient>
+      <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffbb5f"/><stop offset="1" stop-color="#f67e36"/></linearGradient>
+      <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2a9f9"/><stop offset=".5" stop-color="#556ec8"/><stop offset="1" stop-color="#1c2259"/></linearGradient>
+      <filter id="drop" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs><rect width="1100" height="714" fill="url(#peach)"/>
+ <circle cx="785" cy="345" r="270" fill="#ffcfbb" opacity=".65"/>
+ <text x="60" y="123" fill="#24355d" font-family="Arial" font-weight="900" font-size="32">JNRmart HOME</text>
+ <text x="58" y="209" fill="#182e5e" font-family="Arial" font-weight="900" font-size="66">BETTER HOME</text>
+ <text x="58" y="286" fill="#182e5e" font-family="Arial" font-weight="900" font-size="66">BETTER DAYS</text>
+ <text x="61" y="330" fill="#536585" font-family="Arial" font-size="27">Thoughtful essentials for everyday living</text>
+ <rect x="58" y="395" width="321" height="139" rx="17" fill="#223773"/>
+ <text x="86" y="444" fill="#fff" font-family="Arial" font-size="24">DISCOVER OUR</text>
+ <text x="84" y="503" fill="#f4f17b" font-family="Arial" font-weight="900" font-size="50">BEST PICKS</text>
+ <ellipse cx="832" cy="644" rx="242" ry="28" fill="#9b887b" opacity=".18"/>
+ <g transform="translate(719 188) scale(1.62)">
+      <ellipse cx="88" cy="263" rx="90" ry="14" fill="#07152e" opacity=".15" filter="url(#drop)"/>
+      <rect x="15" y="0" width="139" height="257" rx="18" fill="url(#silver)" stroke="#9eb0c1" stroke-width="3"/>
+      <rect x="19" y="116" width="131" height="8" fill="#bdcad5"/>
+      <rect x="131" y="35" width="6" height="52" rx="3" fill="#8999ac"/>
+      <rect x="131" y="157" width="6" height="65" rx="3" fill="#8999ac"/>
+      <path d="M36 14 Q53 12 56 240" fill="none" stroke="#fff" stroke-width="18" opacity=".35"/>
+      <text x="49" y="34" font-family="Arial,sans-serif" fill="#365175" font-size="12" font-weight="bold">JNR</text>
+    </g><g transform="translate(554 310) scale(1.12)">
+      <ellipse cx="70" cy="216" rx="65" ry="11" fill="#422912" opacity=".18" filter="url(#drop)"/>
+      <rect x="26" y="4" width="90" height="27" rx="5" fill="#372922"/>
+      <rect x="22" y="29" width="98" height="176" rx="29" fill="#e2a32d" stroke="#b27316" stroke-width="4"/>
+      <rect x="31" y="73" width="80" height="92" rx="6" fill="#fffaf0" stroke="#e9ce8c"/>
+      <text x="71" y="106" fill="#20365e" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold">JNR</text>
+      <text x="71" y="129" fill="#976017" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold">HONEY</text>
+      <circle cx="72" cy="144" r="8" fill="#f6bb4b"/>
+    </g>
+ <rect x="58" y="587" width="318" height="65" rx="13" fill="#fff" opacity=".95"/>
+ <text x="79" y="628" fill="#223773" font-family="Arial" font-weight="800" font-size="25">SHOP COLLECTION →</text>
+ <text x="900" y="696" fill="#a28b8b" font-family="Arial" font-size="15">Demo artwork</text></svg>

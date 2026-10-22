@@ -1,247 +1,72 @@
-/* JNRmart hero section — namespaced to avoid interfering with existing global.css */
+/* JNRmart image-first showcase. Scoped to avoid conflicts with global.css. */
 .jnr-hero-section {
-  /* No width/max-width here: the global .container controls the page width. */
-  margin-top: clamp(8px, 1.1vw, 15px);
-  margin-bottom: clamp(12px, 1.5vw, 22px);
+  margin-top: clamp(8px, 1.2vw, 16px);
+  margin-bottom: clamp(16px, 2.3vw, 28px);
 }
 
-/* 3:1 columns. The big slider is pinned to column 1 and the promo tiles to
-   column 2, so global styles or DOM order can never push the slider below. */
 .jnr-hero-grid {
   display: grid;
-  width: 100%;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
-  grid-template-rows: auto;
-  gap: 10px;
-  align-items: start;
-}
-
-.jnr-hero-grid > .jnr-hero-slider {
-  grid-column: 1;
-  grid-row: 1;
-}
-.jnr-hero-grid > .jnr-hero-side {
-  grid-column: 2;
-  grid-row: 1;
-  align-self: stretch;       /* tiles fill exactly the slider's height */
-  order: 0;
-  position: static;
-  float: none;
-  width: auto;
-  max-width: none;
-  margin: 0;
+  grid-template-columns: minmax(0, 1.84fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 12px;
 }
 
 .jnr-hero-slider {
   position: relative;
-  width: 100%;
-  min-width: 0;
-  aspect-ratio: 9 / 4;       /* was 9 / 5.1 — shorter banner */
-  overflow: hidden;
   isolation: isolate;
-  color: #fff;
-  background: #223773;
-  border-radius: 12px;
-  box-shadow: 0 7px 20px rgba(30, 45, 81, 0.08);
+  min-width: 0;
+  width: 100%;
+  aspect-ratio: 1100 / 714;
+  overflow: hidden;
+  background: #e7effb;
+  border-radius: 16px;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
-
+.jnr-hero-slider.is-dragging { cursor: grabbing; }
 .jnr-hero-track {
   display: flex;
   width: 100%;
   height: 100%;
-  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 550ms cubic-bezier(.22, 1, .36, 1);
   will-change: transform;
 }
-
-.jnr-hero-slide {
-  display: flex;
-  flex: 0 0 100%;
+.jnr-hero-slider.is-dragging .jnr-hero-track { transition: none; }
+.jnr-hero-slide { flex: 0 0 100%; width: 100%; min-width: 0; height: 100%; }
+.jnr-hero-image-link { display: block; width: 100%; height: 100%; outline-offset: -4px; }
+.jnr-hero-banner-img {
+  display: block;
   width: 100%;
-  min-width: 0;
   height: 100%;
-  position: relative;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: clamp(20px, 2.6vw, 42px);
-  overflow: hidden;
-}
-
-.jnr-hero-slide--navy {
-  background: linear-gradient(123deg, #15264f 0%, #243b7c 58%, #607bd2 100%);
-}
-.jnr-hero-slide--sky {
-  background: linear-gradient(118deg, #1b4186 0%, #3776b9 65%, #7ebed9 100%);
-}
-.jnr-hero-slide--ink {
-  background: linear-gradient(124deg, #172438 0%, #2b466f 55%, #406e99 100%);
-}
-
-.jnr-hero-slide::after {
-  content: '';
-  position: absolute;
-  right: -18%;
-  bottom: -55%;
-  width: 65%;
-  aspect-ratio: 1;
-  border: 1px solid rgba(255, 255, 255, .16);
-  border-radius: 50%;
+  object-fit: cover;
+  -webkit-user-drag: none;
   pointer-events: none;
 }
-
-.jnr-hero-copy {
-  width: min(59%, 610px);
-  position: relative;
-  z-index: 2;
-}
-.jnr-hero-tag {
-  display: inline-flex;
-  border-radius: 100px;
-  padding: 8px 13px;
-  background: rgba(255, 255, 255, .14);
-  color: #e8efff;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 1.4px;
-}
-.jnr-hero-copy h1 {
-  font-size: clamp(24px, 2.7vw, 42px);
-  letter-spacing: -.035em;
-  line-height: 1.1;
-  color: #fff;
-  margin: 12px 0 10px;
-  overflow-wrap: break-word;
-}
-.jnr-hero-copy p {
-  color: #e2eaff;
-  font-size: clamp(13px, 1.05vw, 15px);
-  line-height: 1.6;
-  max-width: 435px;
-  margin-bottom: 14px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  overflow: hidden;
-}
-.jnr-hero-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  border-radius: 12px;
-  padding: 11px 18px;
-  background: #fff;
-  color: #223773;
-  font-size: 14px;
-  font-weight: 800;
-  transition: transform .2s ease, background .2s ease;
-}
-.jnr-hero-cta:hover {
-  background: #e8efff;
-  transform: translateY(-2px);
-}
-.jnr-hero-cta:focus-visible,
-.jnr-hero-arrow:focus-visible,
-.jnr-hero-dot:focus-visible,
-.jnr-hero-side-card:focus-visible {
-  outline: 3px solid #9bb7ff;
-  outline-offset: 4px;
-}
-
-.jnr-hero-art {
-  flex: 1;
-  align-self: stretch;
-  position: relative;
-  min-width: 0;
-  display: grid;
-  place-items: center;
-}
-.jnr-hero-art-blob {
-  width: min(78%, 300px);
-  aspect-ratio: 1;
-  border-radius: 44% 56% 62% 38%;
-  background: rgba(255,255,255,.12);
-  box-shadow: 0 0 0 24px rgba(255,255,255,.055), 0 0 0 56px rgba(255,255,255,.035);
-  transform: rotate(-16deg);
-}
-.jnr-hero-emoji {
-  position: absolute;
-  font-size: clamp(70px, 9vw, 150px);
-  line-height: 1;
-  filter: drop-shadow(0 19px 18px rgba(6, 20, 52, .22));
-}
-.jnr-hero-discount {
-  position: absolute;
-  right: 0;
-  bottom: 14%;
-  background: #fff;
-  color: #223773;
-  border-radius: 11px;
-  padding: 10px 13px;
-  font-size: clamp(10px, 1.05vw, 14px);
-  font-weight: 900;
-  white-space: nowrap;
-  transform: rotate(-6deg);
-  box-shadow: 0 10px 22px rgba(8, 20, 55, .25);
-}
-
-.jnr-hero-arrow {
-  display: grid;
-  place-items: center;
-  position: absolute;
-  z-index: 5;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 38px;
-  height: 38px;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.5);
-  border-radius: 50%;
-  background: rgba(15, 34, 78, .52);
-  backdrop-filter: blur(8px);
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity .18s ease, visibility .18s ease, background .2s ease;
-}
-/* Hidden until hovering the main slider or focusing it with the keyboard. */
-.jnr-hero-slider:hover .jnr-hero-arrow,
-.jnr-hero-slider:focus-visible .jnr-hero-arrow,
-.jnr-hero-slider:has(:focus-visible) .jnr-hero-arrow {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-.jnr-hero-arrow:hover { background: rgba(15, 34, 78, .9); }
-.jnr-hero-arrow--prev { left: 10px; }
-.jnr-hero-arrow--next { right: 10px; }
-.jnr-hero-dots {
-  position: absolute;
-  left: 50%;
-  bottom: 12px;
-  z-index: 5;
+.jnr-hero-image-fallback {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  transform: translateX(-50%);
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+  padding: clamp(24px, 5vw, 74px);
+  background: linear-gradient(125deg, #d2f1fa, #eaf3ff 55%, #bfcee9);
+  color: #172956;
+  position: relative;
+  overflow: hidden;
 }
-.jnr-hero-dot {
-  width: 9px;
-  height: 9px;
-  padding: 0;
-  border: 0;
-  border-radius: 12px;
-  background: rgba(255,255,255,.53);
-  transition: width .25s ease, background .25s ease;
-}
-.jnr-hero-dot.is-active { width: 29px; background: #fff; }
+.jnr-hero-image-fallback span { font-size: clamp(11px, 1vw, 15px); font-weight: 800; letter-spacing: .1em; }
+.jnr-hero-image-fallback strong { position: relative; z-index: 2; max-width: 60%; font-size: clamp(22px, 3.7vw, 52px); line-height: 1.15; }
+.jnr-hero-image-fallback small { position: relative; z-index: 2; font-size: clamp(12px, 1.5vw, 18px); }
+.jnr-hero-image-fallback i { position: absolute; right: 10%; bottom: 16%; font-size: clamp(78px, 12vw, 170px); font-style: normal; }
 
 .jnr-hero-side {
   min-width: 0;
-  min-height: 0;
   display: grid;
   grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 .jnr-hero-side-card {
   position: relative;
@@ -249,83 +74,208 @@
   min-width: 0;
   min-height: 0;
   overflow: hidden;
-  border-radius: 12px;
-  background: #edf1f8;
-  box-shadow: 0 7px 20px rgba(30, 45, 81, 0.06);
+  border-radius: 16px;
+  background: #e9eef6;
+  outline-offset: 2px;
 }
-/* Images are absolutely positioned so their intrinsic size can never
-   stretch the row and distort the slider next to them. */
 .jnr-hero-side-card img {
   position: absolute;
   inset: 0;
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
-  transition: transform .35s ease;
+  transition: transform 300ms ease;
 }
 .jnr-hero-side-card:hover img { transform: scale(1.035); }
 
-/* Smaller laptops: tighten copy so it fits the shorter banner. */
-@media (max-width: 1100px) {
-  .jnr-hero-copy h1 { margin: 10px 0 8px; }
-  .jnr-hero-copy p { -webkit-line-clamp: 2; margin-bottom: 12px; }
+/* The main slider's controls are revealed only on hover or keyboard focus. */
+.jnr-hero-arrow {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  color: #fff;
+  background: rgba(15,34,78,.55);
+  border: 1px solid rgba(255,255,255,.55);
+  border-radius: 50%;
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .2s ease, visibility .2s ease, background .2s ease;
+  cursor: pointer;
+}
+.jnr-hero-arrow--prev { left: 14px; }
+.jnr-hero-arrow--next { right: 14px; }
+.jnr-hero-slider:hover .jnr-hero-arrow,
+.jnr-hero-slider:focus-within .jnr-hero-arrow { opacity: 1; visibility: visible; pointer-events: auto; }
+.jnr-hero-arrow:hover { background: rgba(15,34,78,.92); }
+.jnr-hero-dots {
+  position: absolute;
+  z-index: 5;
+  bottom: 17px;
+  left: 50%;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  transform: translateX(-50%);
+}
+.jnr-hero-dot {
+  width: 9px;
+  height: 9px;
+  border: 0;
+  border-radius: 20px;
+  padding: 0;
+  background: rgba(255,255,255,.65);
+  box-shadow: 0 1px 5px rgba(12,24,60,.25);
+  cursor: pointer;
+  transition: width .25s ease, background .25s ease;
+}
+.jnr-hero-dot.is-active { width: 27px; background: #fff; }
+.jnr-hero-slider:focus-visible,
+.jnr-hero-image-link:focus-visible,
+.jnr-hero-arrow:focus-visible,
+.jnr-hero-dot:focus-visible,
+.jnr-hero-side-card:focus-visible,
+.jnr-quick-card:focus-visible,
+.jnr-quick-arrow:focus-visible {
+  outline: 3px solid #80a4ff;
+  outline-offset: 3px;
 }
 
-/* Below 900px: slider on top, the two promo cards underneath. */
-@media (max-width: 900px) {
-  .jnr-hero-grid { grid-template-columns: 1fr; gap: 9px; }
-  .jnr-hero-grid > .jnr-hero-slider { grid-column: 1; grid-row: 1; }
-  .jnr-hero-grid > .jnr-hero-side { grid-column: 1; grid-row: 2; align-self: auto; }
-  .jnr-hero-slider { aspect-ratio: 16 / 7.2; border-radius: 11px; }  /* was 16 / 8.1 */
-  .jnr-hero-slide { padding: clamp(20px, 3.6vw, 34px); }
-  .jnr-hero-side { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; gap: 9px; }
-  .jnr-hero-side-card { aspect-ratio: 3 / 2; border-radius: 11px; }  /* was 1 / 1 */
-  .jnr-hero-copy h1 { font-size: clamp(26px, 4.2vw, 40px); }
-  .jnr-hero-emoji { font-size: clamp(80px, 14vw, 130px); }
+/* Compact sliding deal cards, directly under the three-banner showcase. */
+.jnr-quick-wrap {
+  --jnr-quick-gap: 8px;
+  --jnr-quick-visible: 6;
+  position: relative;
+  margin-top: 14px;
+  background: #fff;
+  border: 1px solid #e6eaf2;
+  border-radius: 10px;
+  padding: 8px;
+  box-shadow: 0 3px 12px rgba(21, 40, 80, .055);
 }
-
-@media (max-width: 550px) {
-  .jnr-hero-section { margin-top: 8px; margin-bottom: 14px; }
-  .jnr-hero-slider { aspect-ratio: auto; height: clamp(258px, 70vw, 300px); border-radius: 10px; }  /* was clamp(292px, 84vw, 360px) */
-  .jnr-hero-slide { padding: 18px 18px 44px; align-items: flex-start; }
-  .jnr-hero-copy { width: 100%; }
-  .jnr-hero-tag { font-size: 9px; padding: 7px 11px; }
-  .jnr-hero-copy h1 { font-size: clamp(22px, 6vw, 30px); max-width: 95%; margin: 10px 0 8px; }
-  .jnr-hero-copy p { font-size: 11px; max-width: 74%; line-height: 1.5; margin: 0 0 12px; -webkit-line-clamp: 2; }
-  .jnr-hero-cta { padding: 10px 14px; font-size: 12px; border-radius: 9px; }
-  .jnr-hero-art { position: absolute; right: 3%; bottom: 30px; width: 38%; height: 42%; opacity: .92; }
-  .jnr-hero-emoji { font-size: clamp(62px, 18vw, 88px); }
-  .jnr-hero-discount { bottom: 0; right: 2%; font-size: 9px; padding: 8px; }
-  .jnr-hero-arrow { width: 32px; height: 32px; top: auto; bottom: 14px; transform: none; }
-  .jnr-hero-arrow--prev { left: 12px; }
-  .jnr-hero-arrow--next { right: 12px; }
-  .jnr-hero-dots { bottom: 24px; }
-  .jnr-hero-side { gap: 8px; }
-  .jnr-hero-side-card { border-radius: 10px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .jnr-hero-track, .jnr-hero-dot, .jnr-hero-cta, .jnr-hero-side-card img { transition: none; }
-}
-
-/* Drag the whole slider surface. Vertical touch scrolling still works. */
-.jnr-hero-slider {
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
+.jnr-quick-track {
+  display: flex;
+  gap: var(--jnr-quick-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 1px;
   cursor: grab;
+  touch-action: auto;
 }
-.jnr-hero-slider.is-dragging { cursor: grabbing; }
-.jnr-hero-slider.is-dragging .jnr-hero-track { transition: none; }
-.jnr-hero-slide, .jnr-hero-copy, .jnr-hero-art { -webkit-user-drag: none; }
-.jnr-hero-cta, .jnr-hero-arrow, .jnr-hero-dot { cursor: pointer; }
+.jnr-quick-track::-webkit-scrollbar { display: none; }
+.jnr-quick-track.is-dragging { scroll-snap-type: none; cursor: grabbing; user-select: none; }
+.jnr-quick-card {
+  flex: 0 0 calc((100% - (var(--jnr-quick-visible) - 1) * var(--jnr-quick-gap)) / var(--jnr-quick-visible));
+  min-width: 0;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px;
+  background: #fff;
+  border: 1px solid #e6eaf2;
+  border-radius: 8px;
+  scroll-snap-align: start;
+  color: #1a2d4c;
+  text-decoration: none;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.jnr-quick-card:hover { border-color: #9daed7; box-shadow: 0 3px 12px #21377514; }
+.jnr-quick-thumb {
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+}
+.jnr-quick-thumb img { width: 100%; height: 100%; display: block; object-fit: contain; pointer-events: none; }
+.jnr-quick-text {
+  font-size: clamp(10px, .84vw, 12px);
+  font-weight: 700;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.jnr-quick-arrow {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: white;
+  border: 1px solid rgba(255,255,255,.6);
+  background: rgba(15,34,78,.73);
+  backdrop-filter: blur(6px);
+  border-radius: 50%;
+  box-shadow: 0 3px 12px #162d5a1a;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, background .2s ease;
+  cursor: pointer;
+}
+.jnr-quick-arrow--prev { left: -12px; }
+.jnr-quick-arrow--next { right: -12px; }
+.jnr-quick-wrap:hover .jnr-quick-arrow:not(:disabled),
+.jnr-quick-wrap:focus-within .jnr-quick-arrow:not(:disabled) { opacity: 1; pointer-events: auto; }
+.jnr-quick-arrow:hover { background: #223773; }
+.jnr-quick-arrow:disabled { display: none; }
 
-/* Touch devices have swipe + pagination dots (no hover-dependent arrows). */
-@media (hover: none) and (pointer: coarse) {
-  .jnr-hero-arrow, .jnr-hero-slider:hover .jnr-hero-arrow {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
+@media (max-width: 1199px) {
+  .jnr-quick-wrap { --jnr-quick-visible: 4; }
+  .jnr-quick-text { font-size: 12px; }
+}
+@media (max-width: 900px) {
+  .jnr-hero-grid { gap: 9px; grid-template-columns: 1fr; }
+  .jnr-hero-side { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; }
+  .jnr-hero-side-card { aspect-ratio: 1.72; }
+  .jnr-hero-slider { border-radius: 12px; }
+  .jnr-hero-side { gap: 9px; }
+  .jnr-hero-side-card { border-radius: 12px; }
+  .jnr-quick-wrap { --jnr-quick-visible: 3; margin-top: 10px; }
+}
+@media (max-width: 680px) {
+  .jnr-hero-section { margin-top: 8px; }
+  .jnr-hero-grid { grid-template-columns: 1fr; gap: 8px; }
+  .jnr-hero-slider { aspect-ratio: 1.54; border-radius: 11px; }
+  .jnr-hero-side { grid-template-columns: repeat(2, minmax(0,1fr)); grid-template-rows: none; gap: 8px; }
+  .jnr-hero-side-card { aspect-ratio: 1.72; min-height: 0; border-radius: 10px; }
+  .jnr-hero-side-card img { position: absolute; }
+  .jnr-hero-arrow { display: none; }
+  .jnr-hero-dots { bottom: 10px; }
+  .jnr-hero-dot { width: 7px; height: 7px; }
+  .jnr-hero-dot.is-active { width: 20px; }
+  .jnr-quick-wrap { --jnr-quick-visible: 2.15; margin-top: 9px; padding: 6px; }
+  .jnr-quick-card { min-height: 64px; }
+  .jnr-quick-thumb { flex-basis: 47px; width: 47px; height: 47px; }
+  .jnr-quick-text { font-size: 10px; }
+  .jnr-quick-arrow { display: none; }
+}
+@media (max-width: 400px) {
+  .jnr-quick-wrap { --jnr-quick-visible: 1.75; }
+  .jnr-quick-thumb { flex-basis: 44px; width: 44px; height: 44px; }
+}
+@media (hover:none) and (pointer:coarse) {
+  .jnr-hero-arrow, .jnr-quick-arrow { display: none; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .jnr-hero-track, .jnr-hero-dot, .jnr-hero-side-card img, .jnr-quick-card { transition: none; }
 }

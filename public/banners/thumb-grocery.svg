@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80"><defs>
+      <linearGradient id="fryer" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#434d5c"/><stop offset=".35" stop-color="#151c2c"/><stop offset="1" stop-color="#060c17"/></linearGradient>
+      <linearGradient id="silver" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#fff"/><stop offset=".48" stop-color="#e3ebf1"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#bbcbd6"/></linearGradient>
+      <linearGradient id="cool" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9fbff"/><stop offset=".5" stop-color="#b4eaf5"/><stop offset="1" stop-color="#f1fafe"/></linearGradient>
+      <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#192d63"/><stop offset=".6" stop-color="#2e539f"/><stop offset="1" stop-color="#739acc"/></linearGradient>
+      <linearGradient id="peach" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7d8"/><stop offset=".55" stop-color="#ffe0ca"/><stop offset="1" stop-color="#e8efff"/></linearGradient>
+      <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffbb5f"/><stop offset="1" stop-color="#f67e36"/></linearGradient>
+      <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2a9f9"/><stop offset=".5" stop-color="#556ec8"/><stop offset="1" stop-color="#1c2259"/></linearGradient>
+      <filter id="drop" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs><g transform="translate(15 1) scale(0.34)">
+      <ellipse cx="70" cy="216" rx="65" ry="11" fill="#422912" opacity=".18" filter="url(#drop)"/>
+      <rect x="26" y="4" width="90" height="27" rx="5" fill="#372922"/>
+      <rect x="22" y="29" width="98" height="176" rx="29" fill="#e2a32d" stroke="#b27316" stroke-width="4"/>
+      <rect x="31" y="73" width="80" height="92" rx="6" fill="#fffaf0" stroke="#e9ce8c"/>
+      <text x="71" y="106" fill="#20365e" text-anchor="middle" font-family="Arial" font-size="18" font-weight="bold">JNR</text>
+      <text x="71" y="129" fill="#976017" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold">HONEY</text>
+      <circle cx="72" cy="144" r="8" fill="#f6bb4b"/>
+    </g></svg>

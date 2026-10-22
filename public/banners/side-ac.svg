@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 345" width="580" height="345"><defs>
+      <linearGradient id="fryer" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#434d5c"/><stop offset=".35" stop-color="#151c2c"/><stop offset="1" stop-color="#060c17"/></linearGradient>
+      <linearGradient id="silver" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#fff"/><stop offset=".48" stop-color="#e3ebf1"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#bbcbd6"/></linearGradient>
+      <linearGradient id="cool" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9fbff"/><stop offset=".5" stop-color="#b4eaf5"/><stop offset="1" stop-color="#f1fafe"/></linearGradient>
+      <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#192d63"/><stop offset=".6" stop-color="#2e539f"/><stop offset="1" stop-color="#739acc"/></linearGradient>
+      <linearGradient id="peach" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7d8"/><stop offset=".55" stop-color="#ffe0ca"/><stop offset="1" stop-color="#e8efff"/></linearGradient>
+      <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffbb5f"/><stop offset="1" stop-color="#f67e36"/></linearGradient>
+      <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2a9f9"/><stop offset=".5" stop-color="#556ec8"/><stop offset="1" stop-color="#1c2259"/></linearGradient>
+      <filter id="drop" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs><rect width="580" height="345" fill="url(#blue)"/>
+ <circle cx="486" cy="182" r="176" fill="#d5ebff" opacity=".2"/>
+ <path d="M0 290 Q230 225 580 335 V345 H0" fill="#d1e7ff" opacity=".3"/>
+ <text x="27" y="56" fill="#fff" font-family="Arial" font-size="32" font-weight="900">COOL COMFORT</text>
+ <text x="27" y="87" fill="#edf6ff" font-family="Arial" font-size="19" font-weight="800">INVERTER AIR CONDITIONER</text>
+ <text x="28" y="147" fill="#d9efff" font-family="Arial" font-size="22">POWERFUL COOLING</text>
+ <rect x="27" y="177" width="232" height="107" rx="14" fill="#fff"/>
+ <text x="43" y="210" fill="#253d6e" font-family="Arial" font-size="19">UPGRADE YOUR</text>
+ <text x="41" y="247" fill="#e55d29" font-family="Arial" font-size="25" font-weight="900">HOME TODAY</text>
+ <g transform="translate(273 102) scale(1.0)">
+      <ellipse cx="148" cy="156" rx="140" ry="13" fill="#07152e" opacity=".17" filter="url(#drop)"/>
+      <path d="M18 54 Q19 27 52 25 H271 Q297 26 300 50 L293 112 Q289 128 267 129 H37 Q18 122 18 99Z" fill="url(#silver)" stroke="#94a6b7" stroke-width="3"/>
+      <path d="M35 89 H284 L276 108 Q268 115 257 115 H50 Q39 111 35 100Z" fill="#b3c4d0"/>
+      <path d="M45 109 H267" stroke="#607b9a" stroke-width="5"/>
+      <path d="M47 121 Q147 144 264 121" stroke="#effbff" stroke-width="5" opacity=".75"/>
+      <text x="56" y="63" fill="#274b84" font-size="17" font-family="Arial,sans-serif" font-weight="bold">JNR</text>
+      <circle cx="273" cy="65" r="3" fill="#0fb9cb"/>
+    </g><text x="33" y="324" fill="#eaf6ff" font-family="Arial" font-size="14">JNRmart • Demo offer</text></svg>

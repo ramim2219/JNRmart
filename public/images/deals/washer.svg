@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="340" height="330" viewBox="0 0 340 330" role="img" aria-label="Washing Machine illustration">
+    <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#f5f8fe"/></linearGradient>
+    <linearGradient id="metal" x2="1" y2="0"><stop stop-color="#d8e0eb"/><stop offset=".38" stop-color="#fff"/><stop offset="1" stop-color="#a3b4c9"/></linearGradient>
+    <linearGradient id="screen" x2=".1" x1=".9" y2="1"><stop stop-color="#1c3964"/><stop offset=".52" stop-color="#00a4be"/><stop offset="1" stop-color="#090f2d"/></linearGradient>
+    <linearGradient id="black" x2="1" y2=".3"><stop stop-color="#111c31"/><stop offset=".4" stop-color="#334359"/><stop offset="1" stop-color="#0a1527"/></linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="9"/></filter></defs>
+    <rect width="340" height="330" fill="url(#bg)" />
+    <path d="M0 0H340V56H0Z" fill="#1c3964"/><path d="M0 55h340v5H0" fill="#00a4be"/>
+    <text x="15" y="21" font-size="12" font-weight="800" font-family="Arial,sans-serif" fill="#ffffff">JNRmart</text>
+    <text x="15" y="43" font-size="20" font-weight="900" font-family="Arial,sans-serif" fill="#ffffff">POWERFUL CLEAN</text>
+    <rect x="268" y="10" width="64" height="30" rx="7" fill="#fff" opacity=".97"/><text x="300" y="29" text-anchor="middle" fill="#1c3964" font-size="11" font-weight="800" font-family="Arial,sans-serif">TOP DEAL</text>
+    <ellipse cx="170" cy="285" rx="96" ry="13" fill="#506080" opacity=".12" filter="url(#shadow)" />
+    
+ <rect x="96" y="101" width="148" height="181" rx="18" fill="url(#metal)" stroke="#a8bacc" stroke-width="3"/>
+ <rect x="107" y="113" width="126" height="34" rx="7" fill="#f5f8fc"/><circle cx="132" cy="130" r="12" fill="#536984"/><circle cx="188" cy="130" r="3" fill="#41b6cc"/><circle cx="202" cy="130" r="3" fill="#41b6cc"/>
+ <circle cx="171" cy="213" r="58" fill="#263b55"/><circle cx="171" cy="213" r="47" fill="url(#screen)" stroke="#a9c2d2" stroke-width="5"/><path d="M129 213q22-19 44 0t44 0" fill="none" stroke="#b4dce6" stroke-width="11" opacity=".6"/>
+
+    <path d="M14 311H326" stroke="#e6edf6" stroke-width="2"/>
+    
+    </svg>

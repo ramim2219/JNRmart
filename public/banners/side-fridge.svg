@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 345" width="580" height="345"><defs>
+      <linearGradient id="fryer" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#434d5c"/><stop offset=".35" stop-color="#151c2c"/><stop offset="1" stop-color="#060c17"/></linearGradient>
+      <linearGradient id="silver" x1="0" y1="0" x2="1" y2=".2"><stop stop-color="#fff"/><stop offset=".48" stop-color="#e3ebf1"/><stop offset=".8" stop-color="#fff"/><stop offset="1" stop-color="#bbcbd6"/></linearGradient>
+      <linearGradient id="cool" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#d9fbff"/><stop offset=".5" stop-color="#b4eaf5"/><stop offset="1" stop-color="#f1fafe"/></linearGradient>
+      <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#192d63"/><stop offset=".6" stop-color="#2e539f"/><stop offset="1" stop-color="#739acc"/></linearGradient>
+      <linearGradient id="peach" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff7d8"/><stop offset=".55" stop-color="#ffe0ca"/><stop offset="1" stop-color="#e8efff"/></linearGradient>
+      <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffbb5f"/><stop offset="1" stop-color="#f67e36"/></linearGradient>
+      <linearGradient id="phone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#a2a9f9"/><stop offset=".5" stop-color="#556ec8"/><stop offset="1" stop-color="#1c2259"/></linearGradient>
+      <filter id="drop" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="12"/></filter>
+    </defs><rect width="580" height="345" fill="url(#peach)"/>
+ <circle cx="470" cy="190" r="186" fill="#fffaf1" opacity=".65"/>
+ <text x="28" y="54" fill="#273659" font-family="Arial" font-size="21">Refresh your home</text>
+ <text x="27" y="99" fill="#9b2134" font-family="Arial" font-size="37" font-weight="900">FRESHER DAYS</text>
+ <text x="27" y="133" fill="#9b2134" font-family="Arial" font-size="22" font-weight="900">START AT HOME</text>
+ <rect x="28" y="177" width="220" height="107" rx="14" fill="#31257b"/>
+ <text x="45" y="214" fill="#fff" font-family="Arial" font-size="20">EXPLORE OUR</text>
+ <text x="44" y="257" fill="#fff67c" font-family="Arial" font-size="25" font-weight="900">FRIDGE RANGE</text>
+ <g transform="translate(351 43) scale(1.1)">
+      <ellipse cx="88" cy="263" rx="90" ry="14" fill="#07152e" opacity=".15" filter="url(#drop)"/>
+      <rect x="15" y="0" width="139" height="257" rx="18" fill="url(#silver)" stroke="#9eb0c1" stroke-width="3"/>
+      <rect x="19" y="116" width="131" height="8" fill="#bdcad5"/>
+      <rect x="131" y="35" width="6" height="52" rx="3" fill="#8999ac"/>
+      <rect x="131" y="157" width="6" height="65" rx="3" fill="#8999ac"/>
+      <path d="M36 14 Q53 12 56 240" fill="none" stroke="#fff" stroke-width="18" opacity=".35"/>
+      <text x="49" y="34" font-family="Arial,sans-serif" fill="#365175" font-size="12" font-weight="bold">JNR</text>
+    </g><text x="28" y="330" fill="#815f6b" font-family="Arial" font-size="14">JNRmart • Demo offer</text></svg>
