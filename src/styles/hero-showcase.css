@@ -1,0 +1,331 @@
+/* JNRmart hero section — namespaced to avoid interfering with existing global.css */
+.jnr-hero-section {
+  /* No width/max-width here: the global .container controls the page width. */
+  margin-top: clamp(8px, 1.1vw, 15px);
+  margin-bottom: clamp(12px, 1.5vw, 22px);
+}
+
+/* 3:1 columns. The big slider is pinned to column 1 and the promo tiles to
+   column 2, so global styles or DOM order can never push the slider below. */
+.jnr-hero-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  grid-template-rows: auto;
+  gap: 10px;
+  align-items: start;
+}
+
+.jnr-hero-grid > .jnr-hero-slider {
+  grid-column: 1;
+  grid-row: 1;
+}
+.jnr-hero-grid > .jnr-hero-side {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: stretch;       /* tiles fill exactly the slider's height */
+  order: 0;
+  position: static;
+  float: none;
+  width: auto;
+  max-width: none;
+  margin: 0;
+}
+
+.jnr-hero-slider {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  aspect-ratio: 9 / 4;       /* was 9 / 5.1 — shorter banner */
+  overflow: hidden;
+  isolation: isolate;
+  color: #fff;
+  background: #223773;
+  border-radius: 12px;
+  box-shadow: 0 7px 20px rgba(30, 45, 81, 0.08);
+}
+
+.jnr-hero-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.jnr-hero-slide {
+  display: flex;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: clamp(20px, 2.6vw, 42px);
+  overflow: hidden;
+}
+
+.jnr-hero-slide--navy {
+  background: linear-gradient(123deg, #15264f 0%, #243b7c 58%, #607bd2 100%);
+}
+.jnr-hero-slide--sky {
+  background: linear-gradient(118deg, #1b4186 0%, #3776b9 65%, #7ebed9 100%);
+}
+.jnr-hero-slide--ink {
+  background: linear-gradient(124deg, #172438 0%, #2b466f 55%, #406e99 100%);
+}
+
+.jnr-hero-slide::after {
+  content: '';
+  position: absolute;
+  right: -18%;
+  bottom: -55%;
+  width: 65%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.jnr-hero-copy {
+  width: min(59%, 610px);
+  position: relative;
+  z-index: 2;
+}
+.jnr-hero-tag {
+  display: inline-flex;
+  border-radius: 100px;
+  padding: 8px 13px;
+  background: rgba(255, 255, 255, .14);
+  color: #e8efff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+}
+.jnr-hero-copy h1 {
+  font-size: clamp(24px, 2.7vw, 42px);
+  letter-spacing: -.035em;
+  line-height: 1.1;
+  color: #fff;
+  margin: 12px 0 10px;
+  overflow-wrap: break-word;
+}
+.jnr-hero-copy p {
+  color: #e2eaff;
+  font-size: clamp(13px, 1.05vw, 15px);
+  line-height: 1.6;
+  max-width: 435px;
+  margin-bottom: 14px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+.jnr-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 12px;
+  padding: 11px 18px;
+  background: #fff;
+  color: #223773;
+  font-size: 14px;
+  font-weight: 800;
+  transition: transform .2s ease, background .2s ease;
+}
+.jnr-hero-cta:hover {
+  background: #e8efff;
+  transform: translateY(-2px);
+}
+.jnr-hero-cta:focus-visible,
+.jnr-hero-arrow:focus-visible,
+.jnr-hero-dot:focus-visible,
+.jnr-hero-side-card:focus-visible {
+  outline: 3px solid #9bb7ff;
+  outline-offset: 4px;
+}
+
+.jnr-hero-art {
+  flex: 1;
+  align-self: stretch;
+  position: relative;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+}
+.jnr-hero-art-blob {
+  width: min(78%, 300px);
+  aspect-ratio: 1;
+  border-radius: 44% 56% 62% 38%;
+  background: rgba(255,255,255,.12);
+  box-shadow: 0 0 0 24px rgba(255,255,255,.055), 0 0 0 56px rgba(255,255,255,.035);
+  transform: rotate(-16deg);
+}
+.jnr-hero-emoji {
+  position: absolute;
+  font-size: clamp(70px, 9vw, 150px);
+  line-height: 1;
+  filter: drop-shadow(0 19px 18px rgba(6, 20, 52, .22));
+}
+.jnr-hero-discount {
+  position: absolute;
+  right: 0;
+  bottom: 14%;
+  background: #fff;
+  color: #223773;
+  border-radius: 11px;
+  padding: 10px 13px;
+  font-size: clamp(10px, 1.05vw, 14px);
+  font-weight: 900;
+  white-space: nowrap;
+  transform: rotate(-6deg);
+  box-shadow: 0 10px 22px rgba(8, 20, 55, .25);
+}
+
+.jnr-hero-arrow {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.5);
+  border-radius: 50%;
+  background: rgba(15, 34, 78, .52);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .18s ease, visibility .18s ease, background .2s ease;
+}
+/* Hidden until hovering the main slider or focusing it with the keyboard. */
+.jnr-hero-slider:hover .jnr-hero-arrow,
+.jnr-hero-slider:focus-visible .jnr-hero-arrow,
+.jnr-hero-slider:has(:focus-visible) .jnr-hero-arrow {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.jnr-hero-arrow:hover { background: rgba(15, 34, 78, .9); }
+.jnr-hero-arrow--prev { left: 10px; }
+.jnr-hero-arrow--next { right: 10px; }
+.jnr-hero-dots {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transform: translateX(-50%);
+}
+.jnr-hero-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: rgba(255,255,255,.53);
+  transition: width .25s ease, background .25s ease;
+}
+.jnr-hero-dot.is-active { width: 29px; background: #fff; }
+
+.jnr-hero-side {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+}
+.jnr-hero-side-card {
+  position: relative;
+  display: block;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #edf1f8;
+  box-shadow: 0 7px 20px rgba(30, 45, 81, 0.06);
+}
+/* Images are absolutely positioned so their intrinsic size can never
+   stretch the row and distort the slider next to them. */
+.jnr-hero-side-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform .35s ease;
+}
+.jnr-hero-side-card:hover img { transform: scale(1.035); }
+
+/* Smaller laptops: tighten copy so it fits the shorter banner. */
+@media (max-width: 1100px) {
+  .jnr-hero-copy h1 { margin: 10px 0 8px; }
+  .jnr-hero-copy p { -webkit-line-clamp: 2; margin-bottom: 12px; }
+}
+
+/* Below 900px: slider on top, the two promo cards underneath. */
+@media (max-width: 900px) {
+  .jnr-hero-grid { grid-template-columns: 1fr; gap: 9px; }
+  .jnr-hero-grid > .jnr-hero-slider { grid-column: 1; grid-row: 1; }
+  .jnr-hero-grid > .jnr-hero-side { grid-column: 1; grid-row: 2; align-self: auto; }
+  .jnr-hero-slider { aspect-ratio: 16 / 7.2; border-radius: 11px; }  /* was 16 / 8.1 */
+  .jnr-hero-slide { padding: clamp(20px, 3.6vw, 34px); }
+  .jnr-hero-side { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; gap: 9px; }
+  .jnr-hero-side-card { aspect-ratio: 3 / 2; border-radius: 11px; }  /* was 1 / 1 */
+  .jnr-hero-copy h1 { font-size: clamp(26px, 4.2vw, 40px); }
+  .jnr-hero-emoji { font-size: clamp(80px, 14vw, 130px); }
+}
+
+@media (max-width: 550px) {
+  .jnr-hero-section { margin-top: 8px; margin-bottom: 14px; }
+  .jnr-hero-slider { aspect-ratio: auto; height: clamp(258px, 70vw, 300px); border-radius: 10px; }  /* was clamp(292px, 84vw, 360px) */
+  .jnr-hero-slide { padding: 18px 18px 44px; align-items: flex-start; }
+  .jnr-hero-copy { width: 100%; }
+  .jnr-hero-tag { font-size: 9px; padding: 7px 11px; }
+  .jnr-hero-copy h1 { font-size: clamp(22px, 6vw, 30px); max-width: 95%; margin: 10px 0 8px; }
+  .jnr-hero-copy p { font-size: 11px; max-width: 74%; line-height: 1.5; margin: 0 0 12px; -webkit-line-clamp: 2; }
+  .jnr-hero-cta { padding: 10px 14px; font-size: 12px; border-radius: 9px; }
+  .jnr-hero-art { position: absolute; right: 3%; bottom: 30px; width: 38%; height: 42%; opacity: .92; }
+  .jnr-hero-emoji { font-size: clamp(62px, 18vw, 88px); }
+  .jnr-hero-discount { bottom: 0; right: 2%; font-size: 9px; padding: 8px; }
+  .jnr-hero-arrow { width: 32px; height: 32px; top: auto; bottom: 14px; transform: none; }
+  .jnr-hero-arrow--prev { left: 12px; }
+  .jnr-hero-arrow--next { right: 12px; }
+  .jnr-hero-dots { bottom: 24px; }
+  .jnr-hero-side { gap: 8px; }
+  .jnr-hero-side-card { border-radius: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jnr-hero-track, .jnr-hero-dot, .jnr-hero-cta, .jnr-hero-side-card img { transition: none; }
+}
+
+/* Drag the whole slider surface. Vertical touch scrolling still works. */
+.jnr-hero-slider {
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.jnr-hero-slider.is-dragging { cursor: grabbing; }
+.jnr-hero-slider.is-dragging .jnr-hero-track { transition: none; }
+.jnr-hero-slide, .jnr-hero-copy, .jnr-hero-art { -webkit-user-drag: none; }
+.jnr-hero-cta, .jnr-hero-arrow, .jnr-hero-dot { cursor: pointer; }
+
+/* Touch devices have swipe + pagination dots (no hover-dependent arrows). */
+@media (hover: none) and (pointer: coarse) {
+  .jnr-hero-arrow, .jnr-hero-slider:hover .jnr-hero-arrow {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}

@@ -1,0 +1,157 @@
+/* JNRmart category slider — namespaced so it can't clash with global.css */
+.jnr-cat-section {
+  --jnr-cat-accent: #f28a1e;
+  --jnr-cat-gap: clamp(12px, 2.6vw, 40px);
+  --jnr-cat-per-view: 8;
+  margin-top: clamp(20px, 3vw, 40px);
+  margin-bottom: clamp(20px, 3vw, 40px);
+}
+
+.jnr-cat-title {
+  text-align: center;
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 500;
+  line-height: 1.25;
+  color: #222;
+  margin: 0 0 clamp(18px, 2.4vw, 32px);
+}
+
+/* Side padding leaves room for the arrows so they never cover a card. */
+.jnr-cat-slider {
+  position: relative;
+  padding-inline: 40px;
+}
+
+.jnr-cat-track {
+  display: flex;
+  gap: var(--jnr-cat-gap);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding: 4px 2px 8px;
+  cursor: grab;
+}
+.jnr-cat-track::-webkit-scrollbar { display: none; }
+.jnr-cat-track.is-dragging,
+.jnr-cat-track.is-dragging * {
+  cursor: grabbing;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.jnr-cat-track.is-dragging { scroll-snap-type: none; }
+
+.jnr-cat-card {
+  flex: 0 0 calc((100% - (var(--jnr-cat-per-view) - 1) * var(--jnr-cat-gap)) / var(--jnr-cat-per-view));
+  min-width: 0;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  color: #222;
+  text-decoration: none;
+  -webkit-user-drag: none;
+  cursor: pointer;
+}
+
+.jnr-cat-tile {
+  width: 100%;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  padding: 12%;
+  background: #fff;
+  border-radius: 17%;
+  box-shadow: 0 4px 14px rgba(30, 45, 81, 0.05);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.jnr-cat-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+.jnr-cat-emoji {
+  font-size: clamp(38px, 4.4vw, 64px);
+  line-height: 1;
+}
+
+.jnr-cat-label {
+  font-size: clamp(13px, 1.1vw, 16px);
+  line-height: 1.3;
+  text-align: center;
+  transition: color .2s ease;
+}
+
+.jnr-cat-card:hover .jnr-cat-label,
+.jnr-cat-card:focus-visible .jnr-cat-label {
+  color: var(--jnr-cat-accent);
+}
+.jnr-cat-card:hover .jnr-cat-tile {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 22px rgba(30, 45, 81, 0.09);
+}
+.jnr-cat-card:focus-visible { outline: none; }
+.jnr-cat-card:focus-visible .jnr-cat-tile {
+  outline: 3px solid var(--jnr-cat-accent);
+  outline-offset: 3px;
+}
+
+.jnr-cat-arrow {
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  margin-top: -20px;         /* centers on the tiles, not on tile + label */
+  transform: translateY(-50%);
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  color: #fff;
+  background: var(--jnr-cat-accent);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(242, 138, 30, .35);
+  cursor: pointer;
+  transition: opacity .2s ease, background .2s ease, transform .2s ease;
+}
+.jnr-cat-arrow:hover:not(:disabled) { transform: translateY(-50%) scale(1.08); }
+.jnr-cat-arrow:focus-visible {
+  outline: 3px solid #9bb7ff;
+  outline-offset: 3px;
+}
+.jnr-cat-arrow:disabled {
+  opacity: .4;               /* faded at the start/end, like the reference */
+  cursor: default;
+  box-shadow: none;
+}
+.jnr-cat-arrow--prev { left: 0; }
+.jnr-cat-arrow--next { right: 0; }
+
+/* Cards visible at once */
+@media (max-width: 1199px) { .jnr-cat-section { --jnr-cat-per-view: 6; } }
+@media (max-width: 991px)  { .jnr-cat-section { --jnr-cat-per-view: 5; } }
+@media (max-width: 767px)  { .jnr-cat-section { --jnr-cat-per-view: 4; } }
+
+/* Phones: swipe instead of arrows, and peek the next card so it's obvious
+   the row scrolls. */
+@media (max-width: 550px) {
+  .jnr-cat-section {
+    --jnr-cat-per-view: 3.4;
+    --jnr-cat-gap: 12px;
+  }
+  .jnr-cat-slider { padding-inline: 0; }
+  .jnr-cat-arrow { display: none; }
+  .jnr-cat-card { gap: 10px; }
+}
+@media (max-width: 400px) {
+  .jnr-cat-section { --jnr-cat-per-view: 3.15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jnr-cat-tile, .jnr-cat-label, .jnr-cat-arrow { transition: none; }
+}

@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search, Heart, UserRound, ShoppingBag } from 'lucide-react';
+import { useStoreUI } from '../../context/StoreUIContext';
 import CategoryNavigation from './CategoryNavigation';
 import AnnouncementBar from './AnnouncementBar';
+import '../../styles/header-cart.css';
 
 export default function Header() {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
+  const { count, panel, openPanel } = useStoreUI();
 
   const submitSearch = (event) => {
     event.preventDefault();
@@ -41,9 +44,18 @@ export default function Header() {
               <Link to="/account" aria-label="My account">
                 <UserRound size={22} /><span>Account</span>
               </Link>
-              <Link to="/cart" aria-label="Shopping cart" className="cart-link">
-                <ShoppingBag size={22} /><span>Cart</span><b>0</b>
-              </Link>
+              <button
+                type="button"
+                className="cart-link header-cart-button"
+                onClick={() => openPanel('cart')}
+                aria-label={`Open shopping cart (${count} ${count === 1 ? 'item' : 'items'})`}
+                aria-haspopup="dialog"
+                aria-expanded={panel === 'cart'}
+              >
+                <ShoppingBag size={22} aria-hidden="true" />
+                <span>Cart</span>
+                <b aria-hidden="true">{count > 99 ? '99+' : count}</b>
+              </button>
             </div>
           </div>
         </div>

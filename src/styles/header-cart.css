@@ -1,0 +1,46 @@
+/* Match the existing header icon-links while using a button for the cart drawer. */
+.header-actions .header-cart-button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #263653;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: normal;
+  cursor: pointer;
+}
+
+.header-actions .header-cart-button svg { stroke-width: 1.8; }
+.header-actions .header-cart-button b {
+  position: absolute;
+  top: -9px;
+  right: 6px;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 3px;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  background: #223773;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1;
+}
+.header-actions .header-cart-button:hover { color: #223773; }
+.header-actions .header-cart-button:focus-visible {
+  outline: 2px solid #223773;
+  outline-offset: 5px;
+  border-radius: 3px;
+}
+
+/* Match the existing icon-only header actions at tablet/mobile widths. */
+@media (max-width: 980px) {
+  .header-actions .header-cart-button > span { display: none; }
+}

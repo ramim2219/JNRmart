@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-labelledby="title desc">
+  <title id="title">JNRmart premium honey promotion</title>
+  <desc id="desc">Stylized jar of honey against a warm golden background with shop now text</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFF6DC"/>
+      <stop offset="1" stop-color="#F4DAA4"/>
+    </linearGradient>
+    <linearGradient id="honey" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#E9A939"/>
+      <stop offset="1" stop-color="#AD671E"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#FFFFFF" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="15" stdDeviation="17" flood-color="#8A5A1E" flood-opacity=".23"/>
+    </filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)"/>
+  <circle cx="505" cy="490" r="240" fill="#EAB962" opacity=".23"/>
+  <circle cx="533" cy="76" r="155" fill="#FFF" opacity=".19"/>
+  <g stroke="#CDA15F" stroke-width="4" fill="none" opacity=".22">
+    <path d="M488 88l20-12 20 12v24l-20 12-20-12zM527 109l20-12 20 12v24l-20 12-20-12zM449 109l20-12 20 12v24l-20 12-20-12z"/>
+  </g>
+  <text x="44" y="75" fill="#25406B" font-size="25" font-family="Arial, sans-serif" font-weight="800" letter-spacing="3">JNRMART</text>
+  <text x="44" y="160" fill="#172B4E" font-size="53" font-family="Arial, sans-serif" font-weight="900">Pure Honey</text>
+  <text x="45" y="202" fill="#745A37" font-size="25" font-family="Arial, sans-serif">A little more natural.</text>
+  <g transform="translate(240 248) rotate(9 130 140)" filter="url(#shadow)">
+    <rect x="70" y="-13" width="144" height="42" rx="14" fill="#7A4E24"/>
+    <rect x="60" y="18" width="164" height="35" rx="9" fill="#A97735"/>
+    <path d="M66 49Q36 55 36 95V247Q36 277 69 281H215Q247 278 248 245V94Q245 56 219 49Z" fill="url(#honey)" stroke="#CC8630" stroke-width="8"/>
+    <path d="M72 68Q63 95 65 155V245" stroke="#FFF4D8" stroke-width="16" stroke-linecap="round" opacity=".34"/>
+    <path d="M204 75Q219 95 215 150V235" stroke="#FFD880" stroke-width="10" stroke-linecap="round" opacity=".45"/>
+    <rect x="65" y="127" width="151" height="91" rx="11" fill="#FDF0D2"/>
+    <text x="140" y="164" font-size="20" font-weight="800" text-anchor="middle" font-family="Arial, sans-serif" fill="#805523">100% PURE</text>
+    <text x="140" y="195" font-size="29" font-weight="900" text-anchor="middle" font-family="Arial, sans-serif" fill="#60401C">HONEY</text>
+  </g>
+  <g transform="translate(42 465)">
+    <rect width="160" height="60" rx="18" fill="#223773"/>
+    <text x="80" y="38" fill="#FFF" font-size="21" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800">Shop now  →</text>
+  </g>
+  <path d="M457 490c28-13 38-22 49-46m-56 69c38-15 70-19 89-17" fill="none" stroke="#647A37" stroke-width="8" stroke-linecap="round" opacity=".55"/>
+  <circle cx="498" cy="441" r="13" fill="#E1AB48"/>
+  <circle cx="529" cy="496" r="9" fill="#E1AB48"/>
+</svg>

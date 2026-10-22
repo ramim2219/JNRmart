@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-labelledby="title desc">
+  <title id="title">JNRmart dates collection promotion</title>
+  <desc id="desc">Premium dates in a bowl on a blue-gray background with promotional heading</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#DDEAFF"/>
+      <stop offset="1" stop-color="#A8C2ED"/>
+    </linearGradient>
+    <linearGradient id="bowl" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#F8F3EB"/>
+      <stop offset="1" stop-color="#C7D5E5"/>
+    </linearGradient>
+    <linearGradient id="date" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#B76D42"/>
+      <stop offset=".5" stop-color="#6E3829"/>
+      <stop offset="1" stop-color="#4D2524"/>
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="14" stdDeviation="15" flood-color="#223D65" flood-opacity=".22"/></filter>
+  </defs>
+  <rect width="600" height="600" fill="url(#bg)"/>
+  <circle cx="479" cy="390" r="230" fill="#EEF5FF" opacity=".45"/>
+  <path d="M450 51c48 75 73 148 80 235" stroke="#89B19F" stroke-width="12" stroke-linecap="round" fill="none" opacity=".45"/>
+  <path d="M499 131c-67-9-70-58-70-58 72 3 70 58 70 58ZM521 197c50-39 45-79 45-79-60 22-45 79-45 79Z" fill="#7BA998" opacity=".42"/>
+  <text x="44" y="75" fill="#25406B" font-size="25" font-family="Arial, sans-serif" font-weight="800" letter-spacing="3">JNRMART</text>
+  <text x="44" y="160" fill="#172B4E" font-size="52" font-family="Arial, sans-serif" font-weight="900">Premium</text>
+  <text x="44" y="215" fill="#172B4E" font-size="52" font-family="Arial, sans-serif" font-weight="900">Dates</text>
+  <text x="45" y="252" fill="#475E81" font-size="23" font-family="Arial, sans-serif">Naturally delicious.</text>
+  <g transform="translate(190 290)" filter="url(#shadow)">
+    <ellipse cx="192" cy="206" rx="168" ry="45" fill="#7894BD" opacity=".25"/>
+    <path d="M31 116c10 86 42 131 161 131s156-45 163-131" fill="url(#bowl)" stroke="#F9FBFF" stroke-width="6"/>
+    <ellipse cx="193" cy="118" rx="163" ry="62" fill="#E9F1FA" stroke="#F9FBFF" stroke-width="7"/>
+    <ellipse cx="193" cy="115" rx="148" ry="49" fill="#E2C4A0"/>
+    <g fill="url(#date)" stroke="#6D382C" stroke-width="2">
+      <ellipse cx="95" cy="100" rx="29" ry="48" transform="rotate(-45 95 100)"/>
+      <ellipse cx="139" cy="89" rx="31" ry="48" transform="rotate(30 139 89)"/>
+      <ellipse cx="194" cy="80" rx="29" ry="46" transform="rotate(-18 194 80)"/>
+      <ellipse cx="253" cy="87" rx="31" ry="49" transform="rotate(25 253 87)"/>
+      <ellipse cx="300" cy="110" rx="28" ry="43" transform="rotate(51 300 110)"/>
+      <ellipse cx="170" cy="138" rx="31" ry="49" transform="rotate(63 170 138)"/>
+      <ellipse cx="225" cy="139" rx="30" ry="46" transform="rotate(-58 225 139)"/>
+    </g>
+    <g fill="none" stroke="#D29A75" stroke-width="3" opacity=".65" stroke-linecap="round">
+      <path d="M89 69c-9 22-5 40 10 58M145 59c-10 26-10 42 2 59M197 55c-10 19-10 36-1 49M258 61c-9 21-7 44 3 60M166 108c-9 19-10 33-1 46"/>
+    </g>
+  </g>
+  <g transform="translate(42 474)">
+    <rect width="160" height="60" rx="18" fill="#223773"/>
+    <text x="80" y="38" fill="#FFF" font-size="21" text-anchor="middle" font-family="Arial, sans-serif" font-weight="800">Explore  →</text>
+  </g>
+</svg>
