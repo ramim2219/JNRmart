@@ -27,6 +27,7 @@ export default function ProductDealsSection({
   showArrows = true,
   arrowsOnHover = false,
   imageFit = 'contain',
+  withContainer = true,
 }) {
   return (
     <SectionCarousel
@@ -37,7 +38,7 @@ export default function ProductDealsSection({
       viewAllLabel={viewAllLabel}
       columns={columns}
       gap={gap}
-      withContainer
+      withContainer={withContainer}
       showArrows={showArrows}
       arrowsOnHover={arrowsOnHover}
       arrowLabel="deal products"

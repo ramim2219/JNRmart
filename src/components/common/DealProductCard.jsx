@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Truck } from 'lucide-react';
+import WishlistToggle from './WishlistToggle';
 
 const money = (value) => `৳ ${Number(value).toLocaleString('en-BD', { maximumFractionDigits: 0 })}`;
 
@@ -77,6 +78,7 @@ export default function DealProductCard({ product, linkTo, imageFit = 'contain' 
           </div>
         </div>
       </Link>
+      <WishlistToggle product={product} />
       <div className="jnr-deal-card__delivery" title={product.deliveryText || 'Delivery details at checkout'}>
         <Truck size={15} aria-hidden="true" />
         <span>{product.deliveryText || 'Delivery details at checkout'}</span>

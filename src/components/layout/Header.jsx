@@ -9,7 +9,7 @@ import '../../styles/header-cart.css';
 export default function Header() {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
-  const { count, panel, openPanel } = useStoreUI();
+  const { count, wishlistCount, panel, openPanel } = useStoreUI();
 
   const submitSearch = (event) => {
     event.preventDefault();
@@ -38,9 +38,18 @@ export default function Header() {
             </form>
 
             <div className="header-actions">
-              <Link to="/wishlist" className="wishlist-link" aria-label="Wishlist">
-                <Heart size={22} /><span>Wishlist</span>
-              </Link>
+              <button
+                type="button"
+                className="wishlist-link header-cart-button header-wishlist-button"
+                onClick={() => openPanel('wishlist')}
+                aria-label={`Open wishlist (${wishlistCount} ${wishlistCount === 1 ? 'item' : 'items'})`}
+                aria-haspopup="dialog"
+                aria-expanded={panel === 'wishlist'}
+              >
+                <Heart size={22} aria-hidden="true" />
+                <span>Wishlist</span>
+                {wishlistCount > 0 && <b aria-hidden="true">{wishlistCount > 99 ? '99+' : wishlistCount}</b>}
+              </button>
               <Link to="/account" aria-label="My account">
                 <UserRound size={22} /><span>Account</span>
               </Link>

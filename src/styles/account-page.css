@@ -1,0 +1,271 @@
+/* JNRmart customer account — fully namespaced styles */
+.jnr-account-page, .jnr-account-auth-page {
+  --account-navy: #223773;
+  --account-ink: #18263f;
+  --account-muted: #728096;
+  --account-line: #e5eaf2;
+  --account-soft: #f5f7fb;
+  background: #f7f9fc;
+  color: var(--account-ink);
+}
+.jnr-account-page button, .jnr-account-auth-page button { cursor: pointer; }
+.jnr-account-page :is(a,button,input,select):focus-visible,
+.jnr-account-auth-page :is(a,button,input,select):focus-visible {
+  outline: 3px solid rgba(64,105,196,.38); outline-offset: 2px;
+}
+.jnr-account-wrap { padding-bottom: 66px; }
+.jnr-account-breadcrumb { display: flex; align-items: center; gap: 9px; padding: 20px 0 26px; color: #8390a2; font-size: 12px; }
+.jnr-account-breadcrumb a:hover { color: var(--account-navy); }
+.jnr-account-breadcrumb span { color: #344257; }
+.jnr-account-layout { display: grid; grid-template-columns: minmax(238px, 266px) minmax(0, 1fr); align-items: start; gap: 24px; }
+.jnr-account-sidebar { position: sticky; top: 78px; border: 1px solid var(--account-line); background: white; border-radius: 13px; overflow: hidden; box-shadow: 0 5px 20px rgba(27,49,87,.025); }
+.jnr-account-person { display:flex; align-items:center; gap:13px; padding: 23px 20px; border-bottom:1px solid var(--account-line); }
+.jnr-account-avatar { width:49px; height:49px; flex:0 0 49px; display:grid; place-items:center; font-weight:800; font-size:16px; color:#fff; border-radius:12px; background:linear-gradient(135deg,#223773,#5074ba); }
+.jnr-account-person-copy { display:flex; flex-direction:column; min-width:0; gap:3px; }
+.jnr-account-person-copy span { font-size:11px; color:#8190a4; }
+.jnr-account-person-copy strong { font-size:13px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.jnr-account-person-copy small { font-size:10px; color:#8190a4; }
+.jnr-account-side-nav { padding:13px 11px; display:grid; gap:4px; }
+.jnr-account-navlink { display:flex; align-items:center; gap:13px; border-radius:8px; padding:12px 13px; font-size:13px; font-weight:600; color:#5d6b81; white-space:nowrap; transition: background .16s,color .16s; }
+.jnr-account-navlink svg { flex-shrink:0; }
+.jnr-account-navlink:hover { background: #f3f6fb; color:var(--account-navy); }
+.jnr-account-navlink.is-active { background:#edf2fd; color:var(--account-navy); }
+.jnr-account-navlink em { margin-left:auto; display:grid; place-items:center; padding:2px 7px; border-radius:7px; color:var(--account-navy); background:#e4eafa; font-style:normal; font-size:10px; }
+.jnr-account-sidebar-bottom { display:flex; align-items:flex-start; gap:8px; border-top:1px solid var(--account-line); padding:16px 18px 8px; color:#8693a6; font-size:11px; line-height:1.5; }
+.jnr-account-sidebar-bottom svg { flex-shrink:0; color:#6d85b1; }
+.jnr-account-signin-link { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--account-navy); font-weight:700; padding:10px 18px 18px; }
+.jnr-account-main { min-width:0; }
+.jnr-account-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:3px 0 22px; }
+.jnr-account-kicker { font-size:10px; letter-spacing:.14em; font-weight:800; margin:0 0 7px; color:#6079a9; }
+.jnr-account-head h1 { font-size:clamp(22px,2.4vw,29px); line-height:1.2; margin:0 0 7px; letter-spacing:-.028em; color:#182c52; }
+.jnr-account-head p:not(.jnr-account-kicker) { margin:0; color:#7b889b; font-size:12px; line-height:1.6; }
+.jnr-account-demo-pill { font-size:10px; font-weight:800; letter-spacing:.08em; color:#4f6999; background:#e7eefb; padding:8px 11px; border-radius:99px; white-space:nowrap; }
+.jnr-account-stack { display:grid; gap:20px; }
+.jnr-account-mobile-nav { display:none; }
+.jnr-account-hero-card { min-height:195px; background:linear-gradient(109deg,#20356d,#344f94 68%,#6a83ba); border-radius:13px; color:white; padding:29px 32px; display:flex; justify-content:space-between; align-items:center; gap:14px; position:relative; overflow:hidden; }
+.jnr-account-hero-card:after { content:''; position:absolute; width:330px; height:330px; border-radius:50%; border:1px solid #ffffff27; right:-94px; top:-111px; }
+.jnr-account-hero-card h2 { font-size:clamp(24px,2.9vw,32px); color:#fff; margin:9px 0 8px; letter-spacing:-.03em; }
+.jnr-account-hero-card p { color:#e2eaff; font-size:13px; line-height:1.6; max-width:400px; margin:0 0 18px; }
+.jnr-account-hero-eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:.05em; font-weight:700; color:#dce6ff; }
+.jnr-account-light-action { display:inline-flex; align-items:center; gap:9px; padding:10px 15px; font-size:12px; font-weight:800; color:#213a73; background:#fff; border-radius:7px; }
+.jnr-account-light-action:hover { background:#eef2fb; }
+.jnr-account-hero-mark { flex:0 0 140px; display:grid; place-items:center; width:140px; height:140px; border-radius:50%; background:#ffffff13; color:#ffffff9a; border:1px solid #ffffff30; }
+.jnr-account-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:13px; }
+.jnr-account-metric { min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:8px; border:1px solid var(--account-line); background:#fff; border-radius:11px; padding:18px 16px; transition:transform .2s,box-shadow .2s; }
+.jnr-account-metric:hover { transform:translateY(-2px); box-shadow:0 8px 25px #233a5a10; }
+.jnr-account-metric-icon { width:35px; height:35px; background:#eef3fc; border-radius:9px; color:#36568f; display:grid; place-items:center; }
+.jnr-account-metric strong { margin-top:1px; font-size:22px; font-family:Outfit,sans-serif; line-height:1; }
+.jnr-account-metric > span:last-child { font-size:11px; color:#74839b; }
+.jnr-account-panel { background:#fff; border:1px solid var(--account-line); border-radius:12px; padding:22px; min-width:0; }
+.jnr-account-panel-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; }
+.jnr-account-panel-heading h2 { font-size:18px; margin:0 0 5px; color:#1c3158; letter-spacing:-.02em; }
+.jnr-account-panel-heading p { margin:0; color:#8a96a8; font-size:11px; line-height:1.5; }
+.jnr-account-inline-link, .jnr-account-text-button, .jnr-account-back { display:inline-flex; align-items:center; gap:7px; border:0; background:none; color:var(--account-navy); font-weight:700; font-size:12px; white-space:nowrap; }
+.jnr-account-inline-link:hover, .jnr-account-text-button:hover, .jnr-account-back:hover { color:#4267b1; }
+.jnr-account-recent-order { display:flex; align-items:center; gap:13px; padding:13px 0; border-bottom:1px solid #edf0f5; }
+.jnr-account-recent-order:first-child { padding-top:0; }
+.jnr-account-recent-order:last-child { padding-bottom:0; border-bottom:0; }
+.jnr-account-order-thumb { width:51px; height:53px; flex:0 0 51px; background:#f7f9fd; border:1px solid #edf0f5; border-radius:8px; display:grid; place-items:center; overflow:hidden; color:#667fae; }
+.jnr-account-order-thumb img { width:100%; height:100%; object-fit:contain; }
+.jnr-account-order-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:6px; }
+.jnr-account-order-main strong { font-size:12px; }
+.jnr-account-order-main small { font-size:11px; color:#8390a3; }
+.jnr-account-status { display:inline-flex; justify-content:center; align-items:center; width:max-content; font-size:10px; white-space:nowrap; padding:6px 10px; font-weight:800; border-radius:40px; background:#f4f6fa; color:#77839a; }
+.jnr-account-status.status-on-the-way { color:#23609b; background:#e8f3ff; }
+.jnr-account-status.status-processing { color:#916020; background:#fff4df; }
+.jnr-account-status.status-delivered { color:#287b58; background:#e5f6ed; }
+.jnr-account-status.status-cancelled { color:#aa4b4b; background:#fff0ee; }
+.jnr-account-order-price { min-width:80px; text-align:right; font-size:13px; color:#192c51; }
+.jnr-account-chevron { color:#97a2b3; }
+.jnr-account-quick-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+.jnr-account-quick-card { display:flex; align-items:center; gap:13px; background:#fff; padding:19px; border:1px solid var(--account-line); border-radius:11px; }
+.jnr-account-quick-icon { display:grid; place-items:center; width:42px; height:42px; flex-shrink:0; border-radius:10px; color:var(--account-navy); background:#eef3fc; }
+.jnr-account-quick-card > span:nth-child(2) { display:grid; gap:5px; flex:1; min-width:0; }
+.jnr-account-quick-card strong { font-size:12px; }
+.jnr-account-quick-card small { font-size:11px; color:#8795a8; line-height:1.5; }
+.jnr-account-quick-card > svg { color:#7b8da8; flex-shrink:0; }
+.jnr-account-preview-caption { font-size:11px; color:#8a96a9; margin:0; }
+.jnr-account-primary, .jnr-account-secondary { min-height:40px; display:inline-flex; justify-content:center; align-items:center; gap:8px; padding:10px 16px; font-size:12px; font-weight:700; border-radius:7px; border:1px solid var(--account-navy); }
+.jnr-account-primary { color:#fff; background:var(--account-navy); }
+.jnr-account-primary:hover { background:#172b60; color:#fff; }
+.jnr-account-secondary { color:var(--account-navy); background:#fff; border-color:#d9e2f0; }
+.jnr-account-secondary:hover { background:#f2f5fb; }
+.jnr-account-primary:disabled { opacity:.5; cursor:not-allowed; }
+.jnr-account-order-toolbar { display:flex; align-items:center; gap:14px; justify-content:space-between; margin-bottom:16px; }
+.jnr-account-order-tabs { display:flex; flex-wrap:wrap; gap:6px; }
+.jnr-account-order-tabs button { background:#fff; border:1px solid transparent; border-radius:7px; padding:8px 10px; color:#65738a; font-size:11px; font-weight:700; white-space:nowrap; }
+.jnr-account-order-tabs button:hover,.jnr-account-order-tabs button.is-current { background:#ebf0fa; color:#223773; border-color:#dfe7f7; }
+.jnr-account-search { height:38px; width:185px; flex:0 0 185px; display:flex; align-items:center; gap:8px; color:#8997a9; padding:0 10px; border:1px solid var(--account-line); border-radius:7px; }
+.jnr-account-search input { width:100%; min-width:0; border:0; outline:0; font-size:11px; }
+.jnr-account-order-card { border:1px solid var(--account-line); border-radius:10px; padding:15px; margin-top:12px; }
+.jnr-account-order-top { display:flex; align-items:center; justify-content:space-between; gap:10px; padding-bottom:12px; border-bottom:1px solid #edf1f6; }
+.jnr-account-order-top > div { display:flex; flex-direction:column; gap:5px; }
+.jnr-account-order-top strong { font-size:12px; }
+.jnr-account-order-top > div span { font-size:10px; color:#8b97a8; }
+.jnr-account-order-products { display:flex; align-items:center; gap:10px; padding:16px 0; }
+.jnr-account-order-products img { width:44px; height:45px; border:1px solid #edf0f6; border-radius:6px; object-fit:contain; background:#f8f9fc; }
+.jnr-account-order-products > div { display:grid; gap:5px; flex:1; min-width:0; }
+.jnr-account-order-products > div strong { font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.jnr-account-order-products > div small { color:#8a97a8; font-size:10px; }
+.jnr-account-order-actions { display:flex; justify-content:flex-end; gap:15px; align-items:center; border-top:1px solid #edf1f6; padding-top:12px; }
+.jnr-account-order-actions .jnr-account-secondary { min-height:32px; padding:6px 11px; font-size:11px; }
+.jnr-account-detail-title { display:flex; justify-content:space-between; gap:20px; align-items:center; }
+.jnr-account-detail-title h2 { font-size:23px; margin:0 0 5px; }
+.jnr-account-detail-title p { font-size:11px; color:#8391a5; margin:0; }
+.jnr-account-back { margin:0 0 -1px; width:max-content; }
+.jnr-account-steps { display:grid; grid-template-columns:repeat(3,1fr); margin:26px 0 14px; }
+.jnr-account-step { display:flex; flex-direction:column; align-items:center; gap:8px; color:#a8b2c1; font-size:11px; font-weight:700; position:relative; text-align:center; }
+.jnr-account-step:not(:first-child):before { position:absolute; content:''; height:2px; top:15px; right:50%; width:100%; background:#e2e8f1; z-index:0; }
+.jnr-account-step.is-complete:not(:first-child):before { background:#4472ac; }
+.jnr-account-step span { display:grid; place-items:center; width:32px; height:32px; border:1px solid #dde3ed; background:#f8fafc; color:#91a0b4; border-radius:50%; z-index:1; }
+.jnr-account-step.is-complete span { color:#fff; border-color:#37649a; background:#37649a; }
+.jnr-account-tracking { display:flex; align-items:center; gap:9px; font-size:11px; line-height:1.5; padding:12px 14px; background:#f5f8fc; border-radius:8px; margin:0; color:#72809a; }
+.jnr-account-tracking svg { flex-shrink:0; }
+.jnr-account-detail-item { display:flex; gap:13px; align-items:center; padding:13px 0; border-bottom:1px solid #edf1f6; }
+.jnr-account-detail-item > div { display:grid; gap:7px; flex:1; }
+.jnr-account-detail-item strong { font-size:12px; }
+.jnr-account-detail-item small { color:#8291a4; font-size:11px; }
+.jnr-account-invoice { max-width:340px; margin:16px 0 17px auto; display:grid; gap:11px; }
+.jnr-account-invoice > div { display:flex; justify-content:space-between; gap:20px; color:#718096; font-size:12px; }
+.jnr-account-invoice strong { color:#283b5b; }
+.jnr-account-invoice .jnr-account-invoice-total { border-top:1px solid #e6ebf2; padding-top:12px; color:#182d54; font-weight:800; font-size:14px; }
+.jnr-account-address-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.jnr-account-address-card { border:1px solid #e5ebf3; padding:18px; border-radius:10px; min-width:0; }
+.jnr-account-address-card-header { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:15px; }
+.jnr-account-address-card-header > strong { display:flex; align-items:center; gap:6px; font-size:13px; }
+.jnr-account-address-card-header > span { padding:5px 8px; background:#e9f1ff; border-radius:5px; font-size:10px; color:#315b95; font-weight:800; }
+.jnr-account-address-card h3 { font-size:14px; margin:0 0 6px; }
+.jnr-account-address-card p { margin:0 0 8px; min-height:42px; font-size:12px; line-height:1.7; color:#657488; }
+.jnr-account-address-card small { color:#7d8b9f; }
+.jnr-account-address-actions { display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding-top:16px; border-top:1px solid #e9eef4; margin-top:15px; }
+.jnr-account-address-actions button { display:inline-flex; align-items:center; gap:5px; color:#365b96; background:none; padding:0; border:0; font-weight:700; font-size:11px; }
+.jnr-account-address-actions button.is-danger, .jnr-account-confirm-remove { color:#b44646; }
+.jnr-account-confirm-remove { display:inline-flex; align-items:center; gap:8px; font-size:11px; }
+.jnr-account-empty { padding:56px 15px; text-align:center; display:flex; align-items:center; flex-direction:column; gap:9px; color:#9aa9bf; }
+.jnr-account-empty h2, .jnr-account-empty h3 { font-size:17px; margin:6px 0 0; color:#233455; }
+.jnr-account-empty p { margin:0 0 9px; font-size:12px; color:#8d9baf; line-height:1.65; max-width:335px; }
+.jnr-account-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:19px; }
+.jnr-account-field { display:flex; flex-direction:column; gap:8px; color:#37475e; font-size:12px; font-weight:700; min-width:0; }
+.jnr-account-field input, .jnr-account-field select { width:100%; height:43px; font-size:12px; padding:0 12px; background:#fff; color:#273954; border:1px solid #dce4ee; border-radius:7px; outline:0; }
+.jnr-account-field input:focus, .jnr-account-field select:focus { border-color:#7e9cce; box-shadow:0 0 0 3px #2d559016; }
+.jnr-account-field input::placeholder { color:#a0a9b9; font-weight:400; }
+.jnr-account-full { grid-column:1/-1; }
+.jnr-account-form-footer { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-top:28px; border-top:1px solid #ebeff6; padding-top:19px; }
+.jnr-account-form-footer p { margin:0; font-size:11px; color:#8c9aae; }
+.jnr-account-local-notice { display:flex; align-items:center; gap:8px; font-size:11px; line-height:1.5; border-radius:7px; padding:10px 12px; margin:14px 0; color:#4c6485; background:#edf4fc; }
+.jnr-account-modal-scrim { position:fixed; inset:0; z-index:2500; display:grid; place-items:center; background:rgba(15,28,52,.58); padding:16px; }
+.jnr-account-address-modal { width:min(540px,100%); max-height:min(92dvh,800px); overflow:auto; background:#fff; border-radius:13px; box-shadow:0 28px 75px #0d1e3c40; padding:24px; }
+.jnr-account-modal-header { display:flex; justify-content:space-between; align-items:flex-start; gap:15px; margin-bottom:20px; }
+.jnr-account-modal-header h2 { font-size:20px; margin:0 0 5px; }
+.jnr-account-modal-header p { margin:0; color:#8896a8; font-size:12px; }
+.jnr-account-modal-header button { border:0; background:#f3f5f9; display:grid; place-items:center; width:31px; height:31px; border-radius:7px; }
+.jnr-account-address-form .jnr-account-form-grid { gap:14px; }
+.jnr-account-switch-line { display:flex; align-items:center; gap:10px; font-size:12px; color:#40516b; margin-top:20px; }
+.jnr-account-switch-line input { accent-color:#223773; width:16px; height:16px; }
+.jnr-account-modal-actions { display:flex; justify-content:flex-end; gap:10px; padding-top:19px; margin-top:16px; border-top:1px solid #e7ebf2; }
+.jnr-account-count-pill { font-size:11px; font-weight:700; border-radius:16px; padding:6px 10px; background:#eef3fc; color:#385b92; }
+.jnr-account-wishlist-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+.jnr-account-wish-card { border:1px solid #e7edf5; border-radius:10px; overflow:hidden; position:relative; min-width:0; }
+.jnr-account-wish-image { height:155px; display:grid; place-items:center; background:#f6f8fc; color:#9ca9ba; }
+.jnr-account-wish-image img { width:100%; height:100%; object-fit:contain; padding:12px; }
+.jnr-account-wish-remove { position:absolute; top:10px; right:10px; border:1px solid #e8edf4; background:#fff; color:#b25c5c; width:30px; height:30px; border-radius:6px; display:grid; place-items:center; }
+.jnr-account-wish-copy { display:flex; flex-direction:column; gap:9px; padding:13px; }
+.jnr-account-wish-copy > span { font-size:10px; color:#8795a5; }
+.jnr-account-wish-copy > a { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:33px; font-size:12px; line-height:1.45; font-weight:700; }
+.jnr-account-wish-copy > strong { font-size:15px; color:#21396e; }
+.jnr-account-wish-copy button { width:100%; font-size:11px; min-height:37px; padding:8px 4px; }
+.jnr-account-preference { display:flex; justify-content:space-between; gap:15px; align-items:center; padding:16px 0; border-bottom:1px solid #ebeff5; cursor:pointer; }
+.jnr-account-preference > span { display:grid; gap:6px; }
+.jnr-account-preference strong { font-size:13px; }
+.jnr-account-preference small { font-size:11px; color:#8594a7; }
+.jnr-account-preference input { width:38px; height:22px; accent-color:#223773; cursor:pointer; }
+.jnr-account-security { display:flex; align-items:center; gap:14px; }
+.jnr-account-security > span { display:grid; place-items:center; width:50px; height:50px; border-radius:10px; background:#eff3fa; color:#395996; flex-shrink:0; }
+.jnr-account-security > div { flex:1; }
+.jnr-account-security strong { font-size:13px; }
+.jnr-account-security p { font-size:11px; color:#8793a5; line-height:1.7; margin:5px 0 0; }
+.jnr-account-security > svg { color:#78a78f; flex-shrink:0; }
+.jnr-account-auth-page { padding:25px 0 75px; min-height:620px; }
+.jnr-account-auth-page .jnr-account-back { margin-bottom:25px; }
+.jnr-account-auth-grid { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); background:#fff; border-radius:15px; border:1px solid #e4eaf2; overflow:hidden; max-width:980px; margin:auto; }
+.jnr-account-auth-intro { color:white; background:linear-gradient(145deg,#1d326b,#395999); padding:66px 44px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; }
+.jnr-account-auth-emblem { display:grid; place-items:center; width:65px; height:65px; border:1px solid #ffffff45; border-radius:15px; color:white; margin-bottom:24px; }
+.jnr-account-auth-intro h1 { font-size:clamp(26px,3vw,36px); line-height:1.15; letter-spacing:-.03em; color:white; max-width:400px; margin:8px 0 15px; }
+.jnr-account-auth-intro > p:not(.jnr-account-hero-eyebrow) { color:#e0e9fc; line-height:1.8; font-size:13px; max-width:380px; }
+.jnr-account-auth-benefit { margin-top:28px; display:flex; align-items:center; gap:12px; color:#e2e9f8; font-size:11px; line-height:1.6; }
+.jnr-account-auth-benefit svg { flex-shrink:0; }
+.jnr-account-auth-card { padding:49px 42px; }
+.jnr-account-auth-card h2 { font-size:25px; color:#1c3158; margin:0 0 8px; }
+.jnr-account-auth-card > p { font-size:12px; line-height:1.7; color:#8a98aa; }
+.jnr-account-auth-note { background:#f1f5fc; color:#526e96; border-radius:7px; font-size:11px; padding:10px 12px; margin:17px 0 23px; }
+.jnr-account-auth-form { display:grid; gap:18px; }
+.jnr-account-auth-form .jnr-account-primary { width:100%; margin-top:5px; }
+.jnr-account-password-input { display:flex; height:43px; align-items:center; border:1px solid #dce4ee; border-radius:7px; }
+.jnr-account-password-input input { border:none; height:100%; flex:1; min-width:0; }
+.jnr-account-password-input button { background:transparent; border:0; padding:8px 12px; color:#66788f; }
+.jnr-account-auth-extra { display:flex; align-items:center; justify-content:space-between; gap:15px; font-size:11px; }
+.jnr-account-auth-extra label { display:flex; align-items:center; gap:6px; color:#7f8ea3; }
+.jnr-account-auth-extra a, .jnr-account-auth-bottom a { font-weight:800; color:#223773; }
+.jnr-account-auth-bottom { margin-top:22px; text-align:center; font-size:12px; color:#7c8b9f; }
+@media (max-width:1190px) {
+  .jnr-account-layout { grid-template-columns:225px minmax(0,1fr); gap:17px; }
+  .jnr-account-metrics { gap:9px; }
+  .jnr-account-metric { padding:14px 12px; }
+  .jnr-account-sidebar { top:70px; }
+}
+@media (max-width:980px) {
+  .jnr-account-layout { grid-template-columns:1fr; }
+  .jnr-account-sidebar { display:none; }
+  .jnr-account-mobile-nav { display:flex; gap:5px; overflow-x:auto; padding:6px 0 15px; margin-bottom:9px; scrollbar-width:none; }
+  .jnr-account-mobile-nav::-webkit-scrollbar { display:none; }
+  .jnr-account-mobile-nav .jnr-account-navlink { flex:0 0 auto; padding:11px 12px; border:1px solid #e6eaf1; background:#fff; font-size:12px; }
+  .jnr-account-mobile-nav .jnr-account-navlink.is-active { border-color:#cbd8ef; background:#e9effb; }
+  .jnr-account-mobile-nav .jnr-account-navlink svg { width:16px; height:16px; }
+  .jnr-account-order-toolbar { flex-wrap:wrap; }
+  .jnr-account-order-tabs { overflow-x:auto; flex-wrap:nowrap; max-width:100%; }
+}
+@media (max-width:700px) {
+  .jnr-account-wrap { padding-bottom:37px; }
+  .jnr-account-breadcrumb { padding:15px 0 22px; }
+  .jnr-account-head { margin-bottom:14px; }
+  .jnr-account-head h1 { font-size:24px; }
+  .jnr-account-panel { padding:16px; }
+  .jnr-account-hero-card { padding:22px; min-height:165px; }
+  .jnr-account-hero-mark { width:95px; height:95px; flex-basis:95px; }
+  .jnr-account-hero-mark svg { width:55px; height:55px; }
+  .jnr-account-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .jnr-account-metric { min-height:112px; }
+  .jnr-account-quick-grid { grid-template-columns:1fr; gap:10px; }
+  .jnr-account-address-grid { grid-template-columns:1fr; }
+  .jnr-account-order-price { min-width:0; }
+  .jnr-account-wishlist-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .jnr-account-order-toolbar { align-items:stretch; }
+  .jnr-account-search { width:100%; flex:1 1 100%; }
+  .jnr-account-auth-grid { grid-template-columns:1fr; }
+  .jnr-account-auth-intro { padding:34px 27px; }
+  .jnr-account-auth-card { padding:28px 24px; }
+}
+@media (max-width:430px) {
+  .jnr-account-hero-card { padding:20px; }
+  .jnr-account-hero-card h2 { font-size:23px; }
+  .jnr-account-hero-card p { font-size:11px; }
+  .jnr-account-hero-mark { display:none; }
+  .jnr-account-recent-order { gap:8px; }
+  .jnr-account-order-thumb { width:43px; height:46px; flex-basis:43px; }
+  .jnr-account-recent-order .jnr-account-status { display:none; }
+  .jnr-account-recent-order .jnr-account-chevron { display:none; }
+  .jnr-account-order-products img { width:35px; height:37px; }
+  .jnr-account-order-products img:nth-child(n+2) { display:none; }
+  .jnr-account-panel-heading { flex-wrap:wrap; }
+  .jnr-account-form-grid { grid-template-columns:1fr; gap:13px; }
+  .jnr-account-full { grid-column:auto; }
+  .jnr-account-form-footer { flex-direction:column; align-items:stretch; }
+  .jnr-account-form-footer button { width:100%; }
+  .jnr-account-steps { margin:20px 0 12px; }
+  .jnr-account-detail-title h2 { font-size:19px; }
+  .jnr-account-address-modal { padding:18px; }
+  .jnr-account-wish-image { height:125px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .jnr-account-navlink,.jnr-account-metric { transition:none; }
+}

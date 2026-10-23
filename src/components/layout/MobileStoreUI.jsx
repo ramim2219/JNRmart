@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Menu, ShoppingCart, Search, UserRound, X, ArrowLeft, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react';
+import { Home, Menu, ShoppingCart, Search, UserRound, X, ArrowRight, Minus, Plus, Trash2, ShoppingBag, Heart } from 'lucide-react';
 import { categories } from '../../data/navigation';
 import { useStoreUI } from '../../context/StoreUIContext';
+import '../../styles/wishlist-ui.css';
+import '../../styles/cart-checkout.css';
 
 const navigation = [
   { label: 'Home', icon: Home, to: '/' },
@@ -13,12 +15,19 @@ const navigation = [
 ];
 
 export default function MobileStoreUI() {
-  const { panel, openPanel, closePanel, cart, count, total, changeQuantity, removeItem, formatMoney } = useStoreUI();
+  const { panel, openPanel, closePanel, cart, count, total, changeQuantity, removeItem, formatMoney, wishlist, wishlistCount, removeFromWishlist, addToCart, selectedCartItems, selectedCount, selectedTotal, allCartSelected, toggleCartSelection, selectAllCartItems } = useStoreUI();
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const searchRef = useRef(null);
   const panelRef = useRef(null);
+  const selectAllRef = useRef(null);
+
+  useEffect(() => {
+    if (selectAllRef.current) {
+      selectAllRef.current.indeterminate = selectedCartItems.length > 0 && !allCartSelected;
+    }
+  }, [selectedCartItems.length, allCartSelected, panel]);
 
   useEffect(() => { closePanel(); }, [location.pathname, location.search, closePanel]);
   useEffect(() => {
@@ -59,17 +68,116 @@ export default function MobileStoreUI() {
       {panel === 'menu' && (
         <aside ref={panelRef} tabIndex={-1} className="store-drawer store-drawer-left" role="dialog" aria-modal="true" aria-label="Categories menu">
           <div className="store-drawer-heading"><strong>Shop Categories</strong><button aria-label="Close menu" onClick={closePanel}><X size={22}/></button></div>
-          <div className="store-menu-links"><Link to="/" onClick={closePanel}>Home</Link>{categories.map(category => <Link key={category.slug} to={`/category/${category.slug}`} onClick={closePanel}>{category.label}<span>›</span></Link>)}<Link to="/wishlist" onClick={closePanel}>Wishlist</Link><Link to="/track-order" onClick={closePanel}>Track Order</Link></div>
+          <div className="store-menu-links"><Link to="/" onClick={closePanel}>Home</Link>{categories.map(category => <Link key={category.slug} to={`/category/${category.slug}`} onClick={closePanel}>{category.label}<span>›</span></Link>)}<button type="button" onClick={() => openPanel('wishlist')}>Wishlist <Heart size={17}/></button><Link to="/track-order" onClick={closePanel}>Track Order</Link></div>
         </aside>
       )}
       {panel === 'cart' && (
         <aside ref={panelRef} tabIndex={-1} className="store-drawer store-drawer-right" role="dialog" aria-modal="true" aria-label="Shopping cart">
-          <div className="store-drawer-heading"><strong>Shopping Cart ({count})</strong><button aria-label="Close cart" onClick={closePanel}><X size={22}/></button></div>
-          {cart.length === 0 ? <div className="store-cart-empty"><ShoppingBag size={54} strokeWidth={1.2}/><h3>Your cart is empty</h3><p>Add products to see them here.</p><button type="button" className="store-primary-btn" onClick={closePanel}>Continue Shopping</button></div> : (
-            <><div className="store-cart-items">{cart.map(item => <div className="store-cart-item" key={item.id}>
-              {item.image ? <img src={item.image} alt=""/> : <div className="store-cart-image-fallback"><ShoppingBag size={24}/></div>}
-              <div className="store-cart-info"><strong>{item.name}</strong><span>{formatMoney(item.price)}</span><div className="store-cart-controls"><button aria-label={`Reduce ${item.name}`} onClick={() => changeQuantity(item.id, -1)}><Minus size={15}/></button><span>{item.quantity}</span><button aria-label={`Increase ${item.name}`} onClick={() => changeQuantity(item.id, 1)}><Plus size={15}/></button><button className="remove" aria-label={`Remove ${item.name}`} onClick={() => removeItem(item.id)}><Trash2 size={16}/></button></div></div>
-            </div>)}</div><div className="store-cart-footer"><p><span>Subtotal</span><strong>{formatMoney(total)}</strong></p><Link to="/cart" onClick={closePanel} className="store-primary-btn">View Cart <ArrowLeft size={17} style={{transform:'rotate(180deg)'}}/></Link></div></>
+          <div className="store-drawer-heading">
+            <strong>Shopping Cart ({count})</strong>
+            <button type="button" aria-label="Close cart" onClick={closePanel}><X size={22}/></button>
+          </div>
+          {cart.length === 0 ? (
+            <div className="store-cart-empty">
+              <ShoppingBag size={54} strokeWidth={1.2}/>
+              <h3>Your cart is empty</h3>
+              <p>Add products to see them here.</p>
+              <button type="button" className="store-primary-btn" onClick={closePanel}>Continue Shopping</button>
+            </div>
+          ) : (
+            <>
+              <div className="jnr-cart-select-all">
+                <label className="jnr-cart-checkbox-label">
+                  <input ref={selectAllRef} type="checkbox" checked={allCartSelected}
+                    onChange={event => selectAllCartItems(event.target.checked)} />
+                  <span>Select All</span>
+                </label>
+                <span>{selectedCartItems.length} of {cart.length} selected</span>
+              </div>
+              <div className="store-cart-items jnr-cart-selectable-items">
+                {cart.map(item => (
+                  <article className={`store-cart-item jnr-cart-selectable-item${item.selected === false ? ' is-unselected' : ''}`} key={item.id}>
+                    <label className="jnr-cart-item-check" title={`Select ${item.name} for checkout`}>
+                      <input type="checkbox" checked={item.selected !== false}
+                        onChange={() => toggleCartSelection(item.id)} aria-label={`Include ${item.name} in checkout`} />
+                    </label>
+                    {item.image ? <img src={item.image} alt=""/> : <div className="store-cart-image-fallback"><ShoppingBag size={24}/></div>}
+                    <div className="store-cart-info">
+                      <strong>{item.name}</strong>
+                      <span>{formatMoney(item.price)}</span>
+                      <div className="store-cart-controls">
+                        <button type="button" aria-label={`Reduce ${item.name}`} onClick={() => changeQuantity(item.id, -1)}><Minus size={15}/></button>
+                        <span>{item.quantity}</span>
+                        <button type="button" aria-label={`Increase ${item.name}`} onClick={() => changeQuantity(item.id, 1)}><Plus size={15}/></button>
+                        <button type="button" className="remove" aria-label={`Remove ${item.name}`} onClick={() => removeItem(item.id)}><Trash2 size={16}/></button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <div className="store-cart-footer jnr-cart-checkout-footer">
+                <div className="jnr-cart-summary-label">
+                  <span>Selected subtotal <small>({selectedCount} {selectedCount === 1 ? 'item' : 'items'})</small></span>
+                  <strong>{formatMoney(selectedTotal)}</strong>
+                </div>
+                {selectedCartItems.length === 0 && <p className="jnr-cart-select-warning" role="status">Select at least one product to checkout.</p>}
+                <button type="button" className="store-primary-btn jnr-cart-checkout-button"
+                  disabled={selectedCartItems.length === 0}
+                  onClick={() => { closePanel(); navigate('/checkout'); }}>
+                  Checkout <ArrowRight size={18} aria-hidden="true" />
+                </button>
+                <small className="jnr-cart-unselected-note">Unselected products stay in your cart.</small>
+              </div>
+            </>
+          )}
+        </aside>
+      )}
+      {panel === 'wishlist' && (
+        <aside ref={panelRef} tabIndex={-1} className="store-drawer store-drawer-right jnr-wishlist-drawer" role="dialog" aria-modal="true" aria-label="Your wishlist">
+          <div className="store-drawer-heading">
+            <strong><Heart size={19} aria-hidden="true"/> My Wishlist ({wishlistCount})</strong>
+            <button type="button" aria-label="Close wishlist" onClick={closePanel}><X size={22}/></button>
+          </div>
+          {wishlistCount === 0 ? (
+            <div className="store-cart-empty jnr-wishlist-empty">
+              <Heart size={54} strokeWidth={1.25} aria-hidden="true"/>
+              <h3>Your wishlist is empty</h3>
+              <p>Save your favourite products to find them here later.</p>
+              <Link to="/shop" className="store-primary-btn" onClick={closePanel}>Explore Products</Link>
+            </div>
+          ) : (
+            <>
+              <div className="store-cart-items jnr-wishlist-items">
+                {wishlist.map(item => (
+                  <article className="store-cart-item jnr-wishlist-item" key={item.id}>
+                    {item.slug ? (
+                      <Link className="jnr-wishlist-item__image" to={`/product/${item.slug}`} onClick={closePanel} aria-label={`View ${item.name}`}>
+                        {item.image ? <img src={item.image} alt="" loading="lazy"/> : <ShoppingBag size={24}/>}
+                      </Link>
+                    ) : (
+                      <span className="jnr-wishlist-item__image">{item.image ? <img src={item.image} alt="" loading="lazy"/> : <ShoppingBag size={24}/>}</span>
+                    )}
+                    <div className="store-cart-info jnr-wishlist-item__info">
+                      {item.slug ? <Link to={`/product/${item.slug}`} onClick={closePanel} className="jnr-wishlist-item__name">{item.name}</Link> : <strong>{item.name}</strong>}
+                      {item.brand && <small>{item.brand}</small>}
+                      <span>{formatMoney(item.price)}</span>
+                      <div className="jnr-wishlist-item__buttons">
+                        <button type="button" className="jnr-wishlist-add" onClick={() => { if (addToCart(item)) openPanel('cart'); }}>
+                          <ShoppingBag size={15}/> Add to Cart
+                        </button>
+                        <button type="button" className="jnr-wishlist-remove" onClick={() => removeFromWishlist(item.id)} aria-label={`Remove ${item.name} from wishlist`} title="Remove from wishlist">
+                          <Trash2 size={17}/>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <div className="store-cart-footer jnr-wishlist-footer">
+                <p><span>Saved Products</span><strong>{wishlistCount} {wishlistCount === 1 ? 'item' : 'items'}</strong></p>
+                <button type="button" className="store-primary-btn" onClick={closePanel}>Continue Shopping</button>
+              </div>
+            </>
           )}
         </aside>
       )}

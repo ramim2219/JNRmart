@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Check, ShoppingCart } from 'lucide-react';
 import { useStoreUI } from '../../context/StoreUIContext';
 import { moneyBDT } from '../../data/shopDemoData';
+import WishlistToggle from '../common/WishlistToggle';
 
 /** Reusable product card: can also be rendered in SectionCarousel on the homepage. */
 export default function ShopProductCard({ product }) {
@@ -26,6 +27,7 @@ export default function ShopProductCard({ product }) {
           </span>
         )}
         {saving > 0 && <span className="jnr-shop-card__saving">Save {saving}%</span>}
+        <WishlistToggle product={product}/>
         <Link className="jnr-shop-card__image-link" to={`/product/${product.slug}`} aria-label={`View ${product.name}`}>
           <img src={product.image} alt={product.name} loading="lazy" decoding="async" />
         </Link>

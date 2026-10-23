@@ -6,6 +6,9 @@ import { StoreUIProvider } from './context/StoreUIContext';
 
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ShopPage = lazy(() => import('./pages/ShopPage'));
+const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
+const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
+const AccountPage = lazy(() => import('./pages/AccountPage'));
 const PlaceholderPage = lazy(() => import('./pages/PlaceholderPage'));
 
 export default function App() {
@@ -20,8 +23,10 @@ export default function App() {
               <Route path="products" element={<ShopPage />} />
               <Route path="category/:slug" element={<ShopPage />} />
               <Route path="search" element={<ShopPage />} />
-              <Route path="product/:slug" element={<PlaceholderPage />} />
-              {['cart', 'wishlist', 'account', 'about', 'contact', 'faq', 'track-order', 'privacy-policy', 'terms'].map(path => (
+              <Route path="product/:slug" element={<ProductDetailsPage />} />
+              <Route path="checkout" element={<CheckoutPage />} />
+              <Route path="account/*" element={<AccountPage />} />
+              {['cart', 'wishlist', 'about', 'contact', 'faq', 'track-order', 'privacy-policy', 'terms'].map(path => (
                 <Route key={path} path={path} element={<PlaceholderPage />} />
               ))}
               <Route path="*" element={<PlaceholderPage />} />
