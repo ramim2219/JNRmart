@@ -1,37 +1,92 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionCarousel from './SectionCarousel';
+import { fetchPublicCategories } from '../../services/categoryServices';
 import '../../styles/category-slider.css';
 
-const ICONS_BY_NAME = [
-  ['ghee', '🧈'], ['oil', '🧈'], ['organic', '🌿'], ['honey', '🍯'],
-  ['date', '🌴'], ['spice', '🌶️'], ['nut', '🥜'], ['seed', '🥜'],
-  ['bever', '☕'], ['tea', '☕'], ['rice', '🍚'], ['gift', '🎁'],
-];
+const isEnabled = (value) =>
+  value === true || value === 1 || value === '1' || value === 'true';
 
-function categoryEmoji(category) {
-  if (typeof category.icon === 'string' && !/^https?:|^\/|^data:image\/|^blob:/.test(category.icon)) {
-    return category.icon;
-  }
-  const name = String(category.label ?? category.name ?? '').toLowerCase();
-  return ICONS_BY_NAME.find(([word]) => name.includes(word))?.[1] ?? '🛍️';
+const sortByOrder = (a, b) => {
+  const order = (item) => {
+    if (item.order == null || item.order === '') return Infinity;
+    const number = Number(item.order);
+    return Number.isFinite(number) ? number : Infinity;
+  };
+  return order(a) - order(b) ||
+    String(a.name || '').localeCompare(String(b.name || ''));
+};
+
+// Keeps the Admin Panel's parent / child order, even when a child is featured.
+function orderCategories(categories) {
+  const nodes = new Map(
+    categories.map((item) => [String(item.id), { ...item, children: [] }])
+  );
+  const roots = [];
+
+  nodes.forEach((item) => {
+    const parent = nodes.get(String(item.parent_id));
+    if (parent && parent !== item) parent.children.push(item);
+    else roots.push(item);
+  });
+
+  const result = [];
+  const visited = new Set();
+
+  const visit = (item) => {
+    const id = String(item.id);
+    if (visited.has(id)) return;
+    visited.add(id);
+    result.push(item);
+    item.children.sort(sortByOrder).forEach(visit);
+  };
+
+  roots.sort(sortByOrder).forEach(visit);
+  // Include orphaned or legacy category records without duplicating them.
+  [...nodes.values()].sort(sortByOrder).forEach(visit);
+  return result;
+}
+
+function imageUrl(path) {
+  if (typeof path !== 'string' || !path.trim()) return null;
+  const value = path.trim();
+  if (/^(https?:\/\/|data:image\/|blob:)/i.test(value)) return value;
+
+  const base = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/';
+  const origin = new URL(base, window.location.origin).origin;
+
+  if (value.startsWith('/')) return `${origin}${value}`;
+  if (value.startsWith('storage/')) return `${origin}/${value}`;
+  return `${origin}/storage/${value}`;
 }
 
 function CategoryCard({ category }) {
-  const title = category.label || category.name || 'Category';
-  const url = category.href || (category.slug ? `/category/${encodeURIComponent(category.slug)}` : '/categories');
-  const iconSrc = category.image || (
-    typeof category.icon === 'string' && /^(https?:|\/|data:image\/|blob:)/.test(category.icon)
-      ? category.icon
-      : null
-  );
+  const image = imageUrl(category.image_url || category.image);
+  const [failedSrc, setFailedSrc] = useState(null);
+  const title = String(category.name || '').trim();
+  const showImage = image && image !== failedSrc;
 
   return (
-    <Link to={url} className="jnr-cat-card" draggable={false}>
+    <Link
+      className="jnr-cat-card"
+      to={`/category/${encodeURIComponent(category.slug)}`}
+      title={`Shop ${title}`}
+      draggable={false}
+    >
       <span className="jnr-cat-tile">
-        {iconSrc ? (
-          <img src={iconSrc} alt="" loading="lazy" decoding="async" draggable={false} />
+        {showImage ? (
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+            onError={() => setFailedSrc(image)}
+          />
         ) : (
-          <span className="jnr-cat-emoji" aria-hidden="true">{categoryEmoji(category)}</span>
+          <span className="jnr-cat-fallback" aria-hidden="true">
+            {title.charAt(0).toUpperCase()}
+          </span>
         )}
       </span>
       <span className="jnr-cat-label">{title}</span>
@@ -39,34 +94,64 @@ function CategoryCard({ category }) {
   );
 }
 
-/** Same public usage as before: <CategorySlider title="Featured Categories" items={categories} /> */
 export default function CategorySlider({
   title = 'Featured Categories',
   subtitle,
-  items = [],
-  to,
-  viewAllHref = to,
+  viewAllHref,
   viewAllLabel = 'View All',
-  columns = { desktop: 8, laptop: 6, tablet: 5, small: 4, mobile: 3.2 },
+  columns = { desktop: 6, laptop: 5, tablet: 4, small: 3, mobile: 2.2 },
   titleAlign = 'left',
   className = '',
-  ...rest
 }) {
+  const [featured, setFeatured] = useState([]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function load() {
+      try {
+        const response = await fetchPublicCategories();
+        const rows = Array.isArray(response?.data) ? response.data : [];
+
+        const active = rows.filter(
+          (item) => item.id != null && item.name && isEnabled(item.status)
+        );
+        const selected = orderCategories(active)
+          .filter((item) => isEnabled(item.is_featured))
+          .map((item) => ({
+            ...item,
+            slug: item.slug || item.url_slug || String(item.name)
+              .trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, ''),
+          }));
+
+        if (!cancelled) setFeatured(selected);
+      } catch (error) {
+        console.error('Unable to fetch featured categories:', error);
+        if (!cancelled) setFeatured([]);
+      }
+    }
+
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Nothing is rendered while loading, on API failure, or with no featured categories.
+  if (featured.length === 0) return null;
+
   return (
     <SectionCarousel
       title={title}
       subtitle={subtitle}
-      items={items}
+      items={featured}
       viewAllHref={viewAllHref}
       viewAllLabel={viewAllLabel}
       columns={columns}
-      gap={16}
+      gap={18}
       titleAlign={titleAlign}
       arrowLabel="categories"
-      getItemKey={(category, i) => category.id ?? category.slug ?? i}
+      getItemKey={(category) => category.id}
       renderItem={(category) => <CategoryCard category={category} />}
       className={`jnr-cat-section ${className}`.trim()}
-      {...rest}
     />
   );
 }
