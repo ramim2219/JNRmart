@@ -1,4 +1,5 @@
-/* Match the existing header icon-links while using a button for the cart drawer. */
+/* Header Cart & Wishlist Buttons */
+
 .header-actions .header-cart-button {
   position: relative;
   display: flex;
@@ -9,15 +10,19 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #263653;
+  color: var(--brand-dark, #291334);
   font: inherit;
   font-size: 11px;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+  transition: color .2s ease;
 }
 
-.header-actions .header-cart-button svg { stroke-width: 1.8; }
+.header-actions .header-cart-button svg {
+  stroke-width: 1.8;
+}
+
 .header-actions .header-cart-button b {
   position: absolute;
   top: -9px;
@@ -28,19 +33,25 @@
   border-radius: 10px;
   display: grid;
   place-items: center;
-  background: #223773;
+  background: var(--brand-accent, #E83E8C);
   color: #fff;
   font-size: 10px;
   line-height: 1;
 }
-.header-actions .header-cart-button:hover { color: #223773; }
+
+.header-actions .header-cart-button:hover {
+  color: var(--brand-primary, #6B168A);
+}
+
 .header-actions .header-cart-button:focus-visible {
-  outline: 2px solid #223773;
+  outline: 2px solid var(--brand-primary, #6B168A);
   outline-offset: 5px;
   border-radius: 3px;
 }
 
-/* Match the existing icon-only header actions at tablet/mobile widths. */
+/* Tablet & Mobile */
 @media (max-width: 980px) {
-  .header-actions .header-cart-button > span { display: none; }
+  .header-actions .header-cart-button > span {
+    display: none;
+  }
 }

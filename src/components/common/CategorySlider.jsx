@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionCarousel from './SectionCarousel';
@@ -5,7 +6,10 @@ import { fetchPublicCategories } from '../../services/categoryServices';
 import '../../styles/category-slider.css';
 
 const isEnabled = (value) =>
-  value === true || value === 1 || value === '1' || value === 'true';
+  value === true ||
+  value === 1 ||
+  value === '1' ||
+  value === 'true';
 
 const sortByOrder = (a, b) => {
   const order = (item) => {
@@ -13,21 +17,32 @@ const sortByOrder = (a, b) => {
     const number = Number(item.order);
     return Number.isFinite(number) ? number : Infinity;
   };
-  return order(a) - order(b) ||
-    String(a.name || '').localeCompare(String(b.name || ''));
+
+  return (
+    order(a) - order(b) ||
+    String(a.name || '').localeCompare(String(b.name || ''))
+  );
 };
 
-// Keeps the Admin Panel's parent / child order, even when a child is featured.
+// Preserve Admin Panel parent-child ordering.
 function orderCategories(categories) {
   const nodes = new Map(
-    categories.map((item) => [String(item.id), { ...item, children: [] }])
+    categories.map((item) => [
+      String(item.id),
+      { ...item, children: [] },
+    ])
   );
+
   const roots = [];
 
   nodes.forEach((item) => {
     const parent = nodes.get(String(item.parent_id));
-    if (parent && parent !== item) parent.children.push(item);
-    else roots.push(item);
+
+    if (parent && parent !== item) {
+      parent.children.push(item);
+    } else {
+      roots.push(item);
+    }
   });
 
   const result = [];
@@ -35,34 +50,52 @@ function orderCategories(categories) {
 
   const visit = (item) => {
     const id = String(item.id);
+
     if (visited.has(id)) return;
+
     visited.add(id);
     result.push(item);
+
     item.children.sort(sortByOrder).forEach(visit);
   };
 
   roots.sort(sortByOrder).forEach(visit);
-  // Include orphaned or legacy category records without duplicating them.
+
   [...nodes.values()].sort(sortByOrder).forEach(visit);
+
   return result;
 }
 
+// Resolve category image URL.
 function imageUrl(path) {
   if (typeof path !== 'string' || !path.trim()) return null;
-  const value = path.trim();
-  if (/^(https?:\/\/|data:image\/|blob:)/i.test(value)) return value;
 
-  const base = import.meta.env.VITE_API_URL || 'http://127.0.0.1:8000/api/';
+  const value = path.trim();
+
+  if (/^(https?:\/\/|data:image\/|blob:)/i.test(value)) {
+    return value;
+  }
+
+  const base =
+    import.meta.env.VITE_API_URL ||
+    'http://127.0.0.1:8000/api/';
+
   const origin = new URL(base, window.location.origin).origin;
 
   if (value.startsWith('/')) return `${origin}${value}`;
-  if (value.startsWith('storage/')) return `${origin}/${value}`;
+
+  if (value.startsWith('storage/')) {
+    return `${origin}/${value}`;
+  }
+
   return `${origin}/storage/${value}`;
 }
 
+// Circular Category Card.
 function CategoryCard({ category }) {
   const image = imageUrl(category.image_url || category.image);
   const [failedSrc, setFailedSrc] = useState(null);
+
   const title = String(category.name || '').trim();
   const showImage = image && image !== failedSrc;
 
@@ -89,7 +122,10 @@ function CategoryCard({ category }) {
           </span>
         )}
       </span>
-      <span className="jnr-cat-label">{title}</span>
+
+      <span className="jnr-cat-label">
+        {title}
+      </span>
     </Link>
   );
 }
@@ -99,7 +135,16 @@ export default function CategorySlider({
   subtitle,
   viewAllHref,
   viewAllLabel = 'View All',
-  columns = { desktop: 6, laptop: 5, tablet: 4, small: 3, mobile: 2.2 },
+
+  // Compact circular category layout.
+  columns = {
+    desktop: 8,
+    laptop: 7,
+    tablet: 6,
+    small: 4,
+    mobile: 3.2,
+  },
+
   titleAlign = 'left',
   className = '',
 }) {
@@ -111,31 +156,50 @@ export default function CategorySlider({
     async function load() {
       try {
         const response = await fetchPublicCategories();
-        const rows = Array.isArray(response?.data) ? response.data : [];
+
+        const rows = Array.isArray(response?.data)
+          ? response.data
+          : [];
 
         const active = rows.filter(
-          (item) => item.id != null && item.name && isEnabled(item.status)
+          (item) =>
+            item.id != null &&
+            item.name &&
+            isEnabled(item.status)
         );
+
         const selected = orderCategories(active)
           .filter((item) => isEnabled(item.is_featured))
           .map((item) => ({
             ...item,
-            slug: item.slug || item.url_slug || String(item.name)
-              .trim().toLowerCase().replace(/[^\p{L}\p{N}]+/gu, '-').replace(/^-|-$/g, ''),
+            slug:
+              item.slug ||
+              item.url_slug ||
+              String(item.name)
+                .trim()
+                .toLowerCase()
+                .replace(/[^\p{L}\p{N}]+/gu, '-')
+                .replace(/^-|-$/g, ''),
           }));
 
         if (!cancelled) setFeatured(selected);
       } catch (error) {
-        console.error('Unable to fetch featured categories:', error);
+        console.error(
+          'Unable to fetch featured categories:',
+          error
+        );
+
         if (!cancelled) setFeatured([]);
       }
     }
 
     load();
-    return () => { cancelled = true; };
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Nothing is rendered while loading, on API failure, or with no featured categories.
   if (featured.length === 0) return null;
 
   return (
@@ -146,11 +210,13 @@ export default function CategorySlider({
       viewAllHref={viewAllHref}
       viewAllLabel={viewAllLabel}
       columns={columns}
-      gap={18}
+      gap={14}
       titleAlign={titleAlign}
       arrowLabel="categories"
       getItemKey={(category) => category.id}
-      renderItem={(category) => <CategoryCard category={category} />}
+      renderItem={(category) => (
+        <CategoryCard category={category} />
+      )}
       className={`jnr-cat-section ${className}`.trim()}
     />
   );

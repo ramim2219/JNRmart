@@ -1,165 +1,293 @@
-/* JNRmart featured category carousel — enhanced product-photo cards */
+
+/* ==========================================
+   JNRMART - PREMIUM CATEGORY SLIDER
+========================================== */
+
 .jnr-cat-section {
-  --jnr-cat-accent: #223773;
-  --jnr-cat-gap: 18px;
-  --jnr-cat-per-view: 6;
-  margin-block: clamp(24px, 3vw, 38px);
+  --cat-primary: #7B1FA2;
+  --cat-dark: #5E167D;
+  --cat-pink: #E83E8C;
+  --cat-soft: #F8F2FA;
+  --cat-text: #30243A;
+
+  margin-block: clamp(24px, 3vw, 36px);
 }
 
-/* The carousel component owns the slide widths; a card fills its slide. */
+/* Category Card */
+
 .jnr-cat-section .jnr-cat-card {
   display: flex;
   flex-direction: column;
+  align-items: center;
+
   width: 100%;
   min-width: 0;
   height: 100%;
-  overflow: hidden;
-  gap: 0;
-  border: 1px solid #e4e9f1;
-  border-radius: 16px;
-  background: #fff;
-  color: #1c2940;
+
+  gap: 11px;
+  padding: 6px 2px;
+
+  color: var(--cat-text);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+
   text-decoration: none;
-  box-shadow: 0 3px 12px rgba(24, 38, 63, .045);
-  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+  box-shadow: none;
+
+  transition: transform .25s ease;
   -webkit-user-drag: none;
 }
 
+/* Circular Image */
+
 .jnr-cat-section .jnr-cat-tile {
   position: relative;
+
   display: grid;
   place-items: center;
-  width: 100%;
-  aspect-ratio: 1 / 1;
+  flex: 0 0 auto;
+
+  width: 120px;
+  height: 120px;
+
   padding: 0;
-  margin: 0;
   overflow: hidden;
-  border-radius: 0;
-  background: linear-gradient(150deg, #eef2f8, #f8fafc);
-  box-shadow: none;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #fff;
+
+  box-shadow:
+    0 5px 16px rgba(74, 18, 95, .13),
+    0 2px 5px rgba(123, 31, 162, .07);
+
+  transition:
+    transform .28s ease,
+    box-shadow .28s ease;
 }
+
+/* Image */
 
 .jnr-cat-section .jnr-cat-tile img {
   display: block;
+
   width: 100%;
   height: 100%;
+
   object-fit: cover;
   object-position: center;
+
+  border: 0;
+  border-radius: 50%;
+
   pointer-events: none;
-  transition: transform .35s ease;
+
+  transition: transform .4s ease;
 }
 
-/* Only a database image is displayed, otherwise use the category initial. */
+/* Fallback */
+
 .jnr-cat-section .jnr-cat-fallback {
   display: grid;
   place-items: center;
-  width: 78px;
-  height: 78px;
+
+  width: 100%;
+  height: 100%;
+
   border-radius: 50%;
-  background: #dfe8f7;
-  color: #223773;
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1;
+
+  background: var(--cat-soft);
+  color: var(--cat-primary);
+
+  font-size: 36px;
+  font-weight: 750;
 }
+
+/* Category Name */
 
 .jnr-cat-section .jnr-cat-label {
   display: -webkit-box;
+
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   line-clamp: 2;
+
+  width: 100%;
+  max-width: 135px;
+  min-height: 36px;
+
+  padding: 0 4px;
   overflow: hidden;
-  min-height: 45px;
-  padding: 13px 10px 14px;
-  color: #24314b;
-  font-size: clamp(13px, 1.1vw, 15px);
+
+  color: var(--cat-text);
+
+  font-size: 13px;
   font-weight: 650;
-  line-height: 1.4;
+  line-height: 1.45;
+
   text-align: center;
   overflow-wrap: anywhere;
-  transition: color .22s ease;
+
+  transition: color .2s ease;
 }
+
+/* Hover */
 
 .jnr-cat-section .jnr-cat-card:hover {
   transform: translateY(-4px);
-  border-color: #cbd8ef;
-  box-shadow: 0 12px 26px rgba(34, 55, 115, .12);
 }
 
-.jnr-cat-section .jnr-cat-card:hover img { transform: scale(1.055); }
-.jnr-cat-section .jnr-cat-card:hover .jnr-cat-label { color: var(--jnr-cat-accent); }
-.jnr-cat-section .jnr-cat-card:focus-visible {
-  outline: 3px solid #809ce2;
-  outline-offset: 3px;
+.jnr-cat-section .jnr-cat-card:hover .jnr-cat-tile {
+  transform: scale(1.045);
+
+  box-shadow:
+    0 9px 24px rgba(123, 31, 162, .19),
+    0 4px 10px rgba(232, 62, 140, .10);
 }
 
-/* Compatibility with the earlier standalone slider styles. */
-.jnr-cat-title {
-  margin: 0 0 22px;
-  color: #1c2940;
-  font-size: clamp(20px, 2vw, 26px);
-  font-weight: 700;
-  line-height: 1.3;
+.jnr-cat-section .jnr-cat-card:hover .jnr-cat-tile img {
+  transform: scale(1.07);
 }
 
-.jnr-cat-slider { position: relative; padding-inline: 40px; }
-.jnr-cat-track {
-  display: flex;
-  gap: var(--jnr-cat-gap);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  cursor: grab;
+.jnr-cat-section .jnr-cat-card:hover .jnr-cat-label {
+  color: var(--cat-primary);
 }
-.jnr-cat-track::-webkit-scrollbar { display: none; }
-.jnr-cat-track > .jnr-cat-card {
-  flex: 0 0 calc((100% - (var(--jnr-cat-per-view) - 1) * var(--jnr-cat-gap)) / var(--jnr-cat-per-view));
-  scroll-snap-align: start;
-}
-.jnr-cat-track.is-dragging { scroll-snap-type: none; cursor: grabbing; }
-.jnr-cat-track.is-dragging * { user-select: none; cursor: grabbing; }
 
-.jnr-cat-arrow {
+/* ==========================================
+   SLIDER NAVIGATION BUTTONS
+========================================== */
+
+.jnr-cat-section .jnr-cat-arrow {
   position: absolute;
-  z-index: 2;
+  z-index: 5;
+
   top: 50%;
   transform: translateY(-50%);
+
   display: grid;
   place-items: center;
+
   width: 38px;
   height: 38px;
-  padding: 0;
-  color: #fff;
-  background: rgba(15, 34, 78, .52);
-  border: 1px solid rgba(255, 255, 255, .5);
-  border-radius: 50%;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: transform .2s ease, background .2s ease;
-}
-.jnr-cat-arrow:hover:not(:disabled) {
-  background: rgba(15, 34, 78, .9);
-  transform: translateY(-50%) scale(1.08);
-}
-.jnr-cat-arrow:disabled { opacity: .4; cursor: default; }
-.jnr-cat-arrow--prev { left: 0; }
-.jnr-cat-arrow--next { right: 0; }
 
-@media (max-width: 1199px) { .jnr-cat-section { --jnr-cat-per-view: 5; } }
-@media (max-width: 991px)  { .jnr-cat-section { --jnr-cat-per-view: 4; } }
-@media (max-width: 767px)  { .jnr-cat-section { --jnr-cat-per-view: 3; } }
-@media (max-width: 550px) {
-  .jnr-cat-section { --jnr-cat-per-view: 2.2; --jnr-cat-gap: 12px; }
-  .jnr-cat-slider { padding-inline: 0; }
-  .jnr-cat-arrow { display: none; }
-  .jnr-cat-section .jnr-cat-card { border-radius: 13px; }
-  .jnr-cat-section .jnr-cat-label { padding: 10px 7px 12px; min-height: 41px; }
-  .jnr-cat-section .jnr-cat-fallback { width: 60px; height: 60px; font-size: 27px; }
+  padding: 0;
+
+  color: #fff;
+  background: var(--cat-primary);
+
+  border: none;
+  border-radius: 50%;
+
+  box-shadow: 0 4px 12px rgba(123, 31, 162, .22);
+
+  cursor: pointer;
+
+  transition:
+    background .2s ease,
+    transform .2s ease,
+    box-shadow .2s ease;
 }
+
+.jnr-cat-section .jnr-cat-arrow:hover:not(:disabled) {
+  background: var(--cat-dark);
+
+  transform: translateY(-50%) scale(1.08);
+
+  box-shadow: 0 6px 16px rgba(123, 31, 162, .28);
+}
+
+.jnr-cat-section .jnr-cat-arrow:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+
+.jnr-cat-section .jnr-cat-arrow--prev {
+  left: 0;
+}
+
+.jnr-cat-section .jnr-cat-arrow--next {
+  right: 0;
+}
+
+/* Focus */
+
+.jnr-cat-section .jnr-cat-card:focus-visible,
+.jnr-cat-section .jnr-cat-arrow:focus-visible {
+  outline: 2px solid var(--cat-pink);
+  outline-offset: 4px;
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 991px) {
+  .jnr-cat-section .jnr-cat-tile {
+    width: 108px;
+    height: 108px;
+  }
+
+  .jnr-cat-section .jnr-cat-fallback {
+    font-size: 32px;
+  }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 550px) {
+  .jnr-cat-section {
+    margin-block: 22px;
+  }
+
+  .jnr-cat-section .jnr-cat-card {
+    gap: 9px;
+  }
+
+  .jnr-cat-section .jnr-cat-tile {
+    width: 90px;
+    height: 90px;
+  }
+
+  .jnr-cat-section .jnr-cat-fallback {
+    font-size: 28px;
+  }
+
+  .jnr-cat-section .jnr-cat-label {
+    max-width: 115px;
+    min-height: 33px;
+    font-size: 12px;
+  }
+
+  .jnr-cat-section .jnr-cat-arrow {
+    display: none;
+  }
+}
+
+/* Small Mobile */
+
+@media (max-width: 380px) {
+  .jnr-cat-section .jnr-cat-tile {
+    width: 82px;
+    height: 82px;
+  }
+
+  .jnr-cat-section .jnr-cat-label {
+    font-size: 11.5px;
+  }
+}
+
+/* Reduced Motion */
 
 @media (prefers-reduced-motion: reduce) {
   .jnr-cat-section .jnr-cat-card,
+  .jnr-cat-section .jnr-cat-tile,
   .jnr-cat-section .jnr-cat-tile img,
   .jnr-cat-section .jnr-cat-label,
-  .jnr-cat-arrow { transition: none; }
+  .jnr-cat-section .jnr-cat-arrow {
+    transition: none;
+  }
 }
