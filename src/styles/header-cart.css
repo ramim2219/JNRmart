@@ -1,57 +1,362 @@
-/* Header Cart & Wishlist Buttons */
+/* =========================================================
+   JNRmart Header — Design 2
+   Navy + Coral + Blush
+   Desktop and mobile layout based on the supplied references
+   ========================================================= */
 
-.header-actions .header-cart-button {
+:root {
+  --header-navy: #192844;
+  --header-navy-deep: #142039;
+  --header-coral: #E66B58;
+  --header-coral-hover: #D85A49;
+  --header-blush: #F9EAE6;
+  --header-border: #EADBD6;
+  --header-text: #292B32;
+  --header-muted: #716D6B;
+  --header-white: #FFFDFC;
+}
+
+/* Header stacking and surfaces */
+.site-header {
+  position: relative;
+  z-index: 1100;
+  width: 100%;
+}
+
+.main-header {
+  position: relative;
+  background: var(--header-white);
+  border-bottom: 1px solid rgba(25, 40, 68, 0.06);
+}
+
+.header-inner {
+  width: min(var(--site-max-width, 1700px), calc(100% - (var(--site-side-gap, 8px) * 2)));
+  min-height: 76px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(240px, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(22px, 3.2vw, 48px);
+  padding-block: 10px;
+}
+
+/* Brand logo */
+.brand-logo {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  text-decoration: none;
+}
+
+.brand-logo img {
+  display: block;
+  width: 100%;
+  max-width: 190px;
+  max-height: 58px;
+  height: auto;
+  object-fit: contain;
+  object-position: left center;
+}
+
+/* Search field */
+.main-header .search-form {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 620px;
+  height: 43px;
+  margin-inline: auto;
+  overflow: hidden;
+  background: #FFFFFF;
+  border: 1px solid #D9D5D2;
+  border-radius: 9px;
+  box-shadow: 0 2px 7px rgba(25, 40, 68, 0.035);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.main-header .search-form:focus-within {
+  border-color: var(--header-coral);
+  box-shadow: 0 0 0 3px rgba(230, 107, 88, .12);
+}
+
+.main-header .search-form input {
+  display: block;
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  padding: 0 16px;
+  color: var(--header-text);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: inherit;
+  font-size: 13px;
+}
+
+.main-header .search-form input::placeholder {
+  color: #89837F;
+  opacity: 1;
+}
+
+.main-header .search-form button {
+  display: grid;
+  flex: 0 0 46px;
+  width: 46px;
+  height: 100%;
+  place-items: center;
+  padding: 0;
+  color: #FFFFFF;
+  background: var(--header-coral);
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background .2s ease;
+}
+
+.main-header .search-form button:hover {
+  background: var(--header-coral-hover);
+}
+
+/* Wishlist, account and cart */
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: clamp(17px, 2.3vw, 30px);
+  margin-left: 0;
+}
+
+.header-actions > a,
+.header-actions > button.header-cart-button {
   position: relative;
   display: flex;
+  flex: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0;
-  border: 0;
+  gap: 5px;
+  min-width: 42px;
+  padding: 2px 0;
+  color: var(--header-navy);
   background: transparent;
-  color: var(--brand-dark, #291334);
+  border: 0;
+  text-decoration: none;
   font: inherit;
   font-size: 11px;
-  font-weight: 700;
-  line-height: normal;
+  font-weight: 600;
+  line-height: 1.2;
   cursor: pointer;
   transition: color .2s ease;
 }
 
-.header-actions .header-cart-button svg {
-  stroke-width: 1.8;
+.header-actions > a svg,
+.header-actions > button.header-cart-button svg {
+  display: block;
+  stroke-width: 1.75;
+}
+
+.header-actions > a:hover,
+.header-actions > button.header-cart-button:hover {
+  color: var(--header-coral);
+}
+
+.header-actions > a:focus-visible,
+.header-actions > button.header-cart-button:focus-visible {
+  outline: 2px solid var(--header-coral);
+  outline-offset: 5px;
+  border-radius: 4px;
 }
 
 .header-actions .header-cart-button b {
   position: absolute;
-  top: -9px;
-  right: 6px;
+  top: -5px;
+  right: 0;
+  display: grid;
   min-width: 17px;
   height: 17px;
-  padding: 0 3px;
-  border-radius: 10px;
-  display: grid;
   place-items: center;
-  background: var(--brand-accent, #E83E8C);
-  color: #fff;
+  padding-inline: 3px;
+  color: #FFFFFF;
+  background: var(--header-coral);
+  border: 1.5px solid #FFFFFF;
+  border-radius: 50px;
   font-size: 10px;
+  font-weight: 700;
   line-height: 1;
 }
 
-.header-actions .header-cart-button:hover {
-  color: var(--brand-primary, #6B168A);
+/* Announcement bar — the AnnouncementBar component supplies its content */
+.site-header .announcement {
+  color: #FFFFFF;
+  background: linear-gradient(90deg, #142039 0%, #192844 58%, #30496F 100%);
 }
 
-.header-actions .header-cart-button:focus-visible {
-  outline: 2px solid var(--brand-primary, #6B168A);
-  outline-offset: 5px;
-  border-radius: 3px;
+.site-header .announce-inner {
+  min-height: 27px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: #FFFFFF;
+  font-size: 11px;
 }
 
-/* Tablet & Mobile */
-@media (max-width: 980px) {
-  .header-actions .header-cart-button > span {
+.site-header .announce-inner span {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+}
+
+/* Tablet */
+@media (max-width: 980px) and (min-width: 701px) {
+  .header-inner {
+    grid-template-columns: minmax(130px, 170px) minmax(180px, 1fr) auto;
+    column-gap: 18px;
+  }
+
+  .brand-logo img {
+    max-width: 165px;
+  }
+
+  .header-actions {
+    gap: 15px;
+  }
+
+  .header-actions > a,
+  .header-actions > button.header-cart-button {
+    min-width: 36px;
+  }
+}
+
+/* Mobile header: logo/actions first row, search second row */
+@media (max-width: 700px) {
+  .site-header .announcement {
     display: none;
+  }
+
+  .main-header {
+    border-bottom: 0;
+  }
+
+  .header-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "brand actions"
+      "search search";
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 11px;
+    min-height: 0;
+    padding-block: 11px 12px;
+  }
+
+  .brand-logo {
+    grid-area: brand;
+    width: 100%;
+    max-width: 155px;
+  }
+
+  .brand-logo img {
+    width: 100%;
+    max-width: 155px;
+    max-height: 43px;
+  }
+
+  .header-actions {
+    grid-area: actions;
+    justify-self: end;
+    gap: clamp(11px, 3.2vw, 19px);
+    margin: 0;
+  }
+
+  .header-actions > a,
+  .header-actions > button.header-cart-button {
+    display: flex !important;
+    min-width: 34px;
+    gap: 3px;
+    padding: 0;
+    color: var(--header-navy);
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .header-actions > a svg,
+  .header-actions > button.header-cart-button svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .header-actions > a span,
+  .header-actions > button.header-cart-button span {
+    display: block !important;
+  }
+
+  .header-actions .header-cart-button b {
+    top: -5px;
+    right: -3px;
+  }
+
+  .main-header .search-form {
+    grid-area: search;
+    width: 100%;
+    max-width: none;
+    height: 41px;
+    margin: 0;
+    border-radius: 9px;
+  }
+
+  .main-header .search-form input {
+    padding-inline: 13px;
+    font-size: 12px;
+  }
+
+  .main-header .search-form button {
+    flex-basis: 45px;
+    width: 45px;
+  }
+}
+
+/* Very small phones */
+@media (max-width: 370px) {
+  .header-inner {
+    column-gap: 7px;
+  }
+
+  .brand-logo {
+    max-width: 125px;
+  }
+
+  .brand-logo img {
+    max-width: 125px;
+  }
+
+  .header-actions {
+    gap: 9px;
+  }
+
+  .header-actions > a,
+  .header-actions > button.header-cart-button {
+    min-width: 30px;
+    font-size: 9px;
+  }
+
+  .header-actions > a svg,
+  .header-actions > button.header-cart-button svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .main-header .search-form,
+  .main-header .search-form button,
+  .header-actions > a,
+  .header-actions > button.header-cart-button {
+    transition: none;
   }
 }

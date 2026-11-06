@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionCarousel from './SectionCarousel';
@@ -14,6 +13,7 @@ const isEnabled = (value) =>
 const sortByOrder = (a, b) => {
   const order = (item) => {
     if (item.order == null || item.order === '') return Infinity;
+
     const number = Number(item.order);
     return Number.isFinite(number) ? number : Infinity;
   };
@@ -24,7 +24,7 @@ const sortByOrder = (a, b) => {
   );
 };
 
-// Preserve Admin Panel parent-child ordering.
+// Preserve the Admin Panel's parent-child ordering.
 function orderCategories(categories) {
   const nodes = new Map(
     categories.map((item) => [
@@ -55,18 +55,18 @@ function orderCategories(categories) {
 
     visited.add(id);
     result.push(item);
-
     item.children.sort(sortByOrder).forEach(visit);
   };
 
   roots.sort(sortByOrder).forEach(visit);
 
+  // Include orphaned or legacy records without duplicates.
   [...nodes.values()].sort(sortByOrder).forEach(visit);
 
   return result;
 }
 
-// Resolve category image URL.
+// Resolve category image URLs from the API or storage.
 function imageUrl(path) {
   if (typeof path !== 'string' || !path.trim()) return null;
 
@@ -91,13 +91,13 @@ function imageUrl(path) {
   return `${origin}/storage/${value}`;
 }
 
-// Circular Category Card.
+// Design 2: rectangular image card with a soft peach label area.
 function CategoryCard({ category }) {
   const image = imageUrl(category.image_url || category.image);
   const [failedSrc, setFailedSrc] = useState(null);
 
   const title = String(category.name || '').trim();
-  const showImage = image && image !== failedSrc;
+  const showImage = Boolean(image && image !== failedSrc);
 
   return (
     <Link
@@ -124,7 +124,10 @@ function CategoryCard({ category }) {
       </span>
 
       <span className="jnr-cat-label">
-        {title}
+        <span className="jnr-cat-label-text">{title}</span>
+        <span className="jnr-cat-label-arrow" aria-hidden="true">
+          →
+        </span>
       </span>
     </Link>
   );
@@ -134,17 +137,14 @@ export default function CategorySlider({
   title = 'Featured Categories',
   subtitle,
   viewAllHref,
-  viewAllLabel = 'View All',
-
-  // Compact circular category layout.
+  viewAllLabel = 'View All Categories',
   columns = {
-    desktop: 8,
+    desktop: 7,
     laptop: 7,
     tablet: 6,
-    small: 4,
+    small: 5,
     mobile: 3.2,
   },
-
   titleAlign = 'left',
   className = '',
 }) {
@@ -156,10 +156,7 @@ export default function CategorySlider({
     async function load() {
       try {
         const response = await fetchPublicCategories();
-
-        const rows = Array.isArray(response?.data)
-          ? response.data
-          : [];
+        const rows = Array.isArray(response?.data) ? response.data : [];
 
         const active = rows.filter(
           (item) =>
@@ -184,10 +181,7 @@ export default function CategorySlider({
 
         if (!cancelled) setFeatured(selected);
       } catch (error) {
-        console.error(
-          'Unable to fetch featured categories:',
-          error
-        );
+        console.error('Unable to fetch featured categories:', error);
 
         if (!cancelled) setFeatured([]);
       }
@@ -210,9 +204,10 @@ export default function CategorySlider({
       viewAllHref={viewAllHref}
       viewAllLabel={viewAllLabel}
       columns={columns}
-      gap={14}
+      gap={12}
       titleAlign={titleAlign}
       arrowLabel="categories"
+      arrowsOnHover={true}
       getItemKey={(category) => category.id}
       renderItem={(category) => (
         <CategoryCard category={category} />
