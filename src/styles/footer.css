@@ -1,0 +1,412 @@
+
+/* =====================================
+   JNRmart Footer - Compact 5 Column
+===================================== */
+
+.site-footer {
+  margin: 0;
+  background: linear-gradient(115deg, #1b2744, #263653);
+  color: #fff;
+}
+
+/* 5 Columns - Always Same Row */
+
+.site-footer .footer-grid {
+  display: grid !important;
+
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(0, 0.70fr)
+    minmax(0, 0.95fr)
+    minmax(0, 0.95fr)
+    minmax(0, 1.20fr) !important;
+
+  grid-auto-flow: row;
+  align-items: start;
+  gap: 12px;
+
+  padding-top: 22px;
+  padding-bottom: 18px;
+}
+
+/* Prevent columns from moving to another row */
+
+.site-footer .footer-grid > .footer-column {
+  min-width: 0;
+  grid-column: auto !important;
+  grid-row: auto !important;
+
+  padding-left: 13px;
+  border-left: 1px solid rgba(255,255,255,.22);
+}
+
+/* First Column */
+
+.site-footer .footer-grid > .footer-about {
+  padding-left: 0;
+  border-left: 0;
+}
+
+/* Logo */
+
+.footer-logo {
+  display: inline-flex;
+  margin-bottom: 5px;
+}
+
+.footer-logo img {
+  display: block;
+  width: 140px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Description */
+
+.footer-description {
+  max-width: 225px;
+  margin: 0 0 8px !important;
+
+  color: #d5dbea;
+  font-size: 10.5px;
+  line-height: 1.25 !important;
+}
+
+/* Social Icons */
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-socials a {
+  position: relative;
+
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+  box-sizing: border-box;
+
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.7);
+  border-radius: 50%;
+
+  line-height: 0;
+  text-decoration: none;
+
+  transition: .2s ease;
+}
+
+.footer-socials a svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 15px;
+  height: 15px;
+  display: block;
+
+  margin: 0;
+  transform: translate(-50%, -50%);
+}
+
+.footer-socials a:hover {
+  background: #df6558;
+  border-color: #df6558;
+  transform: translateY(-2px);
+}
+
+/* Column Headings */
+
+.footer-column h3 {
+  margin: 1px 0 6px !important;
+
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.15 !important;
+}
+
+/* Links */
+
+.footer-column ul {
+  display: flex;
+  flex-direction: column;
+
+  gap: 1px !important;
+
+  margin: 0 !important;
+  padding: 0 !important;
+
+  list-style: none;
+}
+
+.footer-column ul li {
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1.15 !important;
+}
+
+.footer-column ul a {
+  display: inline-block;
+
+  color: #d5dbea;
+  font-size: 10.5px;
+
+  line-height: 1.2 !important;
+  text-decoration: none;
+
+  transition: color .2s ease;
+}
+
+.footer-column ul a:hover {
+  color: #ff9586;
+}
+
+/* Contact */
+
+.footer-contact p {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin: 0 0 5px !important;
+
+  color: #d5dbea;
+  font-size: 10.5px;
+  line-height: 1.2 !important;
+}
+
+.footer-contact p svg {
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  color: #fff;
+}
+
+/* App Badges */
+
+.footer-apps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  margin-top: 8px;
+}
+
+.footer-app-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  min-height: 33px;
+  padding: 4px 6px;
+
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: 5px;
+  background: rgba(255,255,255,.06);
+}
+
+.footer-app-badge span {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 1.05 !important;
+}
+
+.footer-app-badge small {
+  font-size: 7px;
+  line-height: 1.1 !important;
+}
+
+.footer-app-badge strong {
+  font-size: 9px;
+  line-height: 1.1 !important;
+  white-space: nowrap;
+}
+
+/* Footer Bottom */
+
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,.22);
+}
+
+.footer-bottom-inner {
+  min-height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.footer-bottom-inner p {
+  margin: 0 !important;
+
+  color: #d5dbea;
+  font-size: 10px;
+  line-height: 1.2 !important;
+}
+
+/* Payment Methods */
+
+.footer-payments {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.footer-payments span {
+  min-width: 38px;
+  height: 22px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 5px;
+  box-sizing: border-box;
+
+  background: #fff;
+  border-radius: 4px;
+
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.payment-visa {
+  color: #183d83;
+  font-style: italic;
+}
+
+.payment-mastercard {
+  color: #c43b36;
+  font-size: 8px !important;
+}
+
+.payment-bkash {
+  color: #c21875;
+}
+
+.payment-nagad {
+  color: #ef642c;
+}
+
+.payment-dbbl {
+  color: #1473a9;
+}
+
+/* =====================================
+   Tablet - Still 5 Columns
+===================================== */
+
+@media (max-width: 1100px) and (min-width: 761px) {
+
+  .site-footer .footer-grid {
+    grid-template-columns:
+      minmax(0, 1.25fr)
+      minmax(0, .70fr)
+      minmax(0, .95fr)
+      minmax(0, .95fr)
+      minmax(0, 1.15fr) !important;
+
+    gap: 8px;
+  }
+
+  .site-footer .footer-grid > .footer-column {
+    padding-left: 8px;
+  }
+
+  .site-footer .footer-grid > .footer-about {
+    padding-left: 0;
+  }
+
+  .footer-logo img {
+    width: 115px;
+  }
+
+  .footer-column h3 {
+    font-size: 11px;
+  }
+
+  .footer-column ul a,
+  .footer-contact p {
+    font-size: 9px;
+  }
+
+  .footer-app-badge {
+    padding: 3px 4px;
+  }
+}
+
+/* =====================================
+   Mobile - Responsive Layout
+===================================== */
+
+@media (max-width: 760px) {
+
+  .site-footer .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+
+    gap: 20px 14px;
+    padding-block: 22px 18px;
+  }
+
+  .site-footer .footer-grid > .footer-column {
+    padding-left: 10px;
+  }
+
+  .site-footer .footer-grid > .footer-about,
+  .site-footer .footer-grid > .footer-shop {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .footer-logo img {
+    width: 130px;
+  }
+
+  .footer-description {
+    font-size: 10px;
+  }
+
+  .footer-bottom-inner {
+    min-height: auto;
+    padding-block: 10px;
+
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+/* Very Small Mobile */
+
+@media (max-width: 380px) {
+
+  .site-footer .footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .site-footer .footer-grid > .footer-column {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+/* Reduced Motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-socials a {
+    transition: none;
+  }
+}

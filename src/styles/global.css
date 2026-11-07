@@ -16,39 +16,22 @@ body,
 :root {
 
   /* Primary Brand Colors */
-
   --brand-primary: #192844;
-
   --brand-primary-hover: #101C32;
-
   --brand-dark: #142039;
-
   /* Background & Surface */
-
   --brand-soft: #F9EAE6;
-
   --brand-white: #FFFDFC;
-
   --brand-border: #EADBD6;
-
   /* Accent Colors */
-
   --brand-accent: #E66B58;
-
   --brand-accent-soft: #FCEAE6;
-
   /* Text Colors */
-
   --brand-text: #292B32;
-
   --brand-muted: #716D6B;
-
   /* Status Colors */
-
   --brand-success: #23836B;
-
   --brand-danger: #D94F50;
-
   /* Legacy Compatibility */
 
   --orange: var(--brand-accent);

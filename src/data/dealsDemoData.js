@@ -1,6 +1,16 @@
-/** Demo-only products and prices: NOT real offers or inventory. */
+/**
+ * JNRmart demo deal data.
+ * All prices, ratings, reviews and availability are illustrative only.
+ *
+ * The original Home Appliances and Electronics lists remain exported so
+ * existing pages/imports do not break. New fashion deal lists are derived
+ * from featuredProductsDemoData.js (one source of truth).
+ */
+import { featuredProducts } from './featuredProductsDemoData';
+
 const image = (name) => `/images/deals/${name}.svg`;
 
+// Existing demo lists kept for backwards compatibility.
 export const applianceDeals = [
   { id: 'deal-tv', slug: 'ultra-hd-smart-tv', name: '55 Inch 4K UHD Smart Google Television', image: image('television'), price: 94900, oldPrice: 109900, rating: 4.9, reviewCount: 128, deliveryText: 'Estimated delivery: 2–3 days' },
   { id: 'deal-fridge', slug: 'premium-inverter-refrigerator', name: 'Premium 238L Inverter Refrigerator', image: image('refrigerator'), price: 28390, oldPrice: 42900, rating: 4.8, reviewCount: 56, deliveryText: 'Estimated delivery: 3–5 days' },
@@ -20,3 +30,37 @@ export const electronicsDeals = [
   { id: 'ele-vacuum', slug: 'smart-robot-vacuum', name: 'Smart Robot Vacuum Cleaner', image: image('vacuum'), price: 18990, oldPrice: 22990, rating: 4.7, reviewCount: 33, deliveryText: 'Estimated delivery: 3–5 days' },
   { id: 'ele-fryer', slug: 'digital-air-fryer', name: '6L Digital Air Fryer with Smart Touch', image: image('airfryer'), price: 7990, oldPrice: 11990, rating: 4.9, reviewCount: 212, deliveryText: 'Estimated delivery: 2–3 days' },
 ];
+
+// DealProductCard expects price, oldPrice, reviewCount and discountPercent.
+// FeaturedProductsSection expects sale_price, original_price and category_name.
+// This adapter supplies both shapes without duplicating the source products.
+const asDeal = (product) => {
+  const price = Number(product.sale_price ?? product.selling_price ?? product.price ?? 0);
+  const oldPrice = Number(product.original_price ?? product.oldPrice ?? price);
+
+  return {
+    ...product,
+    price,
+    oldPrice,
+    reviewCount: Number(product.review_count ?? product.reviewCount ?? 0),
+    discountPercent: Number(product.discount_percentage ?? product.discountPercent ?? 0),
+    category: String(product.category_name ?? product.category ?? '').toLowerCase(),
+    categoryLabel: product.category_name ?? product.category ?? '',
+  };
+};
+
+export const featuredDeals = featuredProducts.map(asDeal);
+
+const dealsFor = (category) => featuredDeals.filter(
+  (product) => product.category === category.toLowerCase()
+);
+
+export const womenDeals = dealsFor('Women');
+export const menDeals = dealsFor('Men');
+export const shoesDeals = dealsFor('Shoes');
+export const cosmeticsDeals = dealsFor('Cosmetics');
+export const accessoriesDeals = dealsFor('Accessories');
+
+// Two ready-to-use homepage carousels: 6 fashion items + 4 beauty/accessory items.
+export const fashionDeals = [...womenDeals, ...menDeals, ...shoesDeals];
+export const beautyDeals = [...cosmeticsDeals, ...accessoriesDeals];

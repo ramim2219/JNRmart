@@ -8,7 +8,7 @@ const money = (value) => `৳ ${Number(value).toLocaleString('en-BD', { maximumF
  * Presentational card for deal sliders. Supports your existing ShopPage product
  * fields: name, slug, image, price, oldPrice, rating. Optional deal-specific
  * fields: badge, badgeTone, discountPercent, reviewCount, deliveryText.
- */
+*/
 export default function DealProductCard({ product, linkTo, imageFit = 'contain' }) {
   if (!product) return null;
 
