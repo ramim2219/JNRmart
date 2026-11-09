@@ -3,7 +3,7 @@ import axios from "axios";
 
 const apiUrl =
   import.meta.env.VITE_API_URL ||
-  "http://127.0.0.1:8000/api/";
+  "http://192.168.0.174:8000/api";
 
 const apiClient = axios.create({
   baseURL: apiUrl,
@@ -13,15 +13,12 @@ const apiClient = axios.create({
   timeout: 15000,
 });
 
-// Response Interceptor
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
       return Promise.reject(
-        new Error(
-          error.message || "Network error. Please try again."
-        )
+        new Error(error.message || "Network error")
       );
     }
 
