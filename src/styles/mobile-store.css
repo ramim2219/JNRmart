@@ -1,28 +1,683 @@
-/* JNRmart mobile navigation / shared commerce overlays */
-.mobile-bottom-nav{display:none}
-.floating-cart-summary{position:fixed;right:0;top:50%;transform:translateY(-50%);z-index:1050;display:flex;flex-direction:column;align-items:stretch;min-width:92px;padding:0;background:#fff;border:1px solid #dfe6f3;border-right:0;border-radius:10px 0 0 10px;overflow:hidden;box-shadow:0 7px 23px #17295626;color:#223773;cursor:pointer}
-.floating-cart-top{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:12px 10px;background:#223773;color:#fff;font-size:12px}
-.floating-cart-amount{padding:10px 8px;font-size:12px;font-weight:800;text-align:center}
-.store-overlay{position:fixed;inset:0;background:#071427a8;z-index:2000;animation:store-fade .2s ease}
-.store-drawer{position:fixed;top:0;bottom:0;width:min(390px,90vw);background:white;z-index:2001;display:flex;flex-direction:column;box-shadow:0 0 35px #09183335;animation:store-in .24s ease;outline:0}
-.store-drawer-left{left:0;--slide:-100%}.store-drawer-right{right:0;--slide:100%}
-.store-drawer-heading{display:flex;justify-content:space-between;align-items:center;padding:21px 20px;border-bottom:1px solid #e5eaf3;color:#172956;font-size:18px}
-.store-drawer-heading button,.store-search-close{border:0;background:transparent;color:#23395e;display:grid;place-items:center;padding:5px;cursor:pointer}
-.store-menu-links{overflow:auto;padding:8px 20px}.store-menu-links a{display:flex;justify-content:space-between;padding:15px 4px;border-bottom:1px solid #edf0f7;color:#263954;font-weight:600;font-size:14px;text-decoration:none}
-.store-menu-links a:hover{color:#223773}
-.store-cart-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;padding:25px;color:#6c7890}.store-cart-empty h3{margin:0;color:#172956}.store-cart-empty p{margin:0 0 12px}
-.store-primary-btn{display:flex;gap:8px;align-items:center;justify-content:center;padding:13px 18px;background:#223773;color:white;border:0;border-radius:8px;text-decoration:none;font-weight:700;cursor:pointer}
-.store-cart-items{flex:1;overflow:auto;padding:16px}.store-cart-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #edf0f7}.store-cart-item img,.store-cart-image-fallback{width:80px;height:80px;object-fit:contain;border:1px solid #edf0f7;border-radius:8px;flex-shrink:0}.store-cart-image-fallback{display:grid;place-items:center;background:#f4f7fc;color:#223773}.store-cart-info{display:flex;flex-direction:column;gap:7px;flex:1;min-width:0;font-size:13px}.store-cart-info strong{line-height:1.4}.store-cart-info>span{color:#223773;font-weight:700}.store-cart-controls{display:flex;align-items:center;gap:8px}.store-cart-controls button{display:grid;place-items:center;width:27px;height:27px;border:1px solid #dfe6f3;background:white;border-radius:5px;cursor:pointer}.store-cart-controls .remove{margin-left:auto;color:#bc3045}
-.store-cart-footer{border-top:1px solid #e5eaf3;padding:17px 20px 22px}.store-cart-footer p{display:flex;justify-content:space-between;margin:0 0 16px;color:#172956}
-.store-search-panel{position:fixed;left:0;right:0;top:0;z-index:2002;background:#fff;box-shadow:0 12px 30px #07142725;padding:20px 0;animation:store-drop .22s ease}.store-search-inner{display:flex;align-items:center;gap:12px}.store-search-inner form{flex:1;display:flex;align-items:center;gap:10px;border:1px solid #dfe6f3;border-radius:9px;padding:6px 8px 6px 13px}.store-search-inner input{flex:1;min-width:0;border:0;outline:0;font:inherit;background:transparent}.store-search-inner form button{border:0;border-radius:7px;background:#223773;color:#fff;padding:10px 14px;cursor:pointer}
-@keyframes store-in{from{transform:translateX(var(--slide))}to{transform:translateX(0)}}@keyframes store-fade{from{opacity:0}to{opacity:1}}@keyframes store-drop{from{transform:translateY(-100%)}to{transform:translateY(0)}}
-@media(max-width:767px){
-  body{padding-bottom:calc(65px + env(safe-area-inset-bottom))}
-  .mobile-bottom-nav{display:flex;position:fixed;bottom:0;left:0;right:0;height:calc(65px + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:#fff;border-top:1px solid #e2e7f0;box-shadow:0 -4px 18px #16295112;z-index:1500;align-items:stretch;justify-content:space-around}
-  .mobile-bottom-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:0;background:transparent;color:#53627a;font-size:11px;font-weight:600;text-decoration:none;cursor:pointer}
-  .mobile-bottom-item.is-active{color:#223773}.mobile-nav-icon{position:relative;display:grid}.mobile-cart-count{position:absolute;top:-8px;right:-12px;padding:1px 5px;border-radius:9px;background:#e87521;color:#fff;font-size:9px}
-  .floating-cart-summary{right:0;top:52%;min-width:76px}.floating-cart-top{padding:9px 7px}.floating-cart-amount{padding:7px 5px}
-  .floating-actions{bottom:calc(79px + env(safe-area-inset-bottom))!important}.chat-panel{height:min(430px,calc(100dvh - 170px))!important}
-  .store-drawer{bottom:0}
+
+/* =========================================
+   JNRmart Mobile Navigation
+   Navy + Coral + Blush + White
+========================================= */
+
+:root {
+  --store-navy: #192844;
+  --store-coral: #E66B58;
+  --store-coral-hover: #D85A49;
+  --store-blush: #F9EAE6;
+  --store-white: #FFFDFC;
 }
-@media(prefers-reduced-motion:reduce){.store-overlay,.store-drawer,.store-search-panel{animation:none}}
+
+/* =========================================
+   Mobile Bottom Navigation
+========================================= */
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+/* =========================================
+   Compact Floating Cart
+========================================= */
+
+.floating-cart-summary {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  z-index: 1050;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  width: 58px;
+  min-width: 58px;
+  max-width: 58px;
+
+  padding: 0;
+  margin: 0;
+
+  overflow: hidden;
+
+  background: var(--store-white);
+  color: var(--store-navy);
+
+  border: 1px solid var(--store-blush);
+  border-right: 0;
+  border-radius: 8px 0 0 8px;
+
+  box-shadow: 0 5px 16px rgba(25, 40, 68, 0.16);
+
+  font-family: inherit;
+  line-height: 1;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  transition: box-shadow .2s ease;
+}
+
+/* Coral Top Section */
+
+.floating-cart-top {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 4px;
+
+  min-height: 55px;
+  padding: 7px 3px;
+
+  background: var(--store-coral);
+  color: var(--store-white);
+
+  text-align: center;
+}
+
+.floating-cart-top svg {
+  display: block;
+
+  width: 18px;
+  height: 18px;
+
+  color: var(--store-white);
+  stroke-width: 2;
+}
+
+.floating-cart-top strong {
+  display: block;
+
+  color: var(--store-white);
+
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.2;
+
+  white-space: nowrap;
+}
+
+/* White Price Section */
+
+.floating-cart-amount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 24px;
+  padding: 5px 2px;
+
+  background: var(--store-white);
+  color: var(--store-navy);
+
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Floating Cart Hover */
+
+.floating-cart-summary:hover {
+  box-shadow: 0 6px 20px rgba(25, 40, 68, .23);
+}
+
+.floating-cart-summary:hover .floating-cart-top {
+  background: var(--store-coral-hover);
+}
+
+.floating-cart-summary:focus-visible {
+  outline: 2px solid var(--store-navy);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   Store Overlay
+========================================= */
+
+.store-overlay {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(20, 32, 57, .65);
+
+  z-index: 2000;
+
+  animation: store-fade .2s ease;
+}
+
+/* =========================================
+   Store Drawer
+========================================= */
+
+.store-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+
+  width: min(390px, 90vw);
+
+  background: var(--store-white);
+
+  z-index: 2001;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 0 35px rgba(9, 24, 51, .21);
+
+  animation: store-in .24s ease;
+
+  outline: 0;
+}
+
+.store-drawer-left {
+  left: 0;
+  --slide: -100%;
+}
+
+.store-drawer-right {
+  right: 0;
+  --slide: 100%;
+}
+
+/* Drawer Heading */
+
+.store-drawer-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 21px 20px;
+
+  border-bottom: 1px solid var(--store-blush);
+
+  color: var(--store-navy);
+  font-size: 18px;
+}
+
+.store-drawer-heading button,
+.store-search-close {
+  border: 0;
+  background: transparent;
+
+  color: var(--store-navy);
+
+  display: grid;
+  place-items: center;
+
+  padding: 5px;
+
+  cursor: pointer;
+}
+
+/* =========================================
+   Store Menu Links
+========================================= */
+
+.store-menu-links {
+  overflow: auto;
+  padding: 8px 20px;
+}
+
+.store-menu-links a {
+  display: flex;
+  justify-content: space-between;
+
+  padding: 15px 4px;
+
+  border-bottom: 1px solid #edf0f7;
+
+  color: var(--store-navy);
+
+  font-weight: 600;
+  font-size: 14px;
+
+  text-decoration: none;
+}
+
+.store-menu-links a:hover {
+  color: var(--store-coral);
+}
+
+/* =========================================
+   Empty Cart
+========================================= */
+
+.store-cart-empty {
+  flex: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  gap: 10px;
+  padding: 25px;
+
+  color: #6c7890;
+}
+
+.store-cart-empty h3 {
+  margin: 0;
+  color: var(--store-navy);
+}
+
+.store-cart-empty p {
+  margin: 0 0 12px;
+}
+
+/* =========================================
+   Primary Button
+========================================= */
+
+.store-primary-btn {
+  display: flex;
+  gap: 8px;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 13px 18px;
+
+  background: var(--store-coral);
+  color: var(--store-white);
+
+  border: 0;
+  border-radius: 8px;
+
+  text-decoration: none;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.store-primary-btn:hover:not(:disabled) {
+  background: var(--store-coral-hover);
+}
+
+.store-primary-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   Cart Items
+========================================= */
+
+.store-cart-items {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+.store-cart-item {
+  display: flex;
+  gap: 12px;
+  padding: 14px 0;
+
+  border-bottom: 1px solid #edf0f7;
+}
+
+.store-cart-item img,
+.store-cart-image-fallback {
+  width: 80px;
+  height: 80px;
+
+  object-fit: contain;
+
+  border: 1px solid #edf0f7;
+  border-radius: 8px;
+
+  flex-shrink: 0;
+}
+
+.store-cart-image-fallback {
+  display: grid;
+  place-items: center;
+
+  background: var(--store-blush);
+  color: var(--store-navy);
+}
+
+.store-cart-info {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+
+  flex: 1;
+  min-width: 0;
+
+  font-size: 13px;
+}
+
+.store-cart-info strong {
+  line-height: 1.4;
+}
+
+.store-cart-info > span {
+  color: var(--store-navy);
+  font-weight: 700;
+}
+
+/* Cart Quantity Controls */
+
+.store-cart-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.store-cart-controls button {
+  display: grid;
+  place-items: center;
+
+  width: 27px;
+  height: 27px;
+
+  border: 1px solid #e5e0dc;
+  background: var(--store-white);
+
+  color: var(--store-navy);
+
+  border-radius: 5px;
+
+  cursor: pointer;
+}
+
+.store-cart-controls button:hover {
+  color: var(--store-coral);
+  border-color: var(--store-coral);
+}
+
+.store-cart-controls .remove {
+  margin-left: auto;
+  color: #bc3045;
+}
+
+/* =========================================
+   Cart Footer
+========================================= */
+
+.store-cart-footer {
+  border-top: 1px solid #e5eaf3;
+  padding: 17px 20px 22px;
+}
+
+.store-cart-footer p {
+  display: flex;
+  justify-content: space-between;
+
+  margin: 0 0 16px;
+
+  color: var(--store-navy);
+}
+
+/* =========================================
+   Search Panel
+========================================= */
+
+.store-search-panel {
+  position: fixed;
+
+  left: 0;
+  right: 0;
+  top: 0;
+
+  z-index: 2002;
+
+  background: var(--store-white);
+
+  box-shadow: 0 12px 30px rgba(7, 20, 39, .15);
+
+  padding: 20px 0;
+
+  animation: store-drop .22s ease;
+}
+
+.store-search-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.store-search-inner form {
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  border: 1px solid #eadbd6;
+  border-radius: 9px;
+
+  padding: 6px 8px 6px 13px;
+}
+
+.store-search-inner input {
+  flex: 1;
+  min-width: 0;
+
+  border: 0;
+  outline: 0;
+
+  font: inherit;
+  background: transparent;
+}
+
+.store-search-inner form button {
+  border: 0;
+  border-radius: 7px;
+
+  background: var(--store-coral);
+  color: var(--store-white);
+
+  padding: 10px 14px;
+
+  cursor: pointer;
+}
+
+.store-search-inner form button:hover {
+  background: var(--store-coral-hover);
+}
+
+/* =========================================
+   Animations
+========================================= */
+
+@keyframes store-in {
+  from {
+    transform: translateX(var(--slide));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes store-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes store-drop {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+/* =========================================
+   Mobile Responsive
+========================================= */
+
+@media (max-width: 767px) {
+
+  body {
+    padding-bottom: calc(65px + env(safe-area-inset-bottom));
+  }
+
+  /* Bottom Navigation */
+
+  .mobile-bottom-nav {
+    display: flex;
+
+    position: fixed;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    height: calc(65px + env(safe-area-inset-bottom));
+
+    padding-bottom: env(safe-area-inset-bottom);
+
+    background: var(--store-white);
+
+    border-top: 1px solid var(--store-blush);
+
+    box-shadow: 0 -4px 18px rgba(25, 40, 68, .07);
+
+    z-index: 1500;
+
+    align-items: stretch;
+    justify-content: space-around;
+  }
+
+  .mobile-bottom-item {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 5px;
+
+    border: 0;
+    background: transparent;
+
+    color: #716d6b;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+  }
+
+  .mobile-bottom-item.is-active {
+    color: var(--store-coral);
+  }
+
+  .mobile-nav-icon {
+    position: relative;
+    display: grid;
+  }
+
+  .mobile-cart-count {
+    position: absolute;
+
+    top: -8px;
+    right: -12px;
+
+    padding: 1px 5px;
+
+    border-radius: 9px;
+
+    background: var(--store-coral);
+    color: var(--store-white);
+
+    font-size: 9px;
+  }
+
+  /* Compact Floating Cart */
+
+  .floating-cart-summary {
+    top: 50%;
+    right: 0;
+
+    width: 56px;
+    min-width: 56px;
+    max-width: 56px;
+
+    border-radius: 7px 0 0 7px;
+  }
+
+  .floating-cart-top {
+    min-height: 53px;
+
+    gap: 3px;
+    padding: 6px 2px;
+  }
+
+  .floating-cart-top svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .floating-cart-top strong {
+    font-size: 9px;
+  }
+
+  .floating-cart-amount {
+    min-height: 23px;
+
+    padding: 4px 2px;
+
+    font-size: 9px;
+  }
+
+  /* Floating Actions */
+
+  .chat-panel {
+    height: min(430px, calc(100dvh - 170px)) !important;
+  }
+
+  .store-drawer {
+    bottom: 0;
+  }
+}
+
+/* Very Small Phones */
+
+@media (max-width: 360px) {
+  .floating-cart-summary {
+    width: 53px;
+    min-width: 53px;
+    max-width: 53px;
+  }
+
+  .floating-cart-top strong,
+  .floating-cart-amount {
+    font-size: 8px;
+  }
+}
+
+/* =========================================
+   Reduced Motion
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .store-overlay,
+  .store-drawer,
+  .store-search-panel,
+  .floating-cart-summary {
+    animation: none;
+    transition: none;
+  }
+}

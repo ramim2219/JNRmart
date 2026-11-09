@@ -1,64 +1,164 @@
 import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, Maximize2, X, ImageOff } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ImageOff, Maximize2 } from 'lucide-react';
+
 import { getProductImages } from '../../data/productDetailsData';
+import ProductImageLightbox from './ProductImageLightbox';
+
+const INITIAL_POSITION = { x: 50, y: 50 };
 
 export default function ProductGallery({ product }) {
-  const images = getProductImages(product);
-  const [selected, setSelected] = useState(0);
-  const [zoomed, setZoomed] = useState(false);
-  const active = images[Math.min(selected, Math.max(0, images.length - 1))];
+  const images = getProductImages(product) || [];
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [isHoverZoomed, setIsHoverZoomed] = useState(false);
+  const [zoomPosition, setZoomPosition] = useState(INITIAL_POSITION);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
-  useEffect(() => { setSelected(0); setZoomed(false); }, [product.slug]);
+  const activeImage = images[selectedIndex];
+  const price = Number(product.price);
+  const oldPrice = Number(product.oldPrice);
+  const discount =
+    oldPrice > price && oldPrice > 0
+      ? Math.round((1 - price / oldPrice) * 100)
+      : 0;
+
   useEffect(() => {
-    if (!zoomed) return undefined;
-    const onKeyDown = event => {
-      if (event.key === 'Escape') setZoomed(false);
-      if (event.key === 'ArrowRight') setSelected(current => (current + 1) % images.length);
-      if (event.key === 'ArrowLeft') setSelected(current => (current - 1 + images.length) % images.length);
-    };
-    document.addEventListener('keydown', onKeyDown);
-    const oldOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.removeEventListener('keydown', onKeyDown); document.body.style.overflow = oldOverflow; };
-  }, [zoomed, images.length]);
+    setSelectedIndex(0);
+    setIsHoverZoomed(false);
+    setZoomPosition(INITIAL_POSITION);
+    setIsLightboxOpen(false);
+  }, [product.slug]);
 
-  const shift = direction => setSelected(current => (current + direction + images.length) % images.length);
+  useEffect(() => {
+    if (selectedIndex >= images.length) setSelectedIndex(0);
+  }, [images.length, selectedIndex]);
+
+  const updateZoomPosition = (event) => {
+    if (event.pointerType && event.pointerType !== 'mouse') return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+
+    setZoomPosition({
+      x: Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)),
+      y: Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)),
+    });
+  };
+
+  const selectImage = (index) => {
+    setSelectedIndex(index);
+    setIsHoverZoomed(false);
+    setZoomPosition(INITIAL_POSITION);
+  };
+
+  const changeImage = (direction) => {
+    if (images.length < 2) return;
+
+    setSelectedIndex(
+      (current) => (current + direction + images.length) % images.length,
+    );
+    setIsHoverZoomed(false);
+    setZoomPosition(INITIAL_POSITION);
+  };
+
+  const handlePointerEnter = (event) => {
+    if (event.pointerType !== 'mouse') return;
+    updateZoomPosition(event);
+    setIsHoverZoomed(true);
+  };
+
+  const handlePointerLeave = () => {
+    setIsHoverZoomed(false);
+    setZoomPosition(INITIAL_POSITION);
+  };
 
   return (
-    <div className="jnr-pd-gallery">
+    <section className="jnr-pd-gallery" aria-label="Product images">
       <div className="jnr-pd-gallery__stage">
-        {product.oldPrice > product.price && (
-          <span className="jnr-pd-gallery__discount">{Math.round((1 - product.price / product.oldPrice) * 100)}% OFF</span>
+        {discount > 0 && (
+          <span className="jnr-pd-gallery__discount">{discount}% OFF</span>
         )}
-        {active ? (
-          <button type="button" className="jnr-pd-gallery__zoom-trigger" onClick={() => setZoomed(true)} aria-label="View larger product image">
-            <img src={active.src} alt={active.alt} decoding="async" />
-            <span className="jnr-pd-gallery__zoom-hint"><Maximize2 size={15}/> Click to enlarge</span>
+
+        {activeImage ? (
+          <button
+            type="button"
+            className={`jnr-pd-gallery__zoom-trigger ${isHoverZoomed ? 'is-zoomed' : ''}`}
+            onPointerEnter={handlePointerEnter}
+            onPointerMove={(event) => {
+              if (isHoverZoomed) updateZoomPosition(event);
+            }}
+            onPointerLeave={handlePointerLeave}
+            onClick={() => setIsLightboxOpen(true)}
+            aria-label="Open product image in large view"
+          >
+            <img
+              src={activeImage.src}
+              alt={activeImage.alt || product.name}
+              draggable="false"
+              decoding="async"
+              style={{
+                transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
+              }}
+            />
+            <span className="jnr-pd-gallery__zoom-hint">
+              <Maximize2 size={15} />
+              Hover to zoom · Click to enlarge
+            </span>
           </button>
-        ) : <div className="jnr-pd-gallery__empty"><ImageOff size={36}/><span>No image available</span></div>}
+        ) : (
+          <div className="jnr-pd-gallery__empty">
+            <ImageOff size={36} />
+            <span>No image available</span>
+          </div>
+        )}
+
         {images.length > 1 && (
           <>
-            <button type="button" className="jnr-pd-gallery__nav is-prev" onClick={() => shift(-1)} aria-label="Previous image"><ChevronLeft size={20}/></button>
-            <button type="button" className="jnr-pd-gallery__nav is-next" onClick={() => shift(1)} aria-label="Next image"><ChevronRight size={20}/></button>
+            <button
+              type="button"
+              className="jnr-pd-gallery__nav is-prev"
+              onClick={() => changeImage(-1)}
+              aria-label="Previous product image"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              type="button"
+              className="jnr-pd-gallery__nav is-next"
+              onClick={() => changeImage(1)}
+              aria-label="Next product image"
+            >
+              <ChevronRight size={20} />
+            </button>
           </>
         )}
       </div>
-      <div className="jnr-pd-gallery__thumbs" aria-label="Product image thumbnails">
-        {images.map((image, index) => (
-          <button key={`${image.src}-${index}`} type="button" className={`jnr-pd-gallery__thumb ${index === selected ? 'is-active' : ''}`} onClick={() => setSelected(index)} aria-label={`Show image ${index + 1}`} aria-pressed={index === selected}>
-            <img src={image.src} alt="" loading="lazy" />
-          </button>
-        ))}
-      </div>
-      {zoomed && active && (
-        <div className="jnr-pd-lightbox" role="presentation" onMouseDown={event => { if (event.target === event.currentTarget) setZoomed(false); }}>
-          <div className="jnr-pd-lightbox__dialog" role="dialog" aria-modal="true" aria-label={`${product.name} expanded image`}>
-            <button autoFocus type="button" className="jnr-pd-lightbox__close" onClick={() => setZoomed(false)} aria-label="Close image"><X size={23}/></button>
-            <img src={active.src} alt={active.alt} />
-            {images.length > 1 && <div className="jnr-pd-lightbox__arrows"><button onClick={() => shift(-1)} aria-label="Previous image"><ChevronLeft/></button><span>{selected + 1} / {images.length}</span><button onClick={() => shift(1)} aria-label="Next image"><ChevronRight/></button></div>}
-          </div>
+
+      {images.length > 1 && (
+        <div className="jnr-pd-gallery__thumbs" aria-label="Product thumbnails">
+          {images.map((image, index) => (
+            <button
+              key={`${image.src}-${index}`}
+              type="button"
+              className={`jnr-pd-gallery__thumb ${index === selectedIndex ? 'is-active' : ''}`}
+              onClick={() => selectImage(index)}
+              aria-label={`Show product image ${index + 1}`}
+              aria-pressed={index === selectedIndex}
+            >
+              <img src={image.src} alt="" loading="lazy" decoding="async" />
+            </button>
+          ))}
         </div>
       )}
-    </div>
+
+      {isLightboxOpen && activeImage && (
+        <ProductImageLightbox
+          images={images}
+          index={selectedIndex}
+          productName={product.name}
+          onIndexChange={setSelectedIndex}
+          onClose={() => setIsLightboxOpen(false)}
+        />
+      )}
+    </section>
   );
 }

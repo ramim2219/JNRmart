@@ -1,271 +1,1401 @@
-/* JNRmart customer account — fully namespaced styles */
-.jnr-account-page, .jnr-account-auth-page {
-  --account-navy: #223773;
-  --account-ink: #18263f;
-  --account-muted: #728096;
-  --account-line: #e5eaf2;
-  --account-soft: #f5f7fb;
-  background: #f7f9fc;
+/* =========================================================
+   JNRmart Account Module
+   Navy + Coral + Soft Blush
+   Namespaced styles; global application styles are untouched.
+========================================================= */
+
+.jnr-account-page,
+.jnr-account-auth-page {
+  --account-primary: #192844;
+  --account-primary-dark: #142039;
+  --account-accent: #E66B58;
+  --account-accent-hover: #D85A49;
+  --account-accent-soft: #FCEAE6;
+  --account-blush: #F9EAE6;
+  --account-page: #FCF8F7;
+  --account-surface: #FFFFFF;
+  --account-ink: #292B32;
+  --account-muted: #716D6B;
+  --account-subtle: #8B929D;
+  --account-line: #EADBD6;
+  --account-success: #23836B;
+  --account-warning: #9A6A1C;
+  --account-danger: #C34C50;
+  --account-info: #34537E;
   color: var(--account-ink);
+  background: var(--account-page);
+  font-family: inherit;
 }
-.jnr-account-page button, .jnr-account-auth-page button { cursor: pointer; }
-.jnr-account-page :is(a,button,input,select):focus-visible,
-.jnr-account-auth-page :is(a,button,input,select):focus-visible {
-  outline: 3px solid rgba(64,105,196,.38); outline-offset: 2px;
+
+.jnr-account-page *,
+.jnr-account-auth-page * { box-sizing: border-box; }
+
+.jnr-account-page button,
+.jnr-account-auth-page button { font: inherit; cursor: pointer; }
+
+.jnr-account-page a,
+.jnr-account-auth-page a { color: inherit; text-decoration: none; }
+
+.jnr-account-page :is(a, button, input, select):focus-visible,
+.jnr-account-auth-page :is(a, button, input, select):focus-visible {
+  outline: 3px solid rgba(230, 107, 88, .35);
+  outline-offset: 3px;
 }
-.jnr-account-wrap { padding-bottom: 66px; }
-.jnr-account-breadcrumb { display: flex; align-items: center; gap: 9px; padding: 20px 0 26px; color: #8390a2; font-size: 12px; }
-.jnr-account-breadcrumb a:hover { color: var(--account-navy); }
-.jnr-account-breadcrumb span { color: #344257; }
-.jnr-account-layout { display: grid; grid-template-columns: minmax(238px, 266px) minmax(0, 1fr); align-items: start; gap: 24px; }
-.jnr-account-sidebar { position: sticky; top: 78px; border: 1px solid var(--account-line); background: white; border-radius: 13px; overflow: hidden; box-shadow: 0 5px 20px rgba(27,49,87,.025); }
-.jnr-account-person { display:flex; align-items:center; gap:13px; padding: 23px 20px; border-bottom:1px solid var(--account-line); }
-.jnr-account-avatar { width:49px; height:49px; flex:0 0 49px; display:grid; place-items:center; font-weight:800; font-size:16px; color:#fff; border-radius:12px; background:linear-gradient(135deg,#223773,#5074ba); }
-.jnr-account-person-copy { display:flex; flex-direction:column; min-width:0; gap:3px; }
-.jnr-account-person-copy span { font-size:11px; color:#8190a4; }
-.jnr-account-person-copy strong { font-size:13px; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
-.jnr-account-person-copy small { font-size:10px; color:#8190a4; }
-.jnr-account-side-nav { padding:13px 11px; display:grid; gap:4px; }
-.jnr-account-navlink { display:flex; align-items:center; gap:13px; border-radius:8px; padding:12px 13px; font-size:13px; font-weight:600; color:#5d6b81; white-space:nowrap; transition: background .16s,color .16s; }
-.jnr-account-navlink svg { flex-shrink:0; }
-.jnr-account-navlink:hover { background: #f3f6fb; color:var(--account-navy); }
-.jnr-account-navlink.is-active { background:#edf2fd; color:var(--account-navy); }
-.jnr-account-navlink em { margin-left:auto; display:grid; place-items:center; padding:2px 7px; border-radius:7px; color:var(--account-navy); background:#e4eafa; font-style:normal; font-size:10px; }
-.jnr-account-sidebar-bottom { display:flex; align-items:flex-start; gap:8px; border-top:1px solid var(--account-line); padding:16px 18px 8px; color:#8693a6; font-size:11px; line-height:1.5; }
-.jnr-account-sidebar-bottom svg { flex-shrink:0; color:#6d85b1; }
-.jnr-account-signin-link { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--account-navy); font-weight:700; padding:10px 18px 18px; }
-.jnr-account-main { min-width:0; }
-.jnr-account-head { display:flex; justify-content:space-between; align-items:center; gap:12px; margin:3px 0 22px; }
-.jnr-account-kicker { font-size:10px; letter-spacing:.14em; font-weight:800; margin:0 0 7px; color:#6079a9; }
-.jnr-account-head h1 { font-size:clamp(22px,2.4vw,29px); line-height:1.2; margin:0 0 7px; letter-spacing:-.028em; color:#182c52; }
-.jnr-account-head p:not(.jnr-account-kicker) { margin:0; color:#7b889b; font-size:12px; line-height:1.6; }
-.jnr-account-demo-pill { font-size:10px; font-weight:800; letter-spacing:.08em; color:#4f6999; background:#e7eefb; padding:8px 11px; border-radius:99px; white-space:nowrap; }
-.jnr-account-stack { display:grid; gap:20px; }
-.jnr-account-mobile-nav { display:none; }
-.jnr-account-hero-card { min-height:195px; background:linear-gradient(109deg,#20356d,#344f94 68%,#6a83ba); border-radius:13px; color:white; padding:29px 32px; display:flex; justify-content:space-between; align-items:center; gap:14px; position:relative; overflow:hidden; }
-.jnr-account-hero-card:after { content:''; position:absolute; width:330px; height:330px; border-radius:50%; border:1px solid #ffffff27; right:-94px; top:-111px; }
-.jnr-account-hero-card h2 { font-size:clamp(24px,2.9vw,32px); color:#fff; margin:9px 0 8px; letter-spacing:-.03em; }
-.jnr-account-hero-card p { color:#e2eaff; font-size:13px; line-height:1.6; max-width:400px; margin:0 0 18px; }
-.jnr-account-hero-eyebrow { display:inline-flex; align-items:center; gap:8px; font-size:11px; letter-spacing:.05em; font-weight:700; color:#dce6ff; }
-.jnr-account-light-action { display:inline-flex; align-items:center; gap:9px; padding:10px 15px; font-size:12px; font-weight:800; color:#213a73; background:#fff; border-radius:7px; }
-.jnr-account-light-action:hover { background:#eef2fb; }
-.jnr-account-hero-mark { flex:0 0 140px; display:grid; place-items:center; width:140px; height:140px; border-radius:50%; background:#ffffff13; color:#ffffff9a; border:1px solid #ffffff30; }
-.jnr-account-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:13px; }
-.jnr-account-metric { min-width:0; display:flex; flex-direction:column; align-items:flex-start; gap:8px; border:1px solid var(--account-line); background:#fff; border-radius:11px; padding:18px 16px; transition:transform .2s,box-shadow .2s; }
-.jnr-account-metric:hover { transform:translateY(-2px); box-shadow:0 8px 25px #233a5a10; }
-.jnr-account-metric-icon { width:35px; height:35px; background:#eef3fc; border-radius:9px; color:#36568f; display:grid; place-items:center; }
-.jnr-account-metric strong { margin-top:1px; font-size:22px; font-family:Outfit,sans-serif; line-height:1; }
-.jnr-account-metric > span:last-child { font-size:11px; color:#74839b; }
-.jnr-account-panel { background:#fff; border:1px solid var(--account-line); border-radius:12px; padding:22px; min-width:0; }
-.jnr-account-panel-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:20px; }
-.jnr-account-panel-heading h2 { font-size:18px; margin:0 0 5px; color:#1c3158; letter-spacing:-.02em; }
-.jnr-account-panel-heading p { margin:0; color:#8a96a8; font-size:11px; line-height:1.5; }
-.jnr-account-inline-link, .jnr-account-text-button, .jnr-account-back { display:inline-flex; align-items:center; gap:7px; border:0; background:none; color:var(--account-navy); font-weight:700; font-size:12px; white-space:nowrap; }
-.jnr-account-inline-link:hover, .jnr-account-text-button:hover, .jnr-account-back:hover { color:#4267b1; }
-.jnr-account-recent-order { display:flex; align-items:center; gap:13px; padding:13px 0; border-bottom:1px solid #edf0f5; }
-.jnr-account-recent-order:first-child { padding-top:0; }
-.jnr-account-recent-order:last-child { padding-bottom:0; border-bottom:0; }
-.jnr-account-order-thumb { width:51px; height:53px; flex:0 0 51px; background:#f7f9fd; border:1px solid #edf0f5; border-radius:8px; display:grid; place-items:center; overflow:hidden; color:#667fae; }
-.jnr-account-order-thumb img { width:100%; height:100%; object-fit:contain; }
-.jnr-account-order-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:6px; }
-.jnr-account-order-main strong { font-size:12px; }
-.jnr-account-order-main small { font-size:11px; color:#8390a3; }
-.jnr-account-status { display:inline-flex; justify-content:center; align-items:center; width:max-content; font-size:10px; white-space:nowrap; padding:6px 10px; font-weight:800; border-radius:40px; background:#f4f6fa; color:#77839a; }
-.jnr-account-status.status-on-the-way { color:#23609b; background:#e8f3ff; }
-.jnr-account-status.status-processing { color:#916020; background:#fff4df; }
-.jnr-account-status.status-delivered { color:#287b58; background:#e5f6ed; }
-.jnr-account-status.status-cancelled { color:#aa4b4b; background:#fff0ee; }
-.jnr-account-order-price { min-width:80px; text-align:right; font-size:13px; color:#192c51; }
-.jnr-account-chevron { color:#97a2b3; }
-.jnr-account-quick-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-.jnr-account-quick-card { display:flex; align-items:center; gap:13px; background:#fff; padding:19px; border:1px solid var(--account-line); border-radius:11px; }
-.jnr-account-quick-icon { display:grid; place-items:center; width:42px; height:42px; flex-shrink:0; border-radius:10px; color:var(--account-navy); background:#eef3fc; }
-.jnr-account-quick-card > span:nth-child(2) { display:grid; gap:5px; flex:1; min-width:0; }
-.jnr-account-quick-card strong { font-size:12px; }
-.jnr-account-quick-card small { font-size:11px; color:#8795a8; line-height:1.5; }
-.jnr-account-quick-card > svg { color:#7b8da8; flex-shrink:0; }
-.jnr-account-preview-caption { font-size:11px; color:#8a96a9; margin:0; }
-.jnr-account-primary, .jnr-account-secondary { min-height:40px; display:inline-flex; justify-content:center; align-items:center; gap:8px; padding:10px 16px; font-size:12px; font-weight:700; border-radius:7px; border:1px solid var(--account-navy); }
-.jnr-account-primary { color:#fff; background:var(--account-navy); }
-.jnr-account-primary:hover { background:#172b60; color:#fff; }
-.jnr-account-secondary { color:var(--account-navy); background:#fff; border-color:#d9e2f0; }
-.jnr-account-secondary:hover { background:#f2f5fb; }
-.jnr-account-primary:disabled { opacity:.5; cursor:not-allowed; }
-.jnr-account-order-toolbar { display:flex; align-items:center; gap:14px; justify-content:space-between; margin-bottom:16px; }
-.jnr-account-order-tabs { display:flex; flex-wrap:wrap; gap:6px; }
-.jnr-account-order-tabs button { background:#fff; border:1px solid transparent; border-radius:7px; padding:8px 10px; color:#65738a; font-size:11px; font-weight:700; white-space:nowrap; }
-.jnr-account-order-tabs button:hover,.jnr-account-order-tabs button.is-current { background:#ebf0fa; color:#223773; border-color:#dfe7f7; }
-.jnr-account-search { height:38px; width:185px; flex:0 0 185px; display:flex; align-items:center; gap:8px; color:#8997a9; padding:0 10px; border:1px solid var(--account-line); border-radius:7px; }
-.jnr-account-search input { width:100%; min-width:0; border:0; outline:0; font-size:11px; }
-.jnr-account-order-card { border:1px solid var(--account-line); border-radius:10px; padding:15px; margin-top:12px; }
-.jnr-account-order-top { display:flex; align-items:center; justify-content:space-between; gap:10px; padding-bottom:12px; border-bottom:1px solid #edf1f6; }
-.jnr-account-order-top > div { display:flex; flex-direction:column; gap:5px; }
-.jnr-account-order-top strong { font-size:12px; }
-.jnr-account-order-top > div span { font-size:10px; color:#8b97a8; }
-.jnr-account-order-products { display:flex; align-items:center; gap:10px; padding:16px 0; }
-.jnr-account-order-products img { width:44px; height:45px; border:1px solid #edf0f6; border-radius:6px; object-fit:contain; background:#f8f9fc; }
-.jnr-account-order-products > div { display:grid; gap:5px; flex:1; min-width:0; }
-.jnr-account-order-products > div strong { font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.jnr-account-order-products > div small { color:#8a97a8; font-size:10px; }
-.jnr-account-order-actions { display:flex; justify-content:flex-end; gap:15px; align-items:center; border-top:1px solid #edf1f6; padding-top:12px; }
-.jnr-account-order-actions .jnr-account-secondary { min-height:32px; padding:6px 11px; font-size:11px; }
-.jnr-account-detail-title { display:flex; justify-content:space-between; gap:20px; align-items:center; }
-.jnr-account-detail-title h2 { font-size:23px; margin:0 0 5px; }
-.jnr-account-detail-title p { font-size:11px; color:#8391a5; margin:0; }
-.jnr-account-back { margin:0 0 -1px; width:max-content; }
-.jnr-account-steps { display:grid; grid-template-columns:repeat(3,1fr); margin:26px 0 14px; }
-.jnr-account-step { display:flex; flex-direction:column; align-items:center; gap:8px; color:#a8b2c1; font-size:11px; font-weight:700; position:relative; text-align:center; }
-.jnr-account-step:not(:first-child):before { position:absolute; content:''; height:2px; top:15px; right:50%; width:100%; background:#e2e8f1; z-index:0; }
-.jnr-account-step.is-complete:not(:first-child):before { background:#4472ac; }
-.jnr-account-step span { display:grid; place-items:center; width:32px; height:32px; border:1px solid #dde3ed; background:#f8fafc; color:#91a0b4; border-radius:50%; z-index:1; }
-.jnr-account-step.is-complete span { color:#fff; border-color:#37649a; background:#37649a; }
-.jnr-account-tracking { display:flex; align-items:center; gap:9px; font-size:11px; line-height:1.5; padding:12px 14px; background:#f5f8fc; border-radius:8px; margin:0; color:#72809a; }
-.jnr-account-tracking svg { flex-shrink:0; }
-.jnr-account-detail-item { display:flex; gap:13px; align-items:center; padding:13px 0; border-bottom:1px solid #edf1f6; }
-.jnr-account-detail-item > div { display:grid; gap:7px; flex:1; }
-.jnr-account-detail-item strong { font-size:12px; }
-.jnr-account-detail-item small { color:#8291a4; font-size:11px; }
-.jnr-account-invoice { max-width:340px; margin:16px 0 17px auto; display:grid; gap:11px; }
-.jnr-account-invoice > div { display:flex; justify-content:space-between; gap:20px; color:#718096; font-size:12px; }
-.jnr-account-invoice strong { color:#283b5b; }
-.jnr-account-invoice .jnr-account-invoice-total { border-top:1px solid #e6ebf2; padding-top:12px; color:#182d54; font-weight:800; font-size:14px; }
-.jnr-account-address-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
-.jnr-account-address-card { border:1px solid #e5ebf3; padding:18px; border-radius:10px; min-width:0; }
-.jnr-account-address-card-header { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:15px; }
-.jnr-account-address-card-header > strong { display:flex; align-items:center; gap:6px; font-size:13px; }
-.jnr-account-address-card-header > span { padding:5px 8px; background:#e9f1ff; border-radius:5px; font-size:10px; color:#315b95; font-weight:800; }
-.jnr-account-address-card h3 { font-size:14px; margin:0 0 6px; }
-.jnr-account-address-card p { margin:0 0 8px; min-height:42px; font-size:12px; line-height:1.7; color:#657488; }
-.jnr-account-address-card small { color:#7d8b9f; }
-.jnr-account-address-actions { display:flex; align-items:center; flex-wrap:wrap; gap:14px; padding-top:16px; border-top:1px solid #e9eef4; margin-top:15px; }
-.jnr-account-address-actions button { display:inline-flex; align-items:center; gap:5px; color:#365b96; background:none; padding:0; border:0; font-weight:700; font-size:11px; }
-.jnr-account-address-actions button.is-danger, .jnr-account-confirm-remove { color:#b44646; }
-.jnr-account-confirm-remove { display:inline-flex; align-items:center; gap:8px; font-size:11px; }
-.jnr-account-empty { padding:56px 15px; text-align:center; display:flex; align-items:center; flex-direction:column; gap:9px; color:#9aa9bf; }
-.jnr-account-empty h2, .jnr-account-empty h3 { font-size:17px; margin:6px 0 0; color:#233455; }
-.jnr-account-empty p { margin:0 0 9px; font-size:12px; color:#8d9baf; line-height:1.65; max-width:335px; }
-.jnr-account-form-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:19px; }
-.jnr-account-field { display:flex; flex-direction:column; gap:8px; color:#37475e; font-size:12px; font-weight:700; min-width:0; }
-.jnr-account-field input, .jnr-account-field select { width:100%; height:43px; font-size:12px; padding:0 12px; background:#fff; color:#273954; border:1px solid #dce4ee; border-radius:7px; outline:0; }
-.jnr-account-field input:focus, .jnr-account-field select:focus { border-color:#7e9cce; box-shadow:0 0 0 3px #2d559016; }
-.jnr-account-field input::placeholder { color:#a0a9b9; font-weight:400; }
-.jnr-account-full { grid-column:1/-1; }
-.jnr-account-form-footer { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-top:28px; border-top:1px solid #ebeff6; padding-top:19px; }
-.jnr-account-form-footer p { margin:0; font-size:11px; color:#8c9aae; }
-.jnr-account-local-notice { display:flex; align-items:center; gap:8px; font-size:11px; line-height:1.5; border-radius:7px; padding:10px 12px; margin:14px 0; color:#4c6485; background:#edf4fc; }
-.jnr-account-modal-scrim { position:fixed; inset:0; z-index:2500; display:grid; place-items:center; background:rgba(15,28,52,.58); padding:16px; }
-.jnr-account-address-modal { width:min(540px,100%); max-height:min(92dvh,800px); overflow:auto; background:#fff; border-radius:13px; box-shadow:0 28px 75px #0d1e3c40; padding:24px; }
-.jnr-account-modal-header { display:flex; justify-content:space-between; align-items:flex-start; gap:15px; margin-bottom:20px; }
-.jnr-account-modal-header h2 { font-size:20px; margin:0 0 5px; }
-.jnr-account-modal-header p { margin:0; color:#8896a8; font-size:12px; }
-.jnr-account-modal-header button { border:0; background:#f3f5f9; display:grid; place-items:center; width:31px; height:31px; border-radius:7px; }
-.jnr-account-address-form .jnr-account-form-grid { gap:14px; }
-.jnr-account-switch-line { display:flex; align-items:center; gap:10px; font-size:12px; color:#40516b; margin-top:20px; }
-.jnr-account-switch-line input { accent-color:#223773; width:16px; height:16px; }
-.jnr-account-modal-actions { display:flex; justify-content:flex-end; gap:10px; padding-top:19px; margin-top:16px; border-top:1px solid #e7ebf2; }
-.jnr-account-count-pill { font-size:11px; font-weight:700; border-radius:16px; padding:6px 10px; background:#eef3fc; color:#385b92; }
-.jnr-account-wishlist-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
-.jnr-account-wish-card { border:1px solid #e7edf5; border-radius:10px; overflow:hidden; position:relative; min-width:0; }
-.jnr-account-wish-image { height:155px; display:grid; place-items:center; background:#f6f8fc; color:#9ca9ba; }
-.jnr-account-wish-image img { width:100%; height:100%; object-fit:contain; padding:12px; }
-.jnr-account-wish-remove { position:absolute; top:10px; right:10px; border:1px solid #e8edf4; background:#fff; color:#b25c5c; width:30px; height:30px; border-radius:6px; display:grid; place-items:center; }
-.jnr-account-wish-copy { display:flex; flex-direction:column; gap:9px; padding:13px; }
-.jnr-account-wish-copy > span { font-size:10px; color:#8795a5; }
-.jnr-account-wish-copy > a { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:33px; font-size:12px; line-height:1.45; font-weight:700; }
-.jnr-account-wish-copy > strong { font-size:15px; color:#21396e; }
-.jnr-account-wish-copy button { width:100%; font-size:11px; min-height:37px; padding:8px 4px; }
-.jnr-account-preference { display:flex; justify-content:space-between; gap:15px; align-items:center; padding:16px 0; border-bottom:1px solid #ebeff5; cursor:pointer; }
-.jnr-account-preference > span { display:grid; gap:6px; }
-.jnr-account-preference strong { font-size:13px; }
-.jnr-account-preference small { font-size:11px; color:#8594a7; }
-.jnr-account-preference input { width:38px; height:22px; accent-color:#223773; cursor:pointer; }
-.jnr-account-security { display:flex; align-items:center; gap:14px; }
-.jnr-account-security > span { display:grid; place-items:center; width:50px; height:50px; border-radius:10px; background:#eff3fa; color:#395996; flex-shrink:0; }
-.jnr-account-security > div { flex:1; }
-.jnr-account-security strong { font-size:13px; }
-.jnr-account-security p { font-size:11px; color:#8793a5; line-height:1.7; margin:5px 0 0; }
-.jnr-account-security > svg { color:#78a78f; flex-shrink:0; }
-.jnr-account-auth-page { padding:25px 0 75px; min-height:620px; }
-.jnr-account-auth-page .jnr-account-back { margin-bottom:25px; }
-.jnr-account-auth-grid { display:grid; grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr); background:#fff; border-radius:15px; border:1px solid #e4eaf2; overflow:hidden; max-width:980px; margin:auto; }
-.jnr-account-auth-intro { color:white; background:linear-gradient(145deg,#1d326b,#395999); padding:66px 44px; display:flex; flex-direction:column; align-items:flex-start; justify-content:center; }
-.jnr-account-auth-emblem { display:grid; place-items:center; width:65px; height:65px; border:1px solid #ffffff45; border-radius:15px; color:white; margin-bottom:24px; }
-.jnr-account-auth-intro h1 { font-size:clamp(26px,3vw,36px); line-height:1.15; letter-spacing:-.03em; color:white; max-width:400px; margin:8px 0 15px; }
-.jnr-account-auth-intro > p:not(.jnr-account-hero-eyebrow) { color:#e0e9fc; line-height:1.8; font-size:13px; max-width:380px; }
-.jnr-account-auth-benefit { margin-top:28px; display:flex; align-items:center; gap:12px; color:#e2e9f8; font-size:11px; line-height:1.6; }
-.jnr-account-auth-benefit svg { flex-shrink:0; }
-.jnr-account-auth-card { padding:49px 42px; }
-.jnr-account-auth-card h2 { font-size:25px; color:#1c3158; margin:0 0 8px; }
-.jnr-account-auth-card > p { font-size:12px; line-height:1.7; color:#8a98aa; }
-.jnr-account-auth-note { background:#f1f5fc; color:#526e96; border-radius:7px; font-size:11px; padding:10px 12px; margin:17px 0 23px; }
-.jnr-account-auth-form { display:grid; gap:18px; }
-.jnr-account-auth-form .jnr-account-primary { width:100%; margin-top:5px; }
-.jnr-account-password-input { display:flex; height:43px; align-items:center; border:1px solid #dce4ee; border-radius:7px; }
-.jnr-account-password-input input { border:none; height:100%; flex:1; min-width:0; }
-.jnr-account-password-input button { background:transparent; border:0; padding:8px 12px; color:#66788f; }
-.jnr-account-auth-extra { display:flex; align-items:center; justify-content:space-between; gap:15px; font-size:11px; }
-.jnr-account-auth-extra label { display:flex; align-items:center; gap:6px; color:#7f8ea3; }
-.jnr-account-auth-extra a, .jnr-account-auth-bottom a { font-weight:800; color:#223773; }
-.jnr-account-auth-bottom { margin-top:22px; text-align:center; font-size:12px; color:#7c8b9f; }
-@media (max-width:1190px) {
-  .jnr-account-layout { grid-template-columns:225px minmax(0,1fr); gap:17px; }
-  .jnr-account-metrics { gap:9px; }
-  .jnr-account-metric { padding:14px 12px; }
-  .jnr-account-sidebar { top:70px; }
+
+.jnr-account-wrap {
+  width: min(1320px, calc(100% - 40px));
+  margin-inline: auto;
+  padding-bottom: 64px;
 }
-@media (max-width:980px) {
-  .jnr-account-layout { grid-template-columns:1fr; }
-  .jnr-account-sidebar { display:none; }
-  .jnr-account-mobile-nav { display:flex; gap:5px; overflow-x:auto; padding:6px 0 15px; margin-bottom:9px; scrollbar-width:none; }
-  .jnr-account-mobile-nav::-webkit-scrollbar { display:none; }
-  .jnr-account-mobile-nav .jnr-account-navlink { flex:0 0 auto; padding:11px 12px; border:1px solid #e6eaf1; background:#fff; font-size:12px; }
-  .jnr-account-mobile-nav .jnr-account-navlink.is-active { border-color:#cbd8ef; background:#e9effb; }
-  .jnr-account-mobile-nav .jnr-account-navlink svg { width:16px; height:16px; }
-  .jnr-account-order-toolbar { flex-wrap:wrap; }
-  .jnr-account-order-tabs { overflow-x:auto; flex-wrap:nowrap; max-width:100%; }
+
+/* Breadcrumb and page layout */
+
+.jnr-account-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 20px 0 25px;
+  color: var(--account-subtle);
+  font-size: 12px;
 }
-@media (max-width:700px) {
-  .jnr-account-wrap { padding-bottom:37px; }
-  .jnr-account-breadcrumb { padding:15px 0 22px; }
-  .jnr-account-head { margin-bottom:14px; }
-  .jnr-account-head h1 { font-size:24px; }
-  .jnr-account-panel { padding:16px; }
-  .jnr-account-hero-card { padding:22px; min-height:165px; }
-  .jnr-account-hero-mark { width:95px; height:95px; flex-basis:95px; }
-  .jnr-account-hero-mark svg { width:55px; height:55px; }
-  .jnr-account-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
-  .jnr-account-metric { min-height:112px; }
-  .jnr-account-quick-grid { grid-template-columns:1fr; gap:10px; }
-  .jnr-account-address-grid { grid-template-columns:1fr; }
-  .jnr-account-order-price { min-width:0; }
-  .jnr-account-wishlist-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .jnr-account-order-toolbar { align-items:stretch; }
-  .jnr-account-search { width:100%; flex:1 1 100%; }
-  .jnr-account-auth-grid { grid-template-columns:1fr; }
-  .jnr-account-auth-intro { padding:34px 27px; }
-  .jnr-account-auth-card { padding:28px 24px; }
+
+.jnr-account-breadcrumb a:hover { color: var(--account-accent); }
+.jnr-account-breadcrumb span { color: var(--account-primary); font-weight: 600; }
+
+.jnr-account-layout {
+  display: grid;
+  grid-template-columns: minmax(230px, 260px) minmax(0, 1fr);
+  align-items: start;
+  gap: 24px;
 }
-@media (max-width:430px) {
-  .jnr-account-hero-card { padding:20px; }
-  .jnr-account-hero-card h2 { font-size:23px; }
-  .jnr-account-hero-card p { font-size:11px; }
-  .jnr-account-hero-mark { display:none; }
-  .jnr-account-recent-order { gap:8px; }
-  .jnr-account-order-thumb { width:43px; height:46px; flex-basis:43px; }
-  .jnr-account-recent-order .jnr-account-status { display:none; }
-  .jnr-account-recent-order .jnr-account-chevron { display:none; }
-  .jnr-account-order-products img { width:35px; height:37px; }
-  .jnr-account-order-products img:nth-child(n+2) { display:none; }
-  .jnr-account-panel-heading { flex-wrap:wrap; }
-  .jnr-account-form-grid { grid-template-columns:1fr; gap:13px; }
-  .jnr-account-full { grid-column:auto; }
-  .jnr-account-form-footer { flex-direction:column; align-items:stretch; }
-  .jnr-account-form-footer button { width:100%; }
-  .jnr-account-steps { margin:20px 0 12px; }
-  .jnr-account-detail-title h2 { font-size:19px; }
-  .jnr-account-address-modal { padding:18px; }
-  .jnr-account-wish-image { height:125px; }
+
+.jnr-account-sidebar {
+  position: sticky;
+  top: 82px;
+  overflow: hidden;
+  border: 1px solid var(--account-line);
+  border-radius: 13px;
+  background: #FFFFFF;
+  box-shadow: 0 5px 20px rgba(25, 40, 68, .035);
 }
-@media (prefers-reduced-motion:reduce) {
-  .jnr-account-navlink,.jnr-account-metric { transition:none; }
+
+.jnr-account-person {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 21px 18px;
+  border-bottom: 1px solid var(--account-line);
+}
+
+.jnr-account-avatar {
+  display: grid;
+  flex: 0 0 47px;
+  width: 47px;
+  height: 47px;
+  place-items: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--account-primary), #30496F);
+  color: #FFFFFF;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.jnr-account-person-copy { display: flex; min-width: 0; flex-direction: column; gap: 4px; }
+.jnr-account-person-copy span,
+.jnr-account-person-copy small { color: var(--account-subtle); font-size: 10px; }
+.jnr-account-person-copy strong {
+  overflow: hidden;
+  color: var(--account-primary);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.jnr-account-side-nav { display: grid; gap: 4px; padding: 12px 10px; }
+
+.jnr-account-navlink {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #626D7C;
+  font-size: 12px;
+  font-weight: 650;
+  white-space: nowrap;
+  transition: background .18s ease, color .18s ease, border-color .18s ease;
+}
+
+.jnr-account-navlink svg { flex: 0 0 auto; }
+.jnr-account-navlink:hover { background: #FFF7F4; color: var(--account-primary); }
+.jnr-account-navlink.is-active {
+  border-color: #F1D8D1;
+  background: var(--account-accent-soft);
+  color: var(--account-primary);
+}
+.jnr-account-navlink em {
+  display: grid;
+  min-width: 22px;
+  height: 20px;
+  place-items: center;
+  margin-left: auto;
+  padding: 0 5px;
+  border-radius: 20px;
+  background: var(--account-primary);
+  color: #FFFFFF;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.jnr-account-sidebar-bottom {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 14px 17px 8px;
+  border-top: 1px solid var(--account-line);
+  color: var(--account-subtle);
+  font-size: 10px;
+  line-height: 1.55;
+}
+.jnr-account-sidebar-bottom svg { flex: 0 0 auto; color: var(--account-success); }
+.jnr-account-signin-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 17px 17px;
+  color: var(--account-primary) !important;
+  font-size: 11px;
+  font-weight: 750;
+}
+.jnr-account-signin-link:hover { color: var(--account-accent) !important; }
+
+.jnr-account-main { min-width: 0; }
+.jnr-account-mobile-nav { display: none; }
+
+.jnr-account-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 3px 0 21px;
+}
+.jnr-account-kicker {
+  margin: 0 0 6px;
+  color: var(--account-accent);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+.jnr-account-head h1 {
+  margin: 0 0 6px;
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: clamp(23px, 2.4vw, 30px);
+  letter-spacing: -.035em;
+  line-height: 1.2;
+}
+.jnr-account-head > div > p:last-child {
+  margin: 0;
+  color: var(--account-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.jnr-account-demo-pill {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid #F1D8D1;
+  border-radius: 30px;
+  background: var(--account-accent-soft);
+  color: #9B4E42;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .08em;
+}
+
+/* Shared panels and buttons */
+
+.jnr-account-stack { display: grid; gap: 18px; }
+.jnr-account-panel {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid var(--account-line);
+  border-radius: 12px;
+  background: #FFFFFF;
+  box-shadow: 0 3px 14px rgba(25, 40, 68, .025);
+}
+.jnr-account-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 19px;
+}
+.jnr-account-panel-heading h2 {
+  margin: 0 0 5px;
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: 17px;
+  letter-spacing: -.02em;
+}
+.jnr-account-panel-heading p {
+  margin: 0;
+  color: var(--account-muted);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.jnr-account-inline-link,
+.jnr-account-text-button,
+.jnr-account-back {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: var(--account-primary);
+  font-size: 11px;
+  font-weight: 750;
+  white-space: nowrap;
+}
+.jnr-account-inline-link:hover,
+.jnr-account-text-button:hover,
+.jnr-account-back:hover { color: var(--account-accent); }
+.jnr-account-back { margin-bottom: -1px; }
+
+.jnr-account-primary,
+.jnr-account-secondary {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 15px;
+  border: 1px solid var(--account-primary);
+  border-radius: 7px;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.25;
+  transition: background .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+}
+.jnr-account-primary { background: var(--account-primary); color: #FFFFFF !important; }
+.jnr-account-primary:hover {
+  border-color: var(--account-accent);
+  background: var(--account-accent);
+  color: #FFFFFF !important;
+}
+.jnr-account-secondary {
+  border-color: var(--account-line);
+  background: #FFFFFF;
+  color: var(--account-primary);
+}
+.jnr-account-secondary:hover {
+  border-color: #E8BDB3;
+  background: #FFF7F4;
+  color: var(--account-primary);
+}
+.jnr-account-primary:disabled,
+.jnr-account-secondary:disabled { cursor: not-allowed; opacity: .55; }
+
+/* Overview hero */
+
+.jnr-account-hero-card {
+  position: relative;
+  display: flex;
+  min-height: 190px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  overflow: hidden;
+  padding: 27px 30px;
+  border-radius: 13px;
+  background: linear-gradient(110deg, #142039 0%, #192844 62%, #30496F 100%);
+  color: #FFFFFF;
+}
+.jnr-account-hero-card::after {
+  position: absolute;
+  top: -120px;
+  right: -80px;
+  width: 330px;
+  height: 330px;
+  border: 1px solid rgba(255, 255, 255, .15);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+.jnr-account-hero-copy { position: relative; z-index: 1; }
+.jnr-account-hero-card h2 {
+  margin: 9px 0 8px;
+  color: #FFFFFF;
+  font-family: Outfit, sans-serif;
+  font-size: clamp(24px, 2.8vw, 32px);
+  letter-spacing: -.035em;
+}
+.jnr-account-hero-card p {
+  max-width: 410px;
+  margin: 0 0 17px;
+  color: #E5EAF2;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.jnr-account-hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #F5C7BE;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .04em;
+}
+.jnr-account-light-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 7px;
+  background: #FFFFFF;
+  color: var(--account-primary) !important;
+  font-size: 11px;
+  font-weight: 800;
+  transition: background .18s ease, transform .18s ease;
+}
+.jnr-account-light-action:hover { transform: translateY(-1px); background: var(--account-accent-soft); }
+.jnr-account-hero-mark {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  flex: 0 0 125px;
+  width: 125px;
+  height: 125px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .08);
+  color: rgba(255, 255, 255, .72);
+}
+
+/* Overview metrics and quick links */
+
+.jnr-account-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 11px;
+}
+.jnr-account-metric {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 14px;
+  border: 1px solid var(--account-line);
+  border-radius: 11px;
+  background: #FFFFFF;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.jnr-account-metric:hover {
+  transform: translateY(-2px);
+  border-color: #E8C8C0;
+  box-shadow: 0 8px 22px rgba(25, 40, 68, .07);
+}
+.jnr-account-metric-icon,
+.jnr-account-quick-icon {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--account-accent-soft);
+  color: var(--account-primary);
+}
+.jnr-account-metric-icon { width: 35px; height: 35px; }
+.jnr-account-metric strong {
+  margin-top: 1px;
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: 22px;
+  line-height: 1;
+}
+.jnr-account-metric > span:last-child {
+  color: var(--account-muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+.jnr-account-quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.jnr-account-quick-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--account-line);
+  border-radius: 10px;
+  background: #FFFFFF;
+  transition: border-color .18s ease, transform .18s ease;
+}
+.jnr-account-quick-card:hover { transform: translateY(-1px); border-color: #E8BDB3; }
+.jnr-account-quick-icon { width: 40px; height: 40px; }
+.jnr-account-quick-card > span:nth-child(2) {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 4px;
+}
+.jnr-account-quick-card strong { color: var(--account-primary); font-size: 11px; }
+.jnr-account-quick-card small { color: var(--account-muted); font-size: 10px; line-height: 1.45; }
+.jnr-account-quick-card > svg { flex: 0 0 auto; color: var(--account-subtle); }
+.jnr-account-preview-caption,
+.jnr-account-demo-caption { color: var(--account-muted); font-size: 10px; }
+.jnr-account-preview-caption { margin: 0; }
+
+/* Recent orders and status badges */
+
+.jnr-account-recent-order {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #F1E9E6;
+}
+.jnr-account-recent-order:first-child { padding-top: 0; }
+.jnr-account-recent-order:last-child { padding-bottom: 0; border-bottom: 0; }
+.jnr-account-order-thumb {
+  display: grid;
+  flex: 0 0 49px;
+  width: 49px;
+  height: 50px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #F0E6E2;
+  border-radius: 8px;
+  background: #FFF8F5;
+  color: var(--account-primary);
+}
+.jnr-account-order-thumb img { width: 100%; height: 100%; object-fit: contain; }
+.jnr-account-order-main {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+}
+.jnr-account-order-main strong { color: var(--account-primary); font-size: 11px; }
+.jnr-account-order-main small { color: var(--account-muted); font-size: 10px; }
+.jnr-account-status {
+  display: inline-flex;
+  width: max-content;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 30px;
+  background: #F1F2F4;
+  color: #626D7C;
+  font-size: 9px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+.jnr-account-status.status-on-the-way { background: #EAF2FA; color: #345F87; }
+.jnr-account-status.status-processing { background: #FBF2E2; color: var(--account-warning); }
+.jnr-account-status.status-delivered { background: #E8F4EE; color: var(--account-success); }
+.jnr-account-status.status-cancelled { background: #FCEBE9; color: var(--account-danger); }
+.jnr-account-order-price {
+  min-width: 76px;
+  color: var(--account-primary);
+  font-size: 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+.jnr-account-chevron { flex: 0 0 auto; color: #9AA1AC; }
+
+/* Order list, filters and search */
+
+.jnr-account-order-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+.jnr-account-order-tabs { display: flex; flex-wrap: wrap; gap: 5px; }
+.jnr-account-order-tabs button {
+  padding: 8px 9px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: #FFFFFF;
+  color: #687281;
+  font-size: 10px;
+  font-weight: 750;
+  white-space: nowrap;
+  transition: background .18s ease, border-color .18s ease, color .18s ease;
+}
+.jnr-account-order-tabs button:hover,
+.jnr-account-order-tabs button.is-current {
+  border-color: #EED1C9;
+  background: var(--account-accent-soft);
+  color: var(--account-primary);
+}
+.jnr-account-search {
+  display: flex;
+  width: 185px;
+  height: 38px;
+  flex: 0 0 185px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border: 1px solid var(--account-line);
+  border-radius: 7px;
+  color: var(--account-subtle);
+  background: #FFFFFF;
+}
+.jnr-account-search:focus-within {
+  border-color: var(--account-accent);
+  box-shadow: 0 0 0 3px rgba(230, 107, 88, .10);
+}
+.jnr-account-search input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--account-ink);
+  font-size: 11px;
+}
+.jnr-account-search input:focus-visible { outline: 0; }
+.jnr-account-search input::placeholder { color: #A1A5AD; }
+.jnr-account-order-card {
+  margin-top: 11px;
+  padding: 14px;
+  border: 1px solid var(--account-line);
+  border-radius: 10px;
+  background: #FFFFFF;
+}
+.jnr-account-order-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 11px;
+  border-bottom: 1px solid #F1E9E6;
+}
+.jnr-account-order-top > div { display: flex; flex-direction: column; gap: 5px; }
+.jnr-account-order-top strong { color: var(--account-primary); font-size: 11px; }
+.jnr-account-order-top > div span { color: var(--account-muted); font-size: 10px; }
+.jnr-account-order-products {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 14px 0;
+}
+.jnr-account-order-product-image {
+  display: grid;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 43px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #F0E8E4;
+  border-radius: 7px;
+  background: #FFF8F5;
+  color: var(--account-muted);
+}
+.jnr-account-order-product-image img { width: 100%; height: 100%; object-fit: contain; }
+.jnr-account-order-products > div {
+  display: grid;
+  min-width: 0;
+  flex: 1;
+  gap: 5px;
+}
+.jnr-account-order-products > div strong {
+  overflow: hidden;
+  color: var(--account-primary);
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.jnr-account-order-products > div small { color: var(--account-muted); font-size: 9px; }
+.jnr-account-order-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 13px;
+  padding-top: 11px;
+  border-top: 1px solid #F1E9E6;
+}
+.jnr-account-order-actions .jnr-account-secondary {
+  min-height: 33px;
+  padding: 6px 11px;
+  font-size: 10px;
+}
+.jnr-account-count-pill {
+  flex: 0 0 auto;
+  padding: 6px 10px;
+  border-radius: 20px;
+  background: var(--account-accent-soft);
+  color: #9B4E42;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+/* Order details */
+
+.jnr-account-detail-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+.jnr-account-detail-title h2 {
+  margin: 0 0 5px;
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: 22px;
+}
+.jnr-account-detail-title p { margin: 0; color: var(--account-muted); font-size: 10px; }
+.jnr-account-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 25px 0 14px;
+}
+.jnr-account-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  color: #A0A5AD;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+}
+.jnr-account-step:not(:first-child)::before {
+  position: absolute;
+  z-index: 0;
+  top: 15px;
+  right: 50%;
+  width: 100%;
+  height: 2px;
+  background: #E9E5E2;
+  content: "";
+}
+.jnr-account-step.is-complete:not(:first-child)::before { background: var(--account-success); }
+.jnr-account-step > span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 1px solid #E5E1DE;
+  border-radius: 50%;
+  background: #FFFFFF;
+  color: #9299A2;
+}
+.jnr-account-step.is-complete > span {
+  border-color: var(--account-success);
+  background: var(--account-success);
+  color: #FFFFFF;
+}
+.jnr-account-tracking {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 11px 13px;
+  border-radius: 8px;
+  background: #F7F8FA;
+  color: #596678;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.jnr-account-tracking svg { flex: 0 0 auto; color: var(--account-primary); }
+.jnr-account-cancelled-note {
+  margin: 20px 0 0;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #FCEBE9;
+  color: #984A48;
+  font-size: 11px;
+  line-height: 1.6;
+}
+.jnr-account-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #F1E9E6;
+}
+.jnr-account-detail-item > div { display: grid; min-width: 0; flex: 1; gap: 6px; }
+.jnr-account-detail-item strong { color: var(--account-primary); font-size: 11px; }
+.jnr-account-detail-item small { color: var(--account-muted); font-size: 10px; }
+.jnr-account-invoice {
+  display: grid;
+  max-width: 340px;
+  gap: 10px;
+  margin: 16px 0 17px auto;
+}
+.jnr-account-invoice > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  color: var(--account-muted);
+  font-size: 11px;
+}
+.jnr-account-invoice strong { color: var(--account-primary); }
+.jnr-account-invoice .jnr-account-invoice-total {
+  padding-top: 11px;
+  border-top: 1px solid var(--account-line);
+  color: var(--account-primary);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+/* Address cards */
+
+.jnr-account-address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+}
+.jnr-account-address-card {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--account-line);
+  border-radius: 10px;
+  background: #FFFFFF;
+}
+.jnr-account-address-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+.jnr-account-address-card-header > strong {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--account-primary);
+  font-size: 12px;
+}
+.jnr-account-address-card-header > strong svg { color: var(--account-accent); }
+.jnr-account-default-pill {
+  padding: 5px 8px;
+  border-radius: 5px;
+  background: #E8F4EE;
+  color: var(--account-success);
+  font-size: 9px;
+  font-weight: 800;
+}
+.jnr-account-address-card h3 { margin: 0 0 6px; color: var(--account-primary); font-size: 13px; }
+.jnr-account-address-card p {
+  min-height: 39px;
+  margin: 0 0 8px;
+  color: #657080;
+  font-size: 10px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.jnr-account-address-card > small { color: var(--account-muted); font-size: 10px; }
+.jnr-account-address-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid #F1E9E6;
+}
+.jnr-account-address-actions > button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--account-primary);
+  font-size: 10px;
+  font-weight: 750;
+}
+.jnr-account-address-actions > button:hover { color: var(--account-accent); }
+.jnr-account-address-actions > button.is-danger,
+.jnr-account-confirm-remove { color: var(--account-danger); }
+.jnr-account-confirm-remove {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  font-size: 10px;
+}
+.jnr-account-confirm-remove button {
+  padding: 2px 4px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+/* Empty states and notices */
+
+.jnr-account-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  padding: 48px 15px;
+  color: #A0A4AC;
+  text-align: center;
+}
+.jnr-account-empty > svg { color: var(--account-accent); }
+.jnr-account-empty h2,
+.jnr-account-empty h3 {
+  margin: 5px 0 0;
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: 16px;
+}
+.jnr-account-empty p {
+  max-width: 350px;
+  margin: 0 0 8px;
+  color: var(--account-muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+.jnr-account-empty-compact { padding: 35px 12px 20px; }
+.jnr-account-local-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 13px 0;
+  padding: 10px 12px;
+  border: 1px solid #E5EAF0;
+  border-radius: 7px;
+  background: #F5F7FA;
+  color: #526174;
+  font-size: 10px;
+  line-height: 1.55;
+}
+.jnr-account-local-notice svg { flex: 0 0 auto; color: var(--account-success); }
+
+/* Forms */
+
+.jnr-account-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.jnr-account-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+  color: #3B4655;
+  font-size: 11px;
+  font-weight: 700;
+}
+.jnr-account-field input,
+.jnr-account-field select {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  padding: 0 11px;
+  border: 1px solid #E2DAD6;
+  border-radius: 7px;
+  outline: 0;
+  background: #FFFFFF;
+  color: var(--account-ink);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+.jnr-account-field input:focus,
+.jnr-account-field select:focus {
+  border-color: var(--account-accent);
+  box-shadow: 0 0 0 3px rgba(230, 107, 88, .10);
+}
+.jnr-account-field input::placeholder { color: #A0A4AC; }
+.jnr-account-full { grid-column: 1 / -1; }
+.jnr-account-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 17px;
+  border-top: 1px solid #F1E9E6;
+}
+.jnr-account-form-footer p { margin: 0; color: var(--account-muted); font-size: 10px; line-height: 1.5; }
+
+/* Address modal */
+
+.jnr-account-modal-scrim {
+  position: fixed;
+  z-index: 2500;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: 16px;
+  background: rgba(15, 28, 48, .62);
+  inset: 0;
+  animation: jnr-account-fade-in .16s ease both;
+}
+.jnr-account-address-modal {
+  width: min(560px, 100%);
+  max-height: min(92dvh, 820px);
+  overflow: auto;
+  padding: 23px;
+  border: 1px solid rgba(255, 255, 255, .5);
+  border-radius: 13px;
+  background: #FFFFFF;
+  box-shadow: 0 25px 70px rgba(13, 30, 60, .24);
+  animation: jnr-account-modal-in .2s ease both;
+}
+.jnr-account-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 19px;
+}
+.jnr-account-modal-header h2 {
+  margin: 0 0 5px;
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: 19px;
+}
+.jnr-account-modal-header p { margin: 0; color: var(--account-muted); font-size: 10px; line-height: 1.5; }
+.jnr-account-modal-header > button {
+  display: grid;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border: 0;
+  border-radius: 7px;
+  background: #F5F2F0;
+  color: #6E7480;
+}
+.jnr-account-modal-header > button:hover { background: var(--account-accent-soft); color: var(--account-accent); }
+.jnr-account-address-form .jnr-account-form-grid { gap: 13px; }
+.jnr-account-switch-line {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  color: #465161;
+  font-size: 10px;
+  cursor: pointer;
+}
+.jnr-account-switch-line input {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  accent-color: var(--account-accent);
+}
+.jnr-account-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 17px;
+  padding-top: 16px;
+  border-top: 1px solid #F1E9E6;
+}
+@keyframes jnr-account-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes jnr-account-modal-in {
+  from { opacity: 0; transform: translateY(9px) scale(.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Wishlist */
+
+.jnr-account-wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.jnr-account-wish-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--account-line);
+  border-radius: 10px;
+  background: #FFFFFF;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.jnr-account-wish-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(25, 40, 68, .07); }
+.jnr-account-wish-image {
+  display: grid;
+  height: 155px;
+  place-items: center;
+  overflow: hidden;
+  background: #FFF8F5;
+  color: #A0A4AC;
+}
+.jnr-account-wish-image img { width: 100%; height: 100%; padding: 12px; object-fit: contain; }
+.jnr-account-wish-remove {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid #F0E2DD;
+  border-radius: 7px;
+  background: #FFFFFF;
+  color: var(--account-danger);
+  transition: background .18s ease;
+}
+.jnr-account-wish-remove:hover { background: #FCEBE9; }
+.jnr-account-wish-copy { display: flex; flex-direction: column; gap: 8px; padding: 12px; }
+.jnr-account-wish-copy > span { color: var(--account-muted); font-size: 9px; }
+.jnr-account-wish-copy > a {
+  display: -webkit-box;
+  min-height: 32px;
+  overflow: hidden;
+  color: var(--account-primary);
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.jnr-account-wish-copy > a:hover { color: var(--account-accent); }
+.jnr-account-wish-copy > strong {
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: 14px;
+}
+.jnr-account-wish-copy .jnr-account-primary {
+  width: 100%;
+  min-height: 36px;
+  padding: 7px 5px;
+  font-size: 10px;
+}
+
+/* Preferences and security */
+
+.jnr-account-preference {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 14px 0;
+  border-bottom: 1px solid #F1E9E6;
+  cursor: pointer;
+}
+.jnr-account-preference > span { display: grid; gap: 5px; }
+.jnr-account-preference strong { color: var(--account-primary); font-size: 11px; }
+.jnr-account-preference small { color: var(--account-muted); font-size: 10px; line-height: 1.5; }
+.jnr-account-preference input {
+  position: relative;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 22px;
+  margin: 0;
+  appearance: none;
+  border: 0;
+  border-radius: 20px;
+  background: #D8D9DC;
+  cursor: pointer;
+  transition: background .18s ease;
+}
+.jnr-account-preference input::before {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+  content: "";
+  transition: transform .18s ease;
+}
+.jnr-account-preference input:checked { background: var(--account-primary); }
+.jnr-account-preference input:checked::before { transform: translateX(16px); }
+.jnr-account-preference input:focus-visible {
+  outline: 3px solid rgba(230, 107, 88, .35);
+  outline-offset: 3px;
+}
+.jnr-account-security { display: flex; align-items: center; gap: 13px; }
+.jnr-account-security > span {
+  display: grid;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 10px;
+  background: var(--account-accent-soft);
+  color: var(--account-primary);
+}
+.jnr-account-security > div { min-width: 0; flex: 1; }
+.jnr-account-security strong { color: var(--account-primary); font-size: 11px; }
+.jnr-account-security p { margin: 5px 0 0; color: var(--account-muted); font-size: 10px; line-height: 1.65; }
+.jnr-account-security > svg { flex: 0 0 auto; color: var(--account-success); }
+
+/* Sign in, register and reset password screens */
+
+.jnr-account-auth-page { min-height: 620px; padding: 28px 0 75px; }
+.jnr-account-auth-page > .container { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+.jnr-account-auth-page .jnr-account-back { margin-bottom: 24px; }
+.jnr-account-auth-grid {
+  display: grid;
+  max-width: 980px;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  overflow: hidden;
+  margin: auto;
+  border: 1px solid var(--account-line);
+  border-radius: 15px;
+  background: #FFFFFF;
+  box-shadow: 0 10px 35px rgba(25, 40, 68, .05);
+}
+.jnr-account-auth-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 55px 42px;
+  background: linear-gradient(145deg, #142039, #192844 65%, #30496F);
+  color: #FFFFFF;
+}
+.jnr-account-auth-emblem {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  place-items: center;
+  margin-bottom: 22px;
+  border: 1px solid rgba(255, 255, 255, .28);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, .08);
+  color: #FFFFFF;
+}
+.jnr-account-auth-intro h1 {
+  max-width: 410px;
+  margin: 9px 0 13px;
+  color: #FFFFFF;
+  font-family: Outfit, sans-serif;
+  font-size: clamp(26px, 3vw, 36px);
+  letter-spacing: -.035em;
+  line-height: 1.16;
+}
+.jnr-account-auth-intro > p:not(.jnr-account-hero-eyebrow) {
+  max-width: 390px;
+  color: #E0E6EF;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.jnr-account-auth-benefit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  color: #F2D8D2;
+  font-size: 10px;
+  line-height: 1.6;
+}
+.jnr-account-auth-benefit svg { flex: 0 0 auto; }
+.jnr-account-auth-card { padding: 43px 38px; }
+.jnr-account-auth-card h2 {
+  margin: 0 0 7px;
+  color: var(--account-primary);
+  font-family: Outfit, sans-serif;
+  font-size: 24px;
+}
+.jnr-account-auth-card > p { color: var(--account-muted); font-size: 11px; line-height: 1.7; }
+.jnr-account-auth-note {
+  margin: 16px 0 20px;
+  padding: 10px 12px;
+  border: 1px solid #F1D8D1;
+  border-radius: 7px;
+  background: #FFF7F4;
+  color: #8F5147;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.jnr-account-auth-form { display: grid; gap: 16px; }
+.jnr-account-auth-submit { width: 100%; margin-top: 3px; }
+.jnr-account-password-input {
+  display: flex;
+  height: 42px;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #E2DAD6;
+  border-radius: 7px;
+  background: #FFFFFF;
+}
+.jnr-account-password-input:focus-within {
+  border-color: var(--account-accent);
+  box-shadow: 0 0 0 3px rgba(230, 107, 88, .10);
+}
+.jnr-account-password-input input {
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  flex: 1;
+  padding: 0 11px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--account-ink);
+  font-size: 11px;
+}
+.jnr-account-password-input input:focus-visible { outline: 0; }
+.jnr-account-password-input button {
+  display: grid;
+  flex: 0 0 40px;
+  height: 100%;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #737D8B;
+}
+.jnr-account-password-input button:hover { color: var(--account-accent); }
+.jnr-account-auth-extra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10px;
+}
+.jnr-account-auth-extra label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--account-muted);
+}
+.jnr-account-auth-extra input { accent-color: var(--account-primary); }
+.jnr-account-auth-extra a,
+.jnr-account-auth-bottom a { color: var(--account-primary); font-weight: 800; }
+.jnr-account-auth-extra a:hover,
+.jnr-account-auth-bottom a:hover { color: var(--account-accent); }
+.jnr-account-auth-bottom {
+  margin-top: 21px;
+  color: var(--account-muted);
+  font-size: 11px;
+  text-align: center;
+}
+
+/* Tablet */
+
+@media (max-width: 1100px) {
+  .jnr-account-layout { grid-template-columns: 220px minmax(0, 1fr); gap: 17px; }
+  .jnr-account-metrics { gap: 8px; }
+  .jnr-account-metric { padding: 14px 11px; }
+  .jnr-account-order-toolbar { align-items: flex-start; flex-direction: column; }
+  .jnr-account-search { width: 100%; flex-basis: auto; }
+}
+
+@media (max-width: 900px) {
+  .jnr-account-layout { grid-template-columns: minmax(0, 1fr); }
+  .jnr-account-sidebar { display: none; }
+  .jnr-account-mobile-nav {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    margin: 0 0 12px;
+    padding: 5px 1px 12px;
+    scrollbar-width: none;
+  }
+  .jnr-account-mobile-nav::-webkit-scrollbar { display: none; }
+  .jnr-account-mobile-nav .jnr-account-navlink {
+    flex: 0 0 auto;
+    padding: 9px 11px;
+    border-color: var(--account-line);
+    background: #FFFFFF;
+    font-size: 10px;
+  }
+  .jnr-account-mobile-nav .jnr-account-navlink.is-active {
+    border-color: #E8BDB3;
+    background: var(--account-accent-soft);
+  }
+  .jnr-account-mobile-nav .jnr-account-navlink svg { width: 15px; height: 15px; }
+  .jnr-account-order-tabs {
+    max-width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 3px;
+    scrollbar-width: thin;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .jnr-account-wrap { width: calc(100% - 28px); padding-bottom: 38px; }
+  .jnr-account-breadcrumb { padding: 15px 0 19px; }
+  .jnr-account-head { margin-bottom: 13px; }
+  .jnr-account-head h1 { font-size: 24px; }
+  .jnr-account-panel { padding: 16px; }
+  .jnr-account-hero-card { min-height: 165px; padding: 21px; }
+  .jnr-account-hero-mark { flex-basis: 92px; width: 92px; height: 92px; }
+  .jnr-account-hero-mark svg { width: 54px; height: 54px; }
+  .jnr-account-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  .jnr-account-metric { min-height: 106px; }
+  .jnr-account-quick-grid { grid-template-columns: 1fr; gap: 9px; }
+  .jnr-account-address-grid { grid-template-columns: 1fr; }
+  .jnr-account-wishlist-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .jnr-account-order-toolbar { gap: 10px; }
+  .jnr-account-order-tabs { width: 100%; }
+  .jnr-account-search { width: 100%; }
+  .jnr-account-auth-page { padding: 20px 0 45px; }
+  .jnr-account-auth-page > .container { width: calc(100% - 28px); }
+  .jnr-account-auth-grid { grid-template-columns: 1fr; }
+  .jnr-account-auth-intro { padding: 31px 26px; }
+  .jnr-account-auth-intro h1 { max-width: 520px; font-size: 28px; }
+  .jnr-account-auth-card { padding: 27px 23px; }
+}
+
+/* Small mobile */
+
+@media (max-width: 430px) {
+  .jnr-account-hero-card { padding: 19px; }
+  .jnr-account-hero-card h2 { font-size: 23px; }
+  .jnr-account-hero-card p { max-width: 290px; font-size: 10px; }
+  .jnr-account-hero-mark { display: none; }
+  .jnr-account-recent-order { gap: 8px; }
+  .jnr-account-order-thumb { flex-basis: 42px; width: 42px; height: 44px; }
+  .jnr-account-recent-order .jnr-account-status,
+  .jnr-account-recent-order .jnr-account-chevron { display: none; }
+  .jnr-account-order-product-image { flex-basis: 35px; width: 35px; height: 36px; }
+  .jnr-account-order-product-image:nth-of-type(n + 2) { display: none; }
+  .jnr-account-panel-heading { flex-wrap: wrap; }
+  .jnr-account-form-grid { grid-template-columns: 1fr; gap: 13px; }
+  .jnr-account-full { grid-column: auto; }
+  .jnr-account-form-footer { align-items: stretch; flex-direction: column; }
+  .jnr-account-form-footer button { width: 100%; }
+  .jnr-account-steps { margin: 19px 0 12px; }
+  .jnr-account-detail-title h2 { font-size: 18px; }
+  .jnr-account-address-modal { padding: 17px; }
+  .jnr-account-wish-image { height: 125px; }
+  .jnr-account-order-actions { gap: 9px; }
+}
+
+@media (max-width: 350px) {
+  .jnr-account-wishlist-grid { grid-template-columns: 1fr; }
+  .jnr-account-demo-pill { display: none; }
+  .jnr-account-modal-actions { flex-direction: column-reverse; }
+  .jnr-account-modal-actions button { width: 100%; }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .jnr-account-page *,
+  .jnr-account-auth-page *,
+  .jnr-account-page *::before,
+  .jnr-account-auth-page *::before {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }

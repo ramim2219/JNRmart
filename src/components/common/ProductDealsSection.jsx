@@ -1,12 +1,24 @@
+
 import SectionCarousel from './SectionCarousel';
-import DealProductCard from './DealProductCard';
+import ProductCard from '../common/ProductCard';
+
 import '../../styles/product-deals.css';
 
-const DEFAULT_COLUMNS = { desktop: 7.3, laptop: 5.5, tablet: 4.3, small: 3.1, mobile: 2.1 };
+const DEFAULT_COLUMNS = {
+  desktop: 7.3,
+  laptop: 5.5,
+  tablet: 4.3,
+  small: 3.1,
+  mobile: 2.1,
+};
 
 /**
- * Reusable promotional product strip. Uses the existing SectionCarousel for
- * accessibility, scrolling, dragging, responsive columns and arrow states.
+ * Reusable promotional product section.
+ *
+ * Uses the shared ProductCard component.
+ * Product card styling is managed by product-card.css.
+ *
+ * Example:
  *
  * <ProductDealsSection
  *   title="Top Deals on Home Appliances!"
@@ -14,6 +26,7 @@ const DEFAULT_COLUMNS = { desktop: 7.3, laptop: 5.5, tablet: 4.3, small: 3.1, mo
  *   viewAllHref="/category/home-appliances"
  * />
  */
+
 export default function ProductDealsSection({
   title = 'Top Deals',
   subtitle,
@@ -26,14 +39,15 @@ export default function ProductDealsSection({
   className = '',
   showArrows = true,
   arrowsOnHover = false,
-  imageFit = 'contain',
   withContainer = true,
 }) {
+  const carouselItems = items ?? products;
+
   return (
     <SectionCarousel
       title={title}
       subtitle={subtitle}
-      items={items || products}
+      items={carouselItems}
       viewAllHref={viewAllHref}
       viewAllLabel={viewAllLabel}
       columns={columns}
@@ -43,8 +57,12 @@ export default function ProductDealsSection({
       arrowsOnHover={arrowsOnHover}
       arrowLabel="deal products"
       className={`jnr-deals-section ${className}`.trim()}
-      getItemKey={(product, index) => product.id ?? product.slug ?? index}
-      renderItem={(product) => <DealProductCard product={product} imageFit={imageFit} />}
+      getItemKey={(product, index) =>
+        product?.id ?? product?.slug ?? index
+      }
+      renderItem={(product) => (
+        <ProductCard product={product} />
+      )}
     />
   );
 }

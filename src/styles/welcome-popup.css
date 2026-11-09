@@ -1,191 +1,399 @@
-/* Self-contained JNRmart welcome modal. All selectors are scoped. */
-.jnr-welcome-overlay,
-.jnr-welcome-overlay * { box-sizing: border-box; }
+/* ==========================================================
+   JNRmart Welcome Popup
+   Brand palette:
+   Navy       #192844
+   Coral      #E66B58
+   Soft blush #F9EAE6
+   Warm white #FCF8F7
+========================================================== */
 
 .jnr-welcome-overlay {
+  --jnr-navy: #192844;
+  --jnr-navy-dark: #142039;
+  --jnr-navy-light: #30496f;
+  --jnr-coral: #e66b58;
+  --jnr-coral-dark: #d85a49;
+  --jnr-blush: #f9eae6;
+  --jnr-cream: #fcf8f7;
+  --jnr-ink: #292b32;
+  --jnr-muted: #716d6b;
+  --jnr-border: #eadbd6;
+
   position: fixed;
+  z-index: 10000;
   inset: 0;
-  z-index: 99999;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
-  background: rgba(12, 21, 40, .62);
-  backdrop-filter: blur(5px);
+  padding:
+    max(16px, env(safe-area-inset-top))
+    16px
+    max(16px, env(safe-area-inset-bottom));
+  background: rgba(15, 27, 47, 0.66);
   -webkit-backdrop-filter: blur(5px);
-  animation: jnr-overlay-enter .2s ease both;
+  backdrop-filter: blur(5px);
+  animation: jnr-welcome-overlay-in 180ms ease both;
+}
+
+.jnr-welcome-overlay *,
+.jnr-welcome-overlay *::before,
+.jnr-welcome-overlay *::after {
+  box-sizing: border-box;
 }
 
 .jnr-welcome-modal {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.14fr) minmax(0, .86fr);
-  overflow: hidden;
-  width: min(760px, 100%);
+  grid-template-columns: minmax(0, 1.12fr) minmax(260px, 0.88fr);
+  width: min(780px, 100%);
   max-height: min(650px, calc(100dvh - 32px));
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 28px 92px rgba(3, 14, 40, .31);
-  animation: jnr-modal-enter .3s cubic-bezier(.2, .7, .3, 1) both;
+  background: #ffffff;
+  box-shadow: 0 28px 90px rgba(3, 14, 35, 0.3);
+  animation: jnr-welcome-modal-in 260ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
+.jnr-welcome-modal:focus {
+  outline: none;
 }
 
 .jnr-welcome-close {
   position: absolute;
+  z-index: 4;
   top: 15px;
   right: 15px;
-  z-index: 3;
   display: grid;
+  width: 36px;
+  height: 36px;
   place-items: center;
-  width: 35px;
-  height: 35px;
   padding: 0;
-  border: 1px solid rgba(255,255,255,.4);
+  border: 1px solid rgba(25, 40, 68, 0.1);
   border-radius: 50%;
-  background: rgba(255,255,255,.9);
-  color: #172943;
+  background: #ffffff;
+  color: var(--jnr-navy, #192844);
   cursor: pointer;
-  transition: background .2s, transform .2s;
+  box-shadow: 0 3px 12px rgba(16, 31, 54, 0.08);
+  transition:
+    color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
 }
-.jnr-welcome-close:hover { background: #fff; transform: rotate(90deg); }
-.jnr-welcome-close:focus-visible,
-.jnr-welcome-primary:focus-visible,
-.jnr-welcome-secondary:focus-visible,
-.jnr-welcome-form input:focus-visible,
-.jnr-welcome-form button:focus-visible {
-  outline: 3px solid #88a6f6;
+
+.jnr-welcome-close:hover {
+  transform: rotate(90deg);
+  background: var(--jnr-blush, #f9eae6);
+  color: var(--jnr-coral, #e66b58);
+}
+
+.jnr-welcome-overlay :is(a, button, input):focus-visible {
+  outline: 3px solid rgba(230, 107, 88, 0.42);
   outline-offset: 3px;
 }
 
+/* Main content */
+
 .jnr-welcome-content {
+  display: flex;
   min-width: 0;
-  overflow-y: auto;
-  padding: clamp(28px, 4vw, 54px) clamp(24px, 4vw, 52px);
+  flex-direction: column;
   align-self: center;
+  overflow-y: auto;
+  padding: clamp(30px, 4.5vw, 54px) clamp(25px, 4.5vw, 52px);
+  background: #ffffff;
 }
+
 .jnr-welcome-eyebrow {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #223773;
+  margin-bottom: 17px;
+  color: var(--jnr-coral, #e66b58);
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: .12em;
-  margin-bottom: 16px;
+  letter-spacing: 0.13em;
+  line-height: 1.4;
 }
+
 .jnr-welcome-content h2 {
   max-width: 390px;
-  margin: 0 0 15px;
-  color: #192842;
+  margin: 0 0 14px;
+  color: var(--jnr-navy, #192844);
+  font-family: inherit;
   font-size: clamp(29px, 3.4vw, 40px);
-  line-height: 1.13;
-  letter-spacing: -.04em;
   font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
 }
+
 .jnr-welcome-content > p:not(.jnr-welcome-notice) {
+  max-width: 390px;
   margin: 0 0 25px;
-  color: #687386;
-  font-size: 14px;
-  line-height: 1.7;
+  color: var(--jnr-muted, #716d6b);
+  font-size: 13px;
+  line-height: 1.75;
 }
+
+/* Primary and secondary actions */
+
 .jnr-welcome-primary {
   display: inline-flex;
+  width: fit-content;
+  min-height: 45px;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  min-height: 44px;
-  border-radius: 7px;
+  gap: 11px;
   padding: 11px 18px;
-  background: #223773;
-  color: #fff;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 700;
-  transition: background .2s, transform .2s;
-}
-.jnr-welcome-primary:hover { background: #192a59; transform: translateY(-1px); }
-.jnr-welcome-secondary {
-  display: block;
-  margin-top: 15px;
-  padding: 5px 0;
-  background: transparent;
-  border: 0;
-  color: #6b7890;
+  border: 1px solid var(--jnr-coral, #e66b58);
+  border-radius: 7px;
+  background: var(--jnr-coral, #e66b58);
+  color: #ffffff;
   font-size: 12px;
+  font-weight: 750;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease,
+    box-shadow 160ms ease;
+}
+
+.jnr-welcome-primary:hover {
+  transform: translateY(-1px);
+  border-color: var(--jnr-coral-dark, #d85a49);
+  background: var(--jnr-coral-dark, #d85a49);
+  color: #ffffff;
+  box-shadow: 0 5px 14px rgba(230, 107, 88, 0.2);
+}
+
+.jnr-welcome-secondary {
+  width: fit-content;
+  margin-top: 14px;
+  padding: 5px 0;
+  border: 0;
+  background: transparent;
+  color: #777b84;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 600;
   text-align: left;
   cursor: pointer;
+  transition: color 160ms ease;
 }
-.jnr-welcome-secondary:hover { color: #223773; text-decoration: underline; }
+
+.jnr-welcome-secondary:hover {
+  color: var(--jnr-navy, #192844);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Brand visual */
 
 .jnr-welcome-visual {
   position: relative;
   display: flex;
+  min-width: 0;
+  min-height: 390px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  isolation: isolate;
-  min-height: 390px;
   overflow: hidden;
-  color: #fff;
-  background: linear-gradient(135deg,#1c2c55 0%,#2f4e92 65%,#6185ce 100%);
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 82% 18%, rgba(230, 107, 88, 0.22), transparent 30%),
+    linear-gradient(145deg, #142039 0%, #192844 57%, #30496f 100%);
+  color: #ffffff;
 }
-.jnr-welcome-visual-ring {
+
+.jnr-welcome-visual::before,
+.jnr-welcome-visual::after {
   position: absolute;
   z-index: -1;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  border-radius: 50%;
+  content: "";
+  pointer-events: none;
+}
+
+.jnr-welcome-visual::before {
   width: 390px;
   height: 390px;
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 50%;
+  transform: translate(45px, -75px);
 }
-.jnr-welcome-ring-one { transform: translate(50px, -80px); }
-.jnr-welcome-ring-two { width: 265px; height: 265px; transform: translate(50px, -80px); }
+
+.jnr-welcome-visual::after {
+  width: 270px;
+  height: 270px;
+  transform: translate(45px, -75px);
+}
+
+.jnr-welcome-visual-orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  background: rgba(230, 107, 88, 0.1);
+  filter: blur(1px);
+}
+
+.jnr-welcome-orb-one {
+  top: 12%;
+  left: 7%;
+  width: 55px;
+  height: 55px;
+}
+
+.jnr-welcome-orb-two {
+  right: 8%;
+  bottom: 12%;
+  width: 85px;
+  height: 85px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
 .jnr-welcome-visual-icon {
   display: grid;
+  width: 104px;
+  height: 104px;
   place-items: center;
-  width: 100px;
-  height: 100px;
-  margin-bottom: 26px;
-  border: 1px solid rgba(255,255,255,.28);
-  border-radius: 24px;
-  background: rgba(255,255,255,.11);
-  box-shadow: 0 16px 55px rgba(0,0,0,.13);
-  transform: rotate(-8deg);
+  margin-bottom: 25px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 25px;
+  background: linear-gradient(145deg, #fff8f5, #f9eae6);
+  color: var(--jnr-coral, #e66b58);
+  box-shadow: 0 16px 45px rgba(5, 15, 34, 0.22);
+  transform: rotate(-7deg);
 }
-.jnr-welcome-visual-label { font-size: 35px; font-weight: 800; letter-spacing: -.05em; }
-.jnr-welcome-visual-label span { color: #d6e4ff; }
-.jnr-welcome-visual-caption { margin-top: 7px; font-size: 12px; color: #e5ecff; letter-spacing: .09em; }
-.jnr-welcome-spark { position: absolute; font-size: 28px; color: #d7e8ff; }
-.jnr-welcome-spark-one { top: 20%; right: 14%; }
-.jnr-welcome-spark-two { bottom: 21%; left: 14%; font-size: 18px; }
 
-.jnr-welcome-form { display: flex; flex-direction: column; gap: 10px; }
+.jnr-welcome-visual-label {
+  color: #ffffff;
+  font-size: 35px;
+  font-weight: 850;
+  letter-spacing: -0.055em;
+  line-height: 1.1;
+}
+
+.jnr-welcome-visual-label span {
+  color: #f4a394;
+}
+
+.jnr-welcome-visual-caption {
+  margin-top: 8px;
+  color: #e5eaf2;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+}
+
+.jnr-welcome-spark {
+  position: absolute;
+  color: #f5b1a4;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.jnr-welcome-spark-one {
+  top: 19%;
+  right: 14%;
+}
+
+.jnr-welcome-spark-two {
+  bottom: 20%;
+  left: 13%;
+  font-size: 18px;
+}
+
+.jnr-welcome-spark-three {
+  top: 35%;
+  left: 12%;
+  color: #ffffff;
+  font-size: 15px;
+}
+
+/* Newsletter form */
+
+.jnr-welcome-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 112px;
+  gap: 8px;
+  width: 100%;
+}
+
 .jnr-welcome-form input {
-  height: 45px;
   width: 100%;
   min-width: 0;
-  border: 1px solid #dbe2ed;
+  height: 46px;
+  padding: 0 12px;
+  border: 1px solid #e2deda;
   border-radius: 7px;
-  padding: 0 13px;
-  background: #fff;
-  color: #1d304e;
+  outline: none;
+  background: #ffffff;
+  color: var(--jnr-ink, #292b32);
   font: inherit;
-  font-size: 13px;
+  font-size: 11px;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
 }
+
+.jnr-welcome-form input::placeholder {
+  color: #a0a0a0;
+}
+
+.jnr-welcome-form input:focus {
+  border-color: var(--jnr-coral, #e66b58);
+  box-shadow: 0 0 0 3px rgba(230, 107, 88, 0.1);
+}
+
+.jnr-welcome-form input:disabled {
+  background: #f6f4f3;
+  cursor: wait;
+}
+
 .jnr-welcome-form button {
-  min-height: 44px;
-  border: 0;
+  min-height: 46px;
+  padding: 0 12px;
+  border: 1px solid var(--jnr-navy, #192844);
   border-radius: 7px;
-  background: #223773;
-  color: #fff;
+  background: var(--jnr-navy, #192844);
+  color: #ffffff;
   font: inherit;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 11px;
+  font-weight: 750;
   cursor: pointer;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease;
 }
-.jnr-welcome-form button:hover { background: #192a59; }
-.jnr-welcome-form button:disabled { cursor: wait; opacity: .65; }
-.jnr-welcome-notice { margin: 10px 0 0; font-size: 12px; color: #53647e; }
-.jnr-welcome-notice--success { color: #167247; }
-.jnr-welcome-notice--error { color: #b33436; }
+
+.jnr-welcome-form button:hover:not(:disabled) {
+  border-color: var(--jnr-coral, #e66b58);
+  background: var(--jnr-coral, #e66b58);
+}
+
+.jnr-welcome-form button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.jnr-welcome-notice {
+  margin: 11px 0 0;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.jnr-welcome-notice--success {
+  color: #23836b;
+}
+
+.jnr-welcome-notice--error {
+  color: #c34c50;
+}
+
+.jnr-welcome-notice--info {
+  color: #526174;
+}
+
 .jnr-welcome-visually-hidden {
   position: absolute;
   width: 1px;
@@ -196,29 +404,122 @@
   white-space: nowrap;
   border: 0;
 }
-@keyframes jnr-overlay-enter { from { opacity: 0; } to { opacity: 1; } }
-@keyframes jnr-modal-enter { from { opacity: 0; transform: translateY(18px) scale(.98); } to { opacity: 1; transform: none; } }
+
+/* Animations */
+
+@keyframes jnr-welcome-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes jnr-welcome-modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Tablet and mobile */
 
 @media (max-width: 650px) {
   .jnr-welcome-modal {
-    grid-template-columns: 1fr;
-    width: min(390px, 100%);
+    grid-template-columns: minmax(0, 1fr);
+    width: min(410px, 100%);
     max-height: calc(100dvh - 32px);
-    border-radius: 13px;
     overflow-y: auto;
+    border-radius: 13px;
   }
-  .jnr-welcome-content { order: 2; overflow: visible; padding: 25px 23px 27px; }
-  .jnr-welcome-visual { order: 1; min-height: 166px; }
-  .jnr-welcome-visual-icon { width: 52px; height: 52px; margin-bottom: 9px; border-radius: 14px; }
-  .jnr-welcome-visual-icon svg { width: 25px; height: 25px; }
-  .jnr-welcome-visual-label { font-size: 25px; }
-  .jnr-welcome-visual-caption { font-size: 10px; margin-top: 1px; }
-  .jnr-welcome-content h2 { font-size: clamp(26px, 7vw, 32px); }
-  .jnr-welcome-content > p:not(.jnr-welcome-notice) { margin-bottom: 18px; font-size: 13px; }
-  .jnr-welcome-close { top: 12px; right: 12px; }
-  .jnr-welcome-eyebrow { margin-bottom: 10px; }
+
+  .jnr-welcome-visual {
+    grid-row: 1;
+    min-height: 164px;
+  }
+
+  .jnr-welcome-content {
+    grid-row: 2;
+    overflow: visible;
+    padding: 25px 23px 27px;
+  }
+
+  .jnr-welcome-visual-icon {
+    width: 53px;
+    height: 53px;
+    margin-bottom: 9px;
+    border-radius: 14px;
+    transform: rotate(-5deg);
+  }
+
+  .jnr-welcome-visual-icon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .jnr-welcome-visual-label {
+    font-size: 25px;
+  }
+
+  .jnr-welcome-visual-caption {
+    margin-top: 3px;
+    font-size: 9px;
+  }
+
+  .jnr-welcome-content h2 {
+    max-width: 100%;
+    font-size: clamp(26px, 7vw, 32px);
+  }
+
+  .jnr-welcome-content > p:not(.jnr-welcome-notice) {
+    margin-bottom: 19px;
+    font-size: 12px;
+  }
+
+  .jnr-welcome-eyebrow {
+    margin-bottom: 11px;
+  }
+
+  .jnr-welcome-close {
+    top: 11px;
+    right: 11px;
+    width: 33px;
+    height: 33px;
+  }
 }
+
+@media (max-width: 390px) {
+  .jnr-welcome-overlay {
+    padding-right: 12px;
+    padding-left: 12px;
+  }
+
+  .jnr-welcome-content {
+    padding: 22px 19px 24px;
+  }
+
+  .jnr-welcome-form {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .jnr-welcome-form button {
+    width: 100%;
+  }
+}
+
+/* Reduced motion preference */
+
 @media (prefers-reduced-motion: reduce) {
-  .jnr-welcome-overlay, .jnr-welcome-modal { animation: none; }
-  .jnr-welcome-close, .jnr-welcome-primary { transition: none; }
+  .jnr-welcome-overlay,
+  .jnr-welcome-modal {
+    animation: none;
+  }
+
+  .jnr-welcome-overlay *,
+  .jnr-welcome-overlay *::before,
+  .jnr-welcome-overlay *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,11 +1,11 @@
 import { Link, NavLink } from 'react-router-dom';
 import {
-  LayoutDashboard, Package, MapPin, Heart, UserRound, SlidersHorizontal,
-  ChevronRight, LogIn, ShieldCheck,
+  LayoutDashboard, Package, MapPin, Heart, UserRound,
+  SlidersHorizontal, ChevronRight, LogIn, ShieldCheck,
 } from 'lucide-react';
 import { useStoreUI } from '../../context/StoreUIContext';
 
-const sections = [
+const SECTIONS = [
   { href: '/account', name: 'Overview', icon: LayoutDashboard, end: true },
   { href: '/account/orders', name: 'My Orders', icon: Package },
   { href: '/account/addresses', name: 'Address Book', icon: MapPin },
@@ -14,19 +14,24 @@ const sections = [
   { href: '/account/settings', name: 'Preferences', icon: SlidersHorizontal },
 ];
 
-const initials = name => String(name || 'Guest').trim().split(/\s+/).slice(0, 2).map(word => word[0]).join('').toUpperCase();
+const initials = (name) => String(name || 'Guest').trim()
+  .split(/\s+/).slice(0, 2).map((word) => word[0]).join('').toUpperCase();
 
-export default function AccountShell({ profile, title, subtitle, children }) {
+export default function AccountShell({ profile = {}, title, subtitle, children }) {
   const { wishlistCount } = useStoreUI();
 
-  const menu = sections.map(({ href, name, icon: Icon, end }) => (
+  const renderNavigation = () => SECTIONS.map(({ href, name, icon: Icon, end }) => (
     <NavLink
-      key={href} to={href} end={end}
+      key={href}
+      to={href}
+      end={end}
       className={({ isActive }) => `jnr-account-navlink${isActive ? ' is-active' : ''}`}
     >
       <Icon size={18} aria-hidden="true" />
       <span>{name}</span>
-      {name === 'Saved Products' && wishlistCount > 0 && <em>{wishlistCount}</em>}
+      {name === 'Saved Products' && wishlistCount > 0 && (
+        <em>{wishlistCount > 99 ? '99+' : wishlistCount}</em>
+      )}
     </NavLink>
   ));
 
@@ -34,8 +39,11 @@ export default function AccountShell({ profile, title, subtitle, children }) {
     <div className="jnr-account-page">
       <div className="container jnr-account-wrap">
         <nav className="jnr-account-breadcrumb" aria-label="Breadcrumb">
-          <Link to="/">Home</Link><ChevronRight size={14} aria-hidden="true" /><span>My Account</span>
+          <Link to="/">Home</Link>
+          <ChevronRight size={14} aria-hidden="true" />
+          <span aria-current="page">My Account</span>
         </nav>
+
         <div className="jnr-account-layout">
           <aside className="jnr-account-sidebar" aria-label="Account navigation">
             <div className="jnr-account-person">
@@ -43,26 +51,40 @@ export default function AccountShell({ profile, title, subtitle, children }) {
               <div className="jnr-account-person-copy">
                 <span>Welcome</span>
                 <strong>{profile.name || 'Demo Customer'}</strong>
-                <small>Account UI preview</small>
+                <small>Account preview</small>
               </div>
             </div>
-            <div className="jnr-account-side-nav">{menu}</div>
+
+            <nav className="jnr-account-side-nav" aria-label="Account sections">
+              {renderNavigation()}
+            </nav>
+
             <div className="jnr-account-sidebar-bottom">
               <ShieldCheck size={16} aria-hidden="true" />
-              <span>Your information will be secured when authentication is connected.</span>
+              <span>Account security will be enabled after authentication integration.</span>
             </div>
+
             <Link className="jnr-account-signin-link" to="/account/sign-in">
-              <LogIn size={17} /> Sign-in UI preview
+              <LogIn size={17} aria-hidden="true" /> Sign-in preview
             </Link>
           </aside>
-          <div className="jnr-account-main" id="account-main">
-            <div className="jnr-account-head">
-              <div><p className="jnr-account-kicker">MY ACCOUNT</p><h1>{title}</h1><p>{subtitle}</p></div>
-              <span className="jnr-account-demo-pill">UI DEMO</span>
-            </div>
-            <nav className="jnr-account-mobile-nav" aria-label="Account sections">{menu}</nav>
+
+          <main className="jnr-account-main" id="account-main">
+            <header className="jnr-account-head">
+              <div>
+                <p className="jnr-account-kicker">MY ACCOUNT</p>
+                <h1>{title}</h1>
+                <p>{subtitle}</p>
+              </div>
+              <span className="jnr-account-demo-pill">UI PREVIEW</span>
+            </header>
+
+            <nav className="jnr-account-mobile-nav" aria-label="Account sections">
+              {renderNavigation()}
+            </nav>
+
             {children}
-          </div>
+          </main>
         </div>
       </div>
     </div>

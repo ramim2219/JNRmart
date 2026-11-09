@@ -1,115 +1,416 @@
-/* JNRmart: compact, neutral toast design shared by cart, wishlist and API actions. */
+
+/* =====================================================
+   JNRmart Toast Notification System
+   Theme: Premium Navy + Coral + Soft Blush
+   Responsive, accessible and reusable
+===================================================== */
+
+:root {
+  --toast-navy: #192844;
+  --toast-navy-dark: #142039;
+  --toast-coral: #E66B58;
+  --toast-coral-dark: #D85A49;
+  --toast-blush: #F9EAE6;
+
+  --toast-text: #202B3D;
+  --toast-muted: #6F7887;
+
+  --toast-border: #E9EAF0;
+  --toast-white: #FFFFFF;
+
+  --toast-success: #25835C;
+  --toast-error: #C34C50;
+  --toast-warning: #AF7A1D;
+  --toast-info: #34537E;
+}
+
+/* =====================================================
+   Notification Viewport
+===================================================== */
+
 .jnr-toast-viewport {
   position: fixed;
   z-index: 5000;
-  top: 20px;
+
+  top: calc(20px + env(safe-area-inset-top, 0px));
   right: 20px;
-  width: min(350px, calc(100vw - 32px));
-  max-height: calc(100dvh - 40px);
+
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: stretch;
+  gap: 10px;
+
+  width: min(370px, calc(100vw - 32px));
+  max-height: calc(100dvh - 40px);
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
   pointer-events: none;
+  scrollbar-width: none;
 }
+
+.jnr-toast-viewport::-webkit-scrollbar {
+  display: none;
+}
+
+/* =====================================================
+   Main Toast
+===================================================== */
 
 .jnr-toast {
-  --jnr-toast-status: #264c88;
-  box-sizing: border-box;
+  --jnr-toast-status: var(--toast-info);
+  --jnr-toast-icon-bg: #EEF2F8;
+
   position: relative;
+
   display: flex;
   align-items: flex-start;
-  gap: 11px;
+  gap: 12px;
+
+  box-sizing: border-box;
   width: 100%;
-  padding: 13px 36px 13px 14px;
-  border: 1px solid #e6eaf0;
-  border-radius: 10px;
-  background: #fff;
-  color: #202b3b;
-  box-shadow: 0 6px 22px rgba(19, 38, 68, .11);
+  min-width: 0;
+
+  padding: 15px 40px 17px 14px;
+
+  overflow: hidden;
+
+  color: var(--toast-text);
+  background: var(--toast-white);
+
+  border: 1px solid var(--toast-border);
+  border-left: 3px solid var(--jnr-toast-status);
+
+  border-radius: 11px;
+
+  box-shadow:
+    0 4px 12px rgba(25, 40, 68, 0.055),
+    0 12px 30px rgba(25, 40, 68, 0.09);
+
   pointer-events: auto;
-  animation: jnr-toast-enter .2s ease-out both;
+
+  animation: jnr-toast-enter 0.24s ease-out both;
 }
 
-.jnr-toast--success { --jnr-toast-status: #25835c; }
-.jnr-toast--error { --jnr-toast-status: #c34c50; }
-.jnr-toast--warning { --jnr-toast-status: #af7a1d; }
-.jnr-toast--info { --jnr-toast-status: #264c88; }
+/* =====================================================
+   Semantic Colors
+===================================================== */
+
+.jnr-toast--success {
+  --jnr-toast-status: var(--toast-success);
+  --jnr-toast-icon-bg: #E8F4ED;
+}
+
+.jnr-toast--error {
+  --jnr-toast-status: var(--toast-error);
+  --jnr-toast-icon-bg: #FCEBE8;
+}
+
+.jnr-toast--warning {
+  --jnr-toast-status: var(--toast-warning);
+  --jnr-toast-icon-bg: #FBF3E5;
+}
+
+.jnr-toast--info {
+  --jnr-toast-status: var(--toast-info);
+  --jnr-toast-icon-bg: #EDF1F8;
+}
+
+/* =====================================================
+   Icon
+===================================================== */
+
+.jnr-toast__icon-wrap {
+  display: grid;
+  flex: 0 0 36px;
+
+  width: 36px;
+  height: 36px;
+
+  place-items: center;
+
+  background: var(--jnr-toast-icon-bg);
+  border-radius: 9px;
+}
 
 .jnr-toast__icon {
-  flex: 0 0 19px;
-  margin-top: 1px;
+  display: block;
   color: var(--jnr-toast-status);
 }
 
-.jnr-toast__content { flex: 1; min-width: 0; }
+/* =====================================================
+   Content
+===================================================== */
+
+.jnr-toast__content {
+  flex: 1;
+  min-width: 0;
+  padding-top: 1px;
+}
+
 .jnr-toast__title {
   display: block;
+
   margin: 0;
-  color: #202b3b;
+
+  color: var(--toast-navy);
+
   font-size: 13px;
-  font-weight: 650;
+  font-weight: 700;
   line-height: 1.45;
-}
-.jnr-toast__message {
-  margin: 2px 0 0;
-  color: #647184;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 1.5;
+
   overflow-wrap: anywhere;
 }
+
+.jnr-toast__message {
+  margin: 3px 0 0;
+
+  color: var(--toast-muted);
+
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.55;
+
+  overflow-wrap: anywhere;
+}
+
+/* =====================================================
+   Optional Action
+===================================================== */
+
 .jnr-toast__action {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
-  margin: 5px 0 0;
+  gap: 4px;
+
+  margin-top: 7px;
   padding: 0;
+
+  color: var(--toast-coral);
   background: transparent;
+
   border: 0;
-  color: #223773;
+
   font: inherit;
   font-size: 12px;
-  font-weight: 650;
-  line-height: 1.5;
+  font-weight: 700;
+
   cursor: pointer;
+
+  transition: color 0.2s ease;
 }
-.jnr-toast__action:hover { text-decoration: underline; }
+
+.jnr-toast__action:hover {
+  color: var(--toast-coral-dark);
+}
+
+/* =====================================================
+   Close Button
+===================================================== */
 
 .jnr-toast__close {
   position: absolute;
-  top: 9px;
-  right: 8px;
+  top: 10px;
+  right: 9px;
+
   display: grid;
   place-items: center;
+
   width: 27px;
   height: 27px;
+
   padding: 0;
-  border: 0;
-  border-radius: 6px;
+
+  color: #929BA9;
   background: transparent;
-  color: #99a2b0;
+
+  border: 0;
+  border-radius: 7px;
+
   cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
 }
-.jnr-toast__close:hover { background: #f2f4f8; color: #33445c; }
-.jnr-toast button:focus-visible { outline: 2px solid #6b89c6; outline-offset: 2px; }
+
+.jnr-toast__close:hover {
+  color: var(--toast-coral);
+  background: var(--toast-blush);
+}
+
+/* =====================================================
+   Auto Dismiss Progress
+===================================================== */
+
+.jnr-toast__progress {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background: var(--jnr-toast-icon-bg);
+
+  transform-origin: right center;
+  animation:
+    jnr-toast-progress
+    var(--jnr-toast-duration)
+    linear
+    forwards;
+}
+
+.jnr-toast__progress::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: var(--jnr-toast-status);
+  opacity: 0.8;
+}
+
+.jnr-toast[data-paused="true"] .jnr-toast__progress {
+  animation-play-state: paused;
+}
+
+/* =====================================================
+   Focus Accessibility
+===================================================== */
+
+.jnr-toast button:focus-visible {
+  outline: 2px solid var(--toast-coral);
+  outline-offset: 3px;
+}
+
+.jnr-toast__action:focus-visible,
+.jnr-toast__close:focus-visible {
+  border-radius: 5px;
+}
+
+/* =====================================================
+   Animations
+===================================================== */
 
 @keyframes jnr-toast-enter {
-  from { opacity: 0; transform: translateY(-7px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translate3d(0, -9px, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
 }
+
+@keyframes jnr-toast-progress {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
+/* =====================================================
+   Tablet
+===================================================== */
+
+@media (max-width: 980px) {
+  .jnr-toast-viewport {
+    right: 16px;
+    width: min(360px, calc(100vw - 32px));
+  }
+}
+
+/* =====================================================
+   Mobile
+===================================================== */
 
 @media (max-width: 767px) {
   .jnr-toast-viewport {
     top: auto;
-    bottom: calc(77px + env(safe-area-inset-bottom, 0px));
+
     left: 12px;
     right: 12px;
+
+    bottom: calc(
+      84px + env(safe-area-inset-bottom, 0px)
+    );
+
     width: auto;
-    max-height: calc(100dvh - 100px - env(safe-area-inset-bottom, 0px));
+
+    max-height: calc(
+      100dvh - 110px -
+      env(safe-area-inset-bottom, 0px)
+    );
+
+    gap: 8px;
   }
-  .jnr-toast { padding: 12px 34px 12px 12px; border-radius: 9px; }
+
+  .jnr-toast {
+    gap: 10px;
+    padding: 12px 36px 15px 11px;
+    border-radius: 10px;
+  }
+
+  .jnr-toast__icon-wrap {
+    flex-basis: 33px;
+    width: 33px;
+    height: 33px;
+  }
+
+  .jnr-toast__title {
+    font-size: 12.5px;
+  }
+
+  .jnr-toast__message {
+    font-size: 11.5px;
+  }
 }
 
+/* =====================================================
+   Small Mobile
+===================================================== */
+
+@media (max-width: 380px) {
+  .jnr-toast-viewport {
+    left: 9px;
+    right: 9px;
+  }
+
+  .jnr-toast {
+    gap: 8px;
+    padding-left: 9px;
+  }
+
+  .jnr-toast__icon-wrap {
+    flex-basis: 31px;
+    width: 31px;
+    height: 31px;
+  }
+}
+
+/* =====================================================
+   Reduced Motion
+===================================================== */
+
 @media (prefers-reduced-motion: reduce) {
-  .jnr-toast { animation: none; }
+  .jnr-toast {
+    animation: none;
+  }
+
+  .jnr-toast__progress {
+    animation: none;
+    transform: scaleX(0);
+  }
+
+  .jnr-toast__close,
+  .jnr-toast__action {
+    transition: none;
+  }
 }

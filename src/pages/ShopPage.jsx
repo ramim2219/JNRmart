@@ -202,7 +202,12 @@ export default function ShopPage() {
 
             {currentProducts.length ? (
               <div className="jnr-shop-products">
-                {currentProducts.map(product => <ShopProductCard product={product} key={product.id}/>)}
+                {currentProducts.map((product, index) => (
+                  <ShopProductCard
+                    key={product.id ?? product.slug ?? index}
+                    product={product}
+                  />
+                ))}
               </div>
             ) : (
               <div className="jnr-shop-no-products">
