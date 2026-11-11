@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SectionCarousel from './SectionCarousel';
@@ -12,9 +13,12 @@ const isEnabled = (value) =>
 
 const sortByOrder = (a, b) => {
   const order = (item) => {
-    if (item.order == null || item.order === '') return Infinity;
+    if (item.order == null || item.order === '') {
+      return Infinity;
+    }
 
     const number = Number(item.order);
+
     return Number.isFinite(number) ? number : Infinity;
   };
 
@@ -24,7 +28,7 @@ const sortByOrder = (a, b) => {
   );
 };
 
-// Preserve the Admin Panel's parent-child ordering.
+// Preserve Admin Panel parent-child ordering.
 function orderCategories(categories) {
   const nodes = new Map(
     categories.map((item) => [
@@ -55,6 +59,7 @@ function orderCategories(categories) {
 
     visited.add(id);
     result.push(item);
+
     item.children.sort(sortByOrder).forEach(visit);
   };
 
@@ -66,38 +71,95 @@ function orderCategories(categories) {
   return result;
 }
 
-// Resolve category image URLs from the API or storage.
+// ======================================================
+// UNIVERSAL IMAGE URL HANDLER
+// Supports:
+// 1. Laravel absolute URLs
+// 2. Relative storage URLs
+// 3. External image URLs
+// 4. Base64 images
+// 5. Blob images
+// ======================================================
+
+const LOCAL_BACKEND_HOSTS = [
+  'localhost',
+  '127.0.0.1',
+  '192.168.0.174',
+];
+
 function imageUrl(path) {
-  if (typeof path !== 'string' || !path.trim()) return null;
+  if (typeof path !== 'string' || !path.trim()) {
+    return null;
+  }
 
   const value = path.trim();
 
-  if (/^(https?:\/\/|data:image\/|blob:)/i.test(value)) {
+  // Preserve Base64 and Blob URLs.
+  if (/^(data:image\/|blob:)/i.test(value)) {
     return value;
   }
 
-  const base =
-    import.meta.env.VITE_API_URL ||
-    'http://127.0.0.1:8000/api/';
+  // Handle absolute URLs.
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      const url = new URL(value);
 
-  const origin = new URL(base, window.location.origin).origin;
+      const isLocalBackend =
+        LOCAL_BACKEND_HOSTS.includes(url.hostname) ||
+        url.port === '8000';
 
-  if (value.startsWith('/')) return `${origin}${value}`;
+      // Convert local Laravel storage URL
+      // into a relative URL for Vite proxy.
+      if (
+        isLocalBackend &&
+        url.pathname.startsWith('/storage/')
+      ) {
+        return `${url.pathname}${url.search}${url.hash}`;
+      }
 
-  if (value.startsWith('storage/')) {
-    return `${origin}/${value}`;
+      // Preserve external URLs.
+      return value;
+    } catch {
+      return value;
+    }
   }
 
-  return `${origin}/storage/${value}`;
+  // Already a relative Laravel storage URL.
+  if (value.startsWith('/storage/')) {
+    return value;
+  }
+
+  // Storage path without leading slash.
+  if (value.startsWith('storage/')) {
+    return `/${value}`;
+  }
+
+  // Other absolute paths.
+  if (value.startsWith('/')) {
+    return value;
+  }
+
+  // Filename or relative storage path.
+  return `/storage/${value.replace(/^\/+/, '')}`;
 }
 
-// Design 2: rectangular image card with a soft peach label area.
+// ======================================================
+// CATEGORY CARD
+// Design remains unchanged.
+// ======================================================
+
 function CategoryCard({ category }) {
-  const image = imageUrl(category.image_url || category.image);
+  const image = imageUrl(
+    category.image_url || category.image
+  );
+
   const [failedSrc, setFailedSrc] = useState(null);
 
   const title = String(category.name || '').trim();
-  const showImage = Boolean(image && image !== failedSrc);
+
+  const showImage = Boolean(
+    image && image !== failedSrc
+  );
 
   return (
     <Link
@@ -110,22 +172,40 @@ function CategoryCard({ category }) {
         {showImage ? (
           <img
             src={image}
-            alt=""
+            alt={title}
             loading="lazy"
             decoding="async"
             draggable={false}
-            onError={() => setFailedSrc(image)}
+            onError={(e) => {
+              console.error('Category image failed:', {
+                category: title,
+                originalUrl:
+                  category.image_url || category.image,
+                resolvedUrl: e.currentTarget.src,
+              });
+
+              setFailedSrc(image);
+            }}
           />
         ) : (
-          <span className="jnr-cat-fallback" aria-hidden="true">
+          <span
+            className="jnr-cat-fallback"
+            aria-hidden="true"
+          >
             {title.charAt(0).toUpperCase()}
           </span>
         )}
       </span>
 
       <span className="jnr-cat-label">
-        <span className="jnr-cat-label-text">{title}</span>
-        <span className="jnr-cat-label-arrow" aria-hidden="true">
+        <span className="jnr-cat-label-text">
+          {title}
+        </span>
+
+        <span
+          className="jnr-cat-label-arrow"
+          aria-hidden="true"
+        >
           →
         </span>
       </span>
@@ -133,11 +213,16 @@ function CategoryCard({ category }) {
   );
 }
 
+// ======================================================
+// CATEGORY SLIDER
+// ======================================================
+
 export default function CategorySlider({
   title = 'Featured Categories',
   subtitle,
   viewAllHref,
   viewAllLabel = 'View All Categories',
+
   columns = {
     desktop: 7,
     laptop: 7,
@@ -145,6 +230,7 @@ export default function CategorySlider({
     small: 5,
     mobile: 3.2,
   },
+
   titleAlign = 'left',
   className = '',
 }) {
@@ -156,7 +242,10 @@ export default function CategorySlider({
     async function load() {
       try {
         const response = await fetchPublicCategories();
-        const rows = Array.isArray(response?.data) ? response.data : [];
+
+        const rows = Array.isArray(response?.data)
+          ? response.data
+          : [];
 
         const active = rows.filter(
           (item) =>
@@ -169,6 +258,7 @@ export default function CategorySlider({
           .filter((item) => isEnabled(item.is_featured))
           .map((item) => ({
             ...item,
+
             slug:
               item.slug ||
               item.url_slug ||
@@ -179,11 +269,18 @@ export default function CategorySlider({
                 .replace(/^-|-$/g, ''),
           }));
 
-        if (!cancelled) setFeatured(selected);
+        if (!cancelled) {
+          setFeatured(selected);
+        }
       } catch (error) {
-        console.error('Unable to fetch featured categories:', error);
+        console.error(
+          'Unable to fetch featured categories:',
+          error
+        );
 
-        if (!cancelled) setFeatured([]);
+        if (!cancelled) {
+          setFeatured([]);
+        }
       }
     }
 
@@ -194,7 +291,9 @@ export default function CategorySlider({
     };
   }, []);
 
-  if (featured.length === 0) return null;
+  if (featured.length === 0) {
+    return null;
+  }
 
   return (
     <SectionCarousel

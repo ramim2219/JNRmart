@@ -1,28 +1,32 @@
-import { useCallback, useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { useCallback, useEffect, useState } from "react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 const INITIAL_POSITION = { x: 50, y: 50 };
 
 export default function ProductImageLightbox({
   images = [],
   index = 0,
-  productName = 'Product',
+  productName = "Product",
   onIndexChange,
   onClose,
 }) {
   const [isZoomed, setIsZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState(INITIAL_POSITION);
+
   const image = images[index];
 
   const changeImage = useCallback(
     (direction) => {
       if (images.length < 2) return;
 
-      onIndexChange((index + direction + images.length) % images.length);
+      onIndexChange(
+        (index + direction + images.length) % images.length
+      );
+
       setIsZoomed(false);
       setZoomPosition(INITIAL_POSITION);
     },
-    [images.length, index, onIndexChange],
+    [images.length, index, onIndexChange]
   );
 
   useEffect(() => {
@@ -34,17 +38,17 @@ export default function ProductImageLightbox({
     const previousOverflow = document.body.style.overflow;
 
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') onClose();
-      if (event.key === 'ArrowRight') changeImage(1);
-      if (event.key === 'ArrowLeft') changeImage(-1);
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowRight") changeImage(1);
+      if (event.key === "ArrowLeft") changeImage(-1);
     };
 
-    document.body.style.overflow = 'hidden';
-    window.addEventListener('keydown', handleKeyDown);
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [changeImage, onClose]);
 
@@ -55,8 +59,14 @@ export default function ProductImageLightbox({
     if (!rect.width || !rect.height) return;
 
     setZoomPosition({
-      x: Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)),
-      y: Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)),
+      x: Math.max(
+        0,
+        Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)
+      ),
+      y: Math.max(
+        0,
+        Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)
+      ),
     });
   };
 
@@ -86,10 +96,12 @@ export default function ProductImageLightbox({
 
         <button
           type="button"
-          className={`jnr-pd-lightbox__image ${isZoomed ? 'is-zoomed' : ''}`}
+          className={`jnr-pd-lightbox__image ${
+            isZoomed ? "is-zoomed" : ""
+          }`}
           onClick={() => setIsZoomed((current) => !current)}
           onPointerMove={updateZoomPosition}
-          aria-label={isZoomed ? 'Reset image zoom' : 'Zoom image'}
+          aria-label={isZoomed ? "Reset image zoom" : "Zoom image"}
           aria-pressed={isZoomed}
         >
           <img
@@ -102,10 +114,13 @@ export default function ProductImageLightbox({
           />
         </button>
 
-        <span className="jnr-pd-lightbox__zoom-label" aria-live="polite">
+        <span
+          className="jnr-pd-lightbox__zoom-label"
+          aria-live="polite"
+        >
           {isZoomed
-            ? 'Move pointer to explore · Click to reset'
-            : 'Click image to zoom'}
+            ? "Move pointer to explore · Click to reset"
+            : "Click image to zoom"}
         </span>
 
         {images.length > 1 && (
@@ -117,7 +132,11 @@ export default function ProductImageLightbox({
             >
               <ChevronLeft size={22} />
             </button>
-            <span>{index + 1} / {images.length}</span>
+
+            <span>
+              {index + 1} / {images.length}
+            </span>
+
             <button
               type="button"
               onClick={() => changeImage(1)}

@@ -2,11 +2,10 @@
 import axios from "axios";
 
 const apiUrl =
-  import.meta.env.VITE_API_URL ||
-  "http://192.168.0.174:8000/api";
+  import.meta.env.VITE_API_URL || "/api";
 
 const apiClient = axios.create({
-  baseURL: apiUrl,
+  baseURL: apiUrl.replace(/\/+$/, ""),
   headers: {
     Accept: "application/json",
   },
@@ -17,24 +16,24 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
-      return Promise.reject(
-        new Error(error.message || "Network error")
-      );
-    }
+      error.message =
+        error.code === "ECONNABORTED"
+          ? "Request timed out. Please try again."
+          : error.message || "Network error. Please try again.";
+    } else {
+      const data = error.response.data || {};
 
-    const data = error.response.data || {};
+      const firstError = data?.errors
+        ? Object.values(data.errors).flat().find(Boolean)
+        : null;
 
-    const firstError =
-      data?.errors &&
-      Object.values(data.errors)[0]?.[0];
-
-    return Promise.reject(
-      new Error(
+      error.message =
         firstError ||
         data?.message ||
-        `Request failed (${error.response.status})`
-      )
-    );
+        `Request failed (${error.response.status})`;
+    }
+
+    return Promise.reject(error);
   }
 );
 

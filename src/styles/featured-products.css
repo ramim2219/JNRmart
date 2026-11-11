@@ -269,3 +269,230 @@
     transition: none;
   }
 }
+
+/* =========================================
+   Dynamic Product Loading
+========================================= */
+
+.jnr-featured-result-count {
+  margin: 0 0 16px;
+  color: #727d8e;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.jnr-featured-category-loading {
+  color: #8992a1;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.jnr-featured-category-error,
+.jnr-featured-load-error {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 15px;
+  margin-bottom: 16px;
+  border: 1px solid #f0d8d2;
+  border-radius: 8px;
+  background: #fff8f6;
+  color: #9e5144;
+  font-size: 12px;
+}
+
+.jnr-featured-category-error button,
+.jnr-featured-load-error button {
+  border: 0;
+  background: transparent;
+  color: #c45d4c;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* =========================================
+   Skeleton Loading
+========================================= */
+
+.jnr-featured-skeleton-card {
+  min-width: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.jnr-featured-skeleton-image {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  border-radius: 9px;
+  background: #edf0f4;
+  animation: jnr-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.jnr-featured-skeleton-line {
+  height: 11px;
+  margin: 13px 4px 0;
+  border-radius: 5px;
+  background: #edf0f4;
+  animation: jnr-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.jnr-featured-skeleton-line.short {
+  width: 60%;
+  margin-top: 9px;
+}
+
+.jnr-featured-skeleton-line.price {
+  width: 40%;
+  height: 13px;
+  margin-top: 12px;
+}
+
+@keyframes jnr-skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.48;
+  }
+}
+
+/* =========================================
+   Empty & Error States
+========================================= */
+
+.jnr-featured-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 230px;
+  padding: 35px 20px;
+  text-align: center;
+  border: 1px solid #e9edf2;
+  border-radius: 12px;
+  background: #fafbfc;
+}
+
+.jnr-featured-state h3 {
+  margin: 12px 0 6px;
+  color: #192844;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.jnr-featured-state p {
+  max-width: 360px;
+  margin: 0;
+  color: #737e8e;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.jnr-featured-retry {
+  margin-top: 17px;
+  padding: 10px 20px;
+  border: 0;
+  border-radius: 7px;
+  background: #192844;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.jnr-featured-retry:hover {
+  background: #293d60;
+}
+
+/* =========================================
+   Category Filter Improvements
+========================================= */
+
+.jnr-featured-filter {
+  white-space: nowrap;
+}
+
+.jnr-featured-filter:focus-visible,
+.jnr-featured-retry:focus-visible,
+.jnr-featured-load-more button:focus-visible {
+  outline: 3px solid rgba(230, 107, 88, 0.35);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   Load More
+========================================= */
+
+.jnr-featured-load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+}
+
+.jnr-featured-load-more button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 190px;
+  min-height: 44px;
+  padding: 11px 22px;
+  border: 1px solid #192844;
+  border-radius: 7px;
+  background: #192844;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.jnr-featured-load-more button:hover:not(:disabled) {
+  background: #293d60;
+  transform: translateY(-2px);
+}
+
+.jnr-featured-load-more button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+/* =========================================
+   Responsive
+========================================= */
+
+@media (max-width: 767px) {
+  .jnr-featured-result-count {
+    margin-bottom: 12px;
+  }
+
+  .jnr-featured-load-more {
+    margin-top: 24px;
+  }
+
+  .jnr-featured-load-more button {
+    width: 100%;
+  }
+
+  .jnr-featured-state {
+    min-height: 190px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jnr-featured-skeleton-image,
+  .jnr-featured-skeleton-line {
+    animation: none;
+  }
+
+  .jnr-featured-load-more button,
+  .jnr-featured-retry {
+    transition: none;
+  }
+}

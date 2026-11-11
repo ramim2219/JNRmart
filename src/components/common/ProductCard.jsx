@@ -1,77 +1,25 @@
+import { Link } from "react-router-dom";
+import { Heart, ShoppingCart, Star } from "lucide-react";
 
-import { Link } from 'react-router-dom';
-import { Heart, ShoppingCart, Star } from 'lucide-react';
-import { useStoreUI } from '../../context/StoreUIContext';
+import { useStoreUI } from "../../context/StoreUIContext";
 
-import '../../styles/product-card.css';
+import {
+  getDefaultVariant,
+  getProductImages,
+  getVariantPricing,
+  normalizePublicProduct,
+  priceBDT,
+} from "../../utils/productHelpers";
 
-// =========================================
-// Price Formatter
-// =========================================
-
-const priceFormatter = new Intl.NumberFormat('en-BD', {
-  maximumFractionDigits: 2,
-});
+import "../../styles/product-card.css";
 
 const numberOrZero = (value) => {
   const parsed = Number(
-    String(value ?? '').replace(/[^\d.]/g, '')
+    String(value ?? "").replace(/[^\d.]/g, "")
   );
 
   return Number.isFinite(parsed) ? parsed : 0;
 };
-
-const money = (value) =>
-  `৳ ${priceFormatter.format(numberOrZero(value))}`;
-
-// =========================================
-// Product Image URL
-// =========================================
-
-function imageUrl(path) {
-  if (typeof path !== 'string' || !path.trim()) {
-    return '';
-  }
-
-  const src = path.trim();
-
-  if (/^(https?:\/\/|\/\/|data:image\/|blob:)/i.test(src)) {
-    return src;
-  }
-
-  const apiBase =
-    import.meta.env.VITE_API_URL ||
-    'http://127.0.0.1:8000/api/';
-
-  const fallbackOrigin =
-    typeof window !== 'undefined'
-      ? window.location.origin
-      : 'http://127.0.0.1:8000';
-
-  let origin;
-
-  try {
-    origin = new URL(apiBase, fallbackOrigin).origin;
-  } catch {
-    origin = fallbackOrigin;
-  }
-
-  if (src.startsWith('/')) {
-    return `${origin}${src}`;
-  }
-
-  const cleanPath = src.replace(/^\/+/, '');
-
-  return `${origin}/${
-    cleanPath.startsWith('storage/')
-      ? cleanPath
-      : `storage/${cleanPath}`
-  }`;
-}
-
-// =========================================
-// Shared Product Card
-// =========================================
 
 export default function ProductCard({ product }) {
   const {
@@ -80,144 +28,102 @@ export default function ProductCard({ product }) {
     isWishlisted,
   } = useStoreUI();
 
-  if (!product || typeof product !== 'object') {
-    return null;
-  }
+  if (!product || typeof product !== "object") return null;
 
-  // Product ID
-  const id = product.id ?? product.slug ?? null;
+  const normalized = normalizePublicProduct(product) || product;
 
-  const slug =
-    typeof product.slug === 'string'
-      ? product.slug
-      : '';
+  const id = normalized.id ?? normalized.slug ?? null;
+  const slug = normalized.slug ?? "";
+  const name = normalized.name || normalized.title || "Product";
 
-  // Product Name
-  const name =
-    product.name ||
-    product.title ||
-    'Product';
-
-  // Product Brand
   const brand =
-    typeof product.brand === 'string'
-      ? product.brand.trim()
-      : '';
+    typeof normalized.brand === "string"
+      ? normalized.brand.trim()
+      : normalized.brand?.name ?? "";
 
-  // Product Image
-  const image = imageUrl(
-    product.image_url ||
-    product.image ||
-    product.thumbnail
-  );
+  const images = getProductImages(normalized);
+  const image = images[0]?.src ?? "";
 
-  // Product Price
+  const variants = Array.isArray(normalized.variants)
+    ? normalized.variants
+    : [];
+
+  const defaultVariant = getDefaultVariant(variants);
+  const pricing = getVariantPricing(defaultVariant);
+
   const price = numberOrZero(
-    product.sale_price ??
-    product.selling_price ??
-    product.price
+    pricing.price || normalized.price
   );
 
-  // Original Price
   const oldPrice = numberOrZero(
-    product.oldPrice ??
-    product.original_price ??
-    product.compare_at_price ??
-    product.regular_price
-  );
-
-  // Discount
-  const discountValue = numberOrZero(
-    product.discount_percentage ??
-    product.discount
+    pricing.oldPrice || normalized.oldPrice
   );
 
   const discount =
-    discountValue > 0
-      ? Math.round(discountValue)
-      : oldPrice > price && price > 0
-        ? Math.round(((oldPrice - price) / oldPrice) * 100)
-        : 0;
+    oldPrice > price && price > 0
+      ? Math.round(((oldPrice - price) / oldPrice) * 100)
+      : 0;
 
-  // Product Rating
   const rating = numberOrZero(
-    product.rating ??
-    product.average_rating
+    normalized.rating ?? normalized.average_rating
   );
 
   const reviews = numberOrZero(
-    product.review_count ??
-    product.reviews_count
+    normalized.review_count ?? normalized.reviews_count
   );
 
-  // Product Labels
   const newArrival = Boolean(
-    product.newArrival ??
-    product.new_arrival ??
-    product.is_new_arrival
+    normalized.newArrival ??
+      normalized.new_arrival ??
+      normalized.is_new_arrival
   );
 
   const bestSelling = Boolean(
-    product.bestSelling ??
-    product.best_selling ??
-    product.is_best_selling
+    normalized.bestSelling ??
+      normalized.best_selling ??
+      normalized.is_best_selling
   );
 
   const badgeLabel = newArrival
-    ? 'New Arrival'
+    ? "New Arrival"
     : bestSelling
-      ? 'Best Selling'
-      : '';
+      ? "Best Selling"
+      : "";
 
-  // Wishlist Status
-  const wishlisted =
-    id != null && isWishlisted(id);
+  const wishlisted = id != null && isWishlisted(id);
 
-  // Product URL
-  const href = slug
-    ? `/product/${encodeURIComponent(slug)}`
-    : '/shop';
+  // Public product endpoint currently returns a numeric parent product ID.
+  const href =
+    id != null
+      ? `/product/${encodeURIComponent(String(id))}`
+      : "/shop";
 
-  // Cart Product
   const cartProduct = {
-    ...product,
+    ...normalized,
     id,
     slug,
     name,
     price,
+    oldPrice,
     image,
+    variant_id: defaultVariant?.id ?? null,
+    sku: defaultVariant?.sku ?? null,
+    selectedVariant: defaultVariant,
   };
 
-  // =========================================
-  // Add To Cart
-  // =========================================
-
   const handleAddToCart = () => {
-    if (id == null) return;
-
+    if (id == null || price <= 0) return;
     addToCart(cartProduct);
   };
 
-  // =========================================
-  // Wishlist
-  // =========================================
-
   const handleWishlist = () => {
     if (id == null) return;
-
     toggleWishlist(cartProduct);
   };
 
-  // =========================================
-  // Render
-  // =========================================
-
   return (
     <article className="jnr-product-card">
-
-      {/* Product Image */}
       <div className="jnr-product-image-wrap">
-
         <Link
           to={href}
           className="jnr-product-image-link"
@@ -238,52 +144,45 @@ export default function ProductCard({ product }) {
           )}
         </Link>
 
-        {/* Discount Badge */}
         {discount > 0 && (
           <span className="jnr-product-discount">
             -{discount}%
           </span>
         )}
 
-        {/* New Arrival / Best Selling */}
         {badgeLabel && (
           <span
             className={`jnr-product-tag ${
-              newArrival ? 'is-new' : ''
+              newArrival ? "is-new" : ""
             }`}
           >
             {badgeLabel}
           </span>
         )}
 
-        {/* Wishlist */}
         <button
           type="button"
           className={`jnr-product-wishlist ${
-            wishlisted ? 'is-active' : ''
+            wishlisted ? "is-active" : ""
           }`}
           onClick={handleWishlist}
           disabled={id == null}
           aria-label={
             wishlisted
-              ? 'Remove from wishlist'
-              : 'Add to wishlist'
+              ? "Remove from wishlist"
+              : "Add to wishlist"
           }
           aria-pressed={wishlisted}
         >
           <Heart
             size={17}
-            fill={wishlisted ? 'currentColor' : 'none'}
+            fill={wishlisted ? "currentColor" : "none"}
             aria-hidden="true"
           />
         </button>
-
       </div>
 
-      {/* Product Information */}
       <div className="jnr-product-info">
-
-        {/* Product Name */}
         <Link
           to={href}
           className="jnr-product-name"
@@ -292,16 +191,11 @@ export default function ProductCard({ product }) {
           {name}
         </Link>
 
-        {/* Brand */}
         {brand && (
-          <p className="jnr-product-brand">
-            {brand}
-          </p>
+          <p className="jnr-product-brand">{brand}</p>
         )}
 
-        {/* Rating */}
         <div className="jnr-product-rating">
-
           {rating > 0 ? (
             <>
               <Star
@@ -309,9 +203,7 @@ export default function ProductCard({ product }) {
                 fill="currentColor"
                 aria-hidden="true"
               />
-
               <span>{rating.toFixed(1)}</span>
-
               <span className="jnr-product-reviews">
                 ({reviews})
               </span>
@@ -321,41 +213,30 @@ export default function ProductCard({ product }) {
               No reviews yet
             </span>
           )}
-
         </div>
 
-        {/* Price */}
         <div className="jnr-product-price-row">
-
           <strong className="jnr-product-price">
-            {money(price)}
+            {price > 0 ? priceBDT(price) : "Price unavailable"}
           </strong>
 
           {oldPrice > price && (
             <del className="jnr-product-old-price">
-              {money(oldPrice)}
+              {priceBDT(oldPrice)}
             </del>
           )}
-
         </div>
 
-        {/* Add To Cart */}
         <button
           type="button"
           className="jnr-product-add-cart"
           onClick={handleAddToCart}
-          disabled={id == null}
+          disabled={id == null || price <= 0}
         >
-          <ShoppingCart
-            size={15}
-            aria-hidden="true"
-          />
-
+          <ShoppingCart size={15} aria-hidden="true" />
           <span>Add to Cart</span>
         </button>
-
       </div>
-
     </article>
   );
 }

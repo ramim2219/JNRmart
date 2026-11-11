@@ -1,21 +1,43 @@
-import { useEffect, useState } from 'react';
-import { ChevronLeft, ChevronRight, ImageOff, Maximize2 } from 'lucide-react';
+import { useEffect, useState } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ImageOff,
+  Maximize2,
+} from "lucide-react";
 
-import { getProductImages } from '../../data/productDetailsData';
-import ProductImageLightbox from './ProductImageLightbox';
+import {
+  getProductImages,
+  getVariantPricing,
+} from "../../utils/productHelpers";
+
+import ProductImageLightbox from "./ProductImageLightbox";
 
 const INITIAL_POSITION = { x: 50, y: 50 };
 
 export default function ProductGallery({ product }) {
-  const images = getProductImages(product) || [];
+  const images = getProductImages(product);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [isHoverZoomed, setIsHoverZoomed] = useState(false);
   const [zoomPosition, setZoomPosition] = useState(INITIAL_POSITION);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   const activeImage = images[selectedIndex];
-  const price = Number(product.price);
-  const oldPrice = Number(product.oldPrice);
+
+  const variants = Array.isArray(product?.variants)
+    ? product.variants
+    : [];
+
+  const defaultVariant = variants.find((variant) =>
+    variant.prices?.some(
+      (price) => price.is_default && price.is_active
+    )
+  ) || variants[0];
+
+  const pricing = getVariantPricing(defaultVariant);
+  const price = pricing.price;
+  const oldPrice = pricing.oldPrice;
+
   const discount =
     oldPrice > price && oldPrice > 0
       ? Math.round((1 - price / oldPrice) * 100)
@@ -26,21 +48,29 @@ export default function ProductGallery({ product }) {
     setIsHoverZoomed(false);
     setZoomPosition(INITIAL_POSITION);
     setIsLightboxOpen(false);
-  }, [product.slug]);
+  }, [product?.id]);
 
   useEffect(() => {
-    if (selectedIndex >= images.length) setSelectedIndex(0);
+    if (selectedIndex >= images.length) {
+      setSelectedIndex(0);
+    }
   }, [images.length, selectedIndex]);
 
   const updateZoomPosition = (event) => {
-    if (event.pointerType && event.pointerType !== 'mouse') return;
+    if (event.pointerType && event.pointerType !== "mouse") return;
 
     const rect = event.currentTarget.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
 
     setZoomPosition({
-      x: Math.max(0, Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)),
-      y: Math.max(0, Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)),
+      x: Math.max(
+        0,
+        Math.min(100, ((event.clientX - rect.left) / rect.width) * 100)
+      ),
+      y: Math.max(
+        0,
+        Math.min(100, ((event.clientY - rect.top) / rect.height) * 100)
+      ),
     });
   };
 
@@ -54,14 +84,17 @@ export default function ProductGallery({ product }) {
     if (images.length < 2) return;
 
     setSelectedIndex(
-      (current) => (current + direction + images.length) % images.length,
+      (current) =>
+        (current + direction + images.length) % images.length
     );
+
     setIsHoverZoomed(false);
     setZoomPosition(INITIAL_POSITION);
   };
 
   const handlePointerEnter = (event) => {
-    if (event.pointerType !== 'mouse') return;
+    if (event.pointerType !== "mouse") return;
+
     updateZoomPosition(event);
     setIsHoverZoomed(true);
   };
@@ -75,13 +108,17 @@ export default function ProductGallery({ product }) {
     <section className="jnr-pd-gallery" aria-label="Product images">
       <div className="jnr-pd-gallery__stage">
         {discount > 0 && (
-          <span className="jnr-pd-gallery__discount">{discount}% OFF</span>
+          <span className="jnr-pd-gallery__discount">
+            {discount}% OFF
+          </span>
         )}
 
         {activeImage ? (
           <button
             type="button"
-            className={`jnr-pd-gallery__zoom-trigger ${isHoverZoomed ? 'is-zoomed' : ''}`}
+            className={`jnr-pd-gallery__zoom-trigger ${
+              isHoverZoomed ? "is-zoomed" : ""
+            }`}
             onPointerEnter={handlePointerEnter}
             onPointerMove={(event) => {
               if (isHoverZoomed) updateZoomPosition(event);
@@ -99,6 +136,7 @@ export default function ProductGallery({ product }) {
                 transformOrigin: `${zoomPosition.x}% ${zoomPosition.y}%`,
               }}
             />
+
             <span className="jnr-pd-gallery__zoom-hint">
               <Maximize2 size={15} />
               Hover to zoom · Click to enlarge
@@ -106,7 +144,7 @@ export default function ProductGallery({ product }) {
           </button>
         ) : (
           <div className="jnr-pd-gallery__empty">
-            <ImageOff size={36} />
+            <ImageOff size={36} aria-hidden="true" />
             <span>No image available</span>
           </div>
         )}
@@ -121,6 +159,7 @@ export default function ProductGallery({ product }) {
             >
               <ChevronLeft size={20} />
             </button>
+
             <button
               type="button"
               className="jnr-pd-gallery__nav is-next"
@@ -134,17 +173,27 @@ export default function ProductGallery({ product }) {
       </div>
 
       {images.length > 1 && (
-        <div className="jnr-pd-gallery__thumbs" aria-label="Product thumbnails">
+        <div
+          className="jnr-pd-gallery__thumbs"
+          aria-label="Product thumbnails"
+        >
           {images.map((image, index) => (
             <button
               key={`${image.src}-${index}`}
               type="button"
-              className={`jnr-pd-gallery__thumb ${index === selectedIndex ? 'is-active' : ''}`}
+              className={`jnr-pd-gallery__thumb ${
+                index === selectedIndex ? "is-active" : ""
+              }`}
               onClick={() => selectImage(index)}
               aria-label={`Show product image ${index + 1}`}
               aria-pressed={index === selectedIndex}
             >
-              <img src={image.src} alt="" loading="lazy" decoding="async" />
+              <img
+                src={image.src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+              />
             </button>
           ))}
         </div>

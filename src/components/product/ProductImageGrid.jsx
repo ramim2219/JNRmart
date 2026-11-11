@@ -1,12 +1,15 @@
-import { useState } from 'react';
-import { ImageOff, Maximize2 } from 'lucide-react';
+import { useState } from "react";
+import { ImageOff, Maximize2 } from "lucide-react";
 
-import ProductImageLightbox from './ProductImageLightbox';
+import ProductImageLightbox from "./ProductImageLightbox";
 
-export default function ProductImageGrid({ images = [], productName = 'Product' }) {
+export default function ProductImageGrid({
+  images = [],
+  productName = "Product",
+}) {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
-  if (!images.length) {
+  if (!Array.isArray(images) || images.length === 0) {
     return (
       <div className="jnr-pd-images__empty">
         <ImageOff size={36} aria-hidden="true" />
@@ -34,11 +37,18 @@ export default function ProductImageGrid({ images = [], productName = 'Product' 
                 loading="lazy"
                 decoding="async"
               />
-              <span className="jnr-pd-images__zoom" aria-hidden="true">
+
+              <span
+                className="jnr-pd-images__zoom"
+                aria-hidden="true"
+              >
                 <Maximize2 size={17} />
               </span>
             </span>
-            <span className="jnr-pd-images__label">Image {index + 1}</span>
+
+            <span className="jnr-pd-images__label">
+              Image {index + 1}
+            </span>
           </button>
         ))}
       </div>

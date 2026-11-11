@@ -1,0 +1,178 @@
+/* API-backed product details additions.
+   Existing product-details.css remains responsible for the main layout. */
+
+.jnr-pd-api-variant {
+  display: grid;
+  gap: 10px;
+  margin: 18px 0;
+}
+
+.jnr-pd-api-variant > label {
+  color: #24324a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.jnr-pd-api-variant__select {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 13px;
+  border: 1px solid #d9e0ea;
+  border-radius: 8px;
+  background: #fff;
+  color: #24324a;
+  font: inherit;
+  font-size: 14px;
+}
+
+.jnr-pd-api-variant__select:focus-visible {
+  outline: 3px solid rgba(54, 91, 158, 0.2);
+  border-color: #365b9e;
+}
+
+.jnr-pd-api-variant__single {
+  padding: 12px 14px;
+  border: 1px solid #e1e6ee;
+  border-radius: 8px;
+  color: #34445e;
+  font-size: 14px;
+}
+
+.jnr-pd-api-variant__attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.jnr-pd-api-variant__attributes span {
+  padding: 7px 10px;
+  border-radius: 6px;
+  background: #f3f5f9;
+  color: #58667b;
+  font-size: 12px;
+}
+
+.jnr-pd-api-variant__attributes strong {
+  color: #24324a;
+}
+
+.jnr-pd-api-variant__sku {
+  margin: 0;
+  color: #748096;
+  font-size: 12px;
+}
+
+.jnr-pd-api-tabs {
+  margin-top: 42px;
+  border: 1px solid #e8ebf0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.jnr-pd-api-tabs__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 10px 14px 0;
+  border-bottom: 1px solid #e8ebf0;
+}
+
+.jnr-pd-api-tabs__tab {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: transparent;
+  color: #68758a;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.jnr-pd-api-tabs__tab:hover,
+.jnr-pd-api-tabs__tab.is-active {
+  color: #223773;
+}
+
+.jnr-pd-api-tabs__tab.is-active {
+  border-bottom-color: #223773;
+}
+
+.jnr-pd-api-tabs__tab:focus-visible {
+  outline: 2px solid #88a6f6;
+  outline-offset: -3px;
+}
+
+.jnr-pd-api-tabs__panel {
+  min-height: 150px;
+  padding: 24px;
+}
+
+.jnr-pd-api-tabs__panel h2 {
+  margin: 0 0 14px;
+  color: #1d2c45;
+  font-size: 19px;
+  font-weight: 750;
+}
+
+.jnr-pd-api-tabs__description p,
+.jnr-pd-api-tabs__reviews p {
+  margin: 0;
+  color: #647187;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-line;
+}
+
+.jnr-pd-api-tabs__table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.jnr-pd-api-tabs__table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.jnr-pd-api-tabs__table th,
+.jnr-pd-api-tabs__table td {
+  padding: 13px 14px;
+  border-bottom: 1px solid #edf0f4;
+  font-size: 13px;
+  vertical-align: top;
+}
+
+.jnr-pd-api-tabs__table th {
+  width: 34%;
+  background: #f8f9fb;
+  color: #40506a;
+  font-weight: 650;
+}
+
+.jnr-pd-api-tabs__table td {
+  color: #68758a;
+}
+
+@media (max-width: 600px) {
+  .jnr-pd-api-tabs__nav {
+    gap: 0;
+    padding-inline: 8px;
+  }
+
+  .jnr-pd-api-tabs__tab {
+    min-height: 42px;
+    padding-inline: 10px;
+    font-size: 12px;
+  }
+
+  .jnr-pd-api-tabs__panel {
+    padding: 18px 14px;
+  }
+
+  .jnr-pd-api-tabs__table th,
+  .jnr-pd-api-tabs__table td {
+    padding: 10px;
+  }
+}

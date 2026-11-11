@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import {
   Heart,
   Minus,
@@ -8,36 +8,110 @@ import {
   ShieldCheck,
   ShoppingCart,
   Truck,
-} from 'lucide-react';
+} from "lucide-react";
 
-import { useStoreUI } from '../../context/StoreUIContext';
-import { useToast } from '../common/ToastProvider';
-import { priceBDT } from '../../data/productDetailsData';
+import { useStoreUI } from "../../context/StoreUIContext";
+import { useToast } from "../common/ToastProvider";
+
+import {
+  getDefaultVariant,
+  getProductImages,
+  getVariantLabel,
+  getVariantPricing,
+  getDescription,
+  priceBDT,
+} from "../../utils/productHelpers";
+
+import "../../styles/product-details-api.css";
 
 const MAX_QUANTITY = 99;
 
-export default function ProductPurchasePanel({ product, onShowReviews }) {
-  const { addToCart, openPanel, toggleWishlist, isWishlisted } = useStoreUI();
+export default function ProductPurchasePanel({
+  product,
+  onShowReviews,
+}) {
+  const {
+    addToCart,
+    openPanel,
+    toggleWishlist,
+    isWishlisted,
+  } = useStoreUI();
+
   const toast = useToast();
+
+  const variants = Array.isArray(product?.variants)
+    ? product.variants
+    : [];
+
+  const defaultVariant = getDefaultVariant(variants);
+
+  const [selectedVariantId, setSelectedVariantId] = useState(
+    product.defaultVariantId ?? defaultVariant?.id ?? ""
+  );
+
   const [quantity, setQuantity] = useState(1);
 
-  const wishlisted = Boolean(isWishlisted(product.id));
-  const rating = Number(product.rating);
-  const reviewCount = Math.max(0, Number(product.reviewCount) || 0);
-  const hasRating = Number.isFinite(rating) && rating > 0;
-
-  const oldPrice = Number(product.oldPrice);
-  const savings = oldPrice > Number(product.price)
-    ? oldPrice - Number(product.price)
-    : 0;
-
   useEffect(() => {
+    setSelectedVariantId(
+      product.defaultVariantId ?? defaultVariant?.id ?? ""
+    );
     setQuantity(1);
-  }, [product.slug]);
+  }, [product.id]);
+
+  const selectedVariant =
+    variants.find(
+      (variant) =>
+        String(variant.id) === String(selectedVariantId)
+    ) ||
+    defaultVariant ||
+    null;
+
+  const pricing = selectedVariant
+    ? getVariantPricing(selectedVariant)
+    : {
+        price: Number(product.price) || 0,
+        oldPrice: Number(product.oldPrice) || 0,
+      };
+
+  const price = pricing.price;
+  const oldPrice = pricing.oldPrice;
+  const priceAvailable = price > 0;
+  const savings = oldPrice > price ? oldPrice - price : 0;
+
+  const wishlisted = Boolean(isWishlisted(product.id));
+
+  const selectedAttributes = Array.isArray(
+    selectedVariant?.attributes
+  )
+    ? selectedVariant.attributes
+    : [];
 
   const handleAddToCart = (openCart = false) => {
-    addToCart(product, quantity);
-    if (openCart) openPanel('cart');
+    if (!priceAvailable) {
+      toast.warning("Price is currently unavailable.");
+      return;
+    }
+
+    const images = getProductImages(product);
+
+    const cartProduct = {
+      ...product,
+      id: product.id,
+      name: product.name,
+      price,
+      oldPrice,
+      image: images[0]?.src ?? "",
+      variant_id: selectedVariant?.id ?? null,
+      sku: selectedVariant?.sku ?? null,
+      selectedVariant,
+      attributes: selectedVariant?.attributes ?? [],
+    };
+
+    addToCart(cartProduct, quantity);
+
+    if (openCart) {
+      openPanel("cart");
+    }
   };
 
   const handleShare = async () => {
@@ -45,72 +119,130 @@ export default function ProductPurchasePanel({ product, onShowReviews }) {
 
     try {
       if (navigator.share) {
-        await navigator.share({ title: product.name, url });
+        await navigator.share({
+          title: product.name,
+          url,
+        });
         return;
       }
 
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(url);
-        toast.success('Product link copied to clipboard.', {
-          id: 'product-share',
-          title: 'Link copied',
+
+        toast.success("Product link copied to clipboard.", {
+          id: "product-share",
+          title: "Link copied",
         });
         return;
       }
 
-      toast.warning('Sharing is unavailable in this browser.', {
-        id: 'product-share',
-      });
+      toast.warning("Sharing is unavailable in this browser.");
     } catch (error) {
-      if (error.name !== 'AbortError') {
-        toast.error('Could not share this product.', {
-          id: 'product-share',
-        });
+      if (error.name !== "AbortError") {
+        toast.error("Could not share this product.");
       }
     }
   };
 
   return (
-    <section className="jnr-pd-purchase" aria-label="Purchase product">
+    <section
+      className="jnr-pd-purchase"
+      aria-label="Purchase product"
+    >
       <p className="jnr-pd-purchase__eyebrow">
-        {product.categoryLabel || 'JNRmart Collection'}
+        {product.categoryLabel || "JNRmart Collection"}
       </p>
 
       <h1>{product.name}</h1>
 
       <div className="jnr-pd-purchase__meta">
         {product.brand && (
-          <span>Brand: <strong>{product.brand}</strong></span>
-        )}
-
-        {hasRating && (
-          <button
-            type="button"
-            className="jnr-pd-purchase__rating"
-            onClick={onShowReviews}
-            aria-label={`Rated ${rating.toFixed(1)} out of 5. View reviews`}
-          >
-            <span aria-hidden="true">★★★★★</span>
-            <strong>{rating.toFixed(1)}</strong>
-            <span>
-              {reviewCount > 0
-                ? `(${reviewCount} demo ratings)`
-                : '(demo rating)'}
-            </span>
-          </button>
+          <span>
+            Brand: <strong>{product.brand}</strong>
+          </span>
         )}
       </div>
 
       <div className="jnr-pd-purchase__divider" />
 
+      {variants.length > 0 && (
+        <div className="jnr-pd-api-variant">
+          <label htmlFor={`variant-${product.id}`}>
+            Select variant
+          </label>
+
+          {variants.length > 1 ? (
+            <select
+              id={`variant-${product.id}`}
+              className="jnr-pd-api-variant__select"
+              value={selectedVariantId ?? ""}
+              onChange={(event) =>
+                setSelectedVariantId(event.target.value)
+              }
+            >
+              {variants.map((variant, index) => {
+                const variantPricing = getVariantPricing(variant);
+
+                return (
+                  <option
+                    key={variant.id}
+                    value={variant.id}
+                  >
+                    {getVariantLabel(variant, index)}
+                    {" — "}
+                    {variantPricing.price > 0
+                      ? priceBDT(variantPricing.price)
+                      : "Price unavailable"}
+                  </option>
+                );
+              })}
+            </select>
+          ) : (
+            <div className="jnr-pd-api-variant__single">
+              {getVariantLabel(selectedVariant, 0)}
+            </div>
+          )}
+
+          {selectedAttributes.length > 0 && (
+            <div className="jnr-pd-api-variant__attributes">
+              {selectedAttributes.map((item, index) => {
+                const attribute =
+                  item.attribute_value?.attribute;
+
+                const value =
+                  item.attribute_value?.display_name ||
+                  item.attribute_value?.value;
+
+                if (!value) return null;
+
+                return (
+                  <span key={item.id ?? index}>
+                    {attribute?.display_name ||
+                      attribute?.name ||
+                      "Option"}
+                    : <strong>{value}</strong>
+                  </span>
+                );
+              })}
+            </div>
+          )}
+
+          {selectedVariant?.sku && (
+            <p className="jnr-pd-api-variant__sku">
+              SKU: {selectedVariant.sku}
+            </p>
+          )}
+        </div>
+      )}
+
       <div className="jnr-pd-purchase__price-row">
         <strong className="jnr-pd-purchase__price">
-          {priceBDT(product.price)}
+          {priceAvailable ? priceBDT(price) : "Price unavailable"}
         </strong>
 
-        {savings > 0 && (
+        {oldPrice > price && (
           <>
-            <del>{priceBDT(product.oldPrice)}</del>
+            <del>{priceBDT(oldPrice)}</del>
             <span className="jnr-pd-purchase__save">
               Save {priceBDT(savings)}
             </span>
@@ -118,31 +250,33 @@ export default function ProductPurchasePanel({ product, onShowReviews }) {
         )}
       </div>
 
-      <p className="jnr-pd-purchase__tax-note">
-        Demo price · final price and availability will be confirmed at checkout
-        after backend integration.
-      </p>
-
       <p className="jnr-pd-purchase__intro">
-        {product.description ||
-          `Explore ${product.name} from the JNRmart ${
-            product.categoryLabel || 'product'
-          } collection.`}
+        {getDescription(product)}
       </p>
 
       <div className="jnr-pd-purchase__availability">
         <PackageCheck size={18} aria-hidden="true" />
-        <span>Availability and delivery options: confirm before ordering</span>
+        <span>
+          Product information and pricing are provided by JNRmart.
+        </span>
       </div>
 
       <div className="jnr-pd-purchase__buy-area">
-        <span className="jnr-pd-purchase__quantity-label">Quantity</span>
+        <span className="jnr-pd-purchase__quantity-label">
+          Quantity
+        </span>
 
         <div className="jnr-pd-purchase__buy-row">
-          <div className="jnr-pd-quantity" role="group" aria-label="Select quantity">
+          <div
+            className="jnr-pd-quantity"
+            role="group"
+            aria-label="Select quantity"
+          >
             <button
               type="button"
-              onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+              onClick={() =>
+                setQuantity((value) => Math.max(1, value - 1))
+              }
               disabled={quantity === 1}
               aria-label="Decrease quantity"
             >
@@ -153,7 +287,11 @@ export default function ProductPurchasePanel({ product, onShowReviews }) {
 
             <button
               type="button"
-              onClick={() => setQuantity((value) => Math.min(MAX_QUANTITY, value + 1))}
+              onClick={() =>
+                setQuantity((value) =>
+                  Math.min(MAX_QUANTITY, value + 1)
+                )
+              }
               disabled={quantity === MAX_QUANTITY}
               aria-label="Increase quantity"
             >
@@ -164,7 +302,8 @@ export default function ProductPurchasePanel({ product, onShowReviews }) {
           <button
             type="button"
             className="jnr-pd-purchase__add"
-            onClick={() => handleAddToCart()}
+            onClick={() => handleAddToCart(false)}
+            disabled={!priceAvailable}
           >
             <ShoppingCart size={19} />
             Add to Cart
@@ -174,6 +313,7 @@ export default function ProductPurchasePanel({ product, onShowReviews }) {
             type="button"
             className="jnr-pd-purchase__buy"
             onClick={() => handleAddToCart(true)}
+            disabled={!priceAvailable}
           >
             View Cart
           </button>
@@ -185,16 +325,25 @@ export default function ProductPurchasePanel({ product, onShowReviews }) {
           type="button"
           onClick={() => toggleWishlist(product)}
           aria-pressed={wishlisted}
-          className={wishlisted ? 'is-selected' : ''}
+          className={wishlisted ? "is-selected" : ""}
         >
-          <Heart size={18} fill={wishlisted ? 'currentColor' : 'none'} />
-          {wishlisted ? 'Saved to Wishlist' : 'Add to Wishlist'}
+          <Heart
+            size={18}
+            fill={wishlisted ? "currentColor" : "none"}
+          />
+          {wishlisted ? "Saved to Wishlist" : "Add to Wishlist"}
         </button>
 
         <button type="button" onClick={handleShare}>
           <Share2 size={17} />
           Share Product
         </button>
+
+        {typeof onShowReviews === "function" && (
+          <button type="button" onClick={onShowReviews}>
+            View Reviews
+          </button>
+        )}
       </div>
 
       <div className="jnr-pd-purchase__benefits">
@@ -202,6 +351,7 @@ export default function ProductPurchasePanel({ product, onShowReviews }) {
           <Truck size={20} aria-hidden="true" />
           <span>Delivery fee calculated at checkout</span>
         </span>
+
         <span>
           <ShieldCheck size={20} aria-hidden="true" />
           <span>Review product details before ordering</span>
