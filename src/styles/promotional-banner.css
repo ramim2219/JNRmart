@@ -1,112 +1,194 @@
+
 /* ==========================================
-   JNRMART - TWO IMAGE PROMOTIONAL SECTION
+   JNRMART - PROMOTION_2 BANNER SECTION
    Navy, Coral & Soft Peach Theme
 ========================================== */
 
 .jnr-promo-section {
   --promo-navy: #1c2b49;
   --promo-coral: #d95d4f;
+  --promo-border: #eadfd9;
+  --promo-soft: #fff5f1;
 
+  width: 100%;
   min-width: 0;
-  margin-block: clamp(22px, 2.5vw, 34px);
+
+  margin-top: clamp(18px, 2vw, 26px);
+  margin-bottom: clamp(22px, 2.5vw, 34px);
 }
 
-/* Banner Grid */
+/* ==========================================
+   BANNER GRID
+========================================== */
 
 .jnr-promo-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 18px;
+  align-items: stretch;
+  gap: 14px;
+  min-width: 0;
 }
 
-/* Banner Card */
+/* Single Banner: Full Width */
+
+
+/* Single Banner: Centered with half-width size */
+
+.jnr-promo-grid--single {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.jnr-promo-grid--single .jnr-promo-card {
+  grid-column: 1 / -1;
+  width: calc((100% - 14px) / 2);
+  justify-self: center;
+}
+
+/* Mobile */
+
+@media (max-width: 680px) {
+  .jnr-promo-grid--single .jnr-promo-card {
+    width: calc((100% - 9px) / 2);
+  }
+}
+
+/* Small Mobile */
+
+@media (max-width: 400px) {
+  .jnr-promo-grid--single .jnr-promo-card {
+    width: calc((100% - 7px) / 2);
+  }
+}
+
+
+/* ==========================================
+   BANNER CARD
+========================================== */
 
 .jnr-promo-card {
-  display: block;
   position: relative;
+  display: block;
 
   width: 100%;
+  min-width: 0;
+
   aspect-ratio: 16 / 7;
 
   overflow: hidden;
-  background: #f8eae6;
 
-  border: 1px solid rgba(28, 43, 73, 0.06);
-  border-radius: 13px;
+  background: var(--promo-soft);
+
+  border: 1px solid var(--promo-border);
+  border-radius: 15px;
+
+  outline-offset: 3px;
 
   box-shadow: 0 3px 12px rgba(28, 43, 73, 0.07);
 
   transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
 }
 
-/* Banner Image */
+/* ==========================================
+   BANNER IMAGE
+   Same image handling approach as HeroBanner
+========================================== */
 
-.jnr-promo-image {
+.jnr-promo-card img {
+  position: absolute;
+  inset: 0;
+
   display: block;
 
   width: 100%;
   height: 100%;
 
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 
-  transition: transform 0.45s ease;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+
+  transition: none;
 }
 
-/* Hover Effect */
+/* ==========================================
+   HOVER EFFECT
+========================================== */
 
 .jnr-promo-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 8px 22px rgba(28, 43, 73, 0.13);
+  border-color: var(--promo-coral);
+
+  box-shadow:
+    0 8px 24px rgba(28, 43, 73, 0.12);
 }
 
-.jnr-promo-card:hover .jnr-promo-image {
-  transform: scale(1.045);
-}
-
-/* Focus */
+/* ==========================================
+   FOCUS
+========================================== */
 
 .jnr-promo-card:focus-visible {
-  outline: 3px solid var(--promo-coral);
-  outline-offset: 4px;
+  outline: 3px solid rgba(217, 93, 79, 0.45);
 }
 
-/* Tablet */
+/* ==========================================
+   TABLET
+========================================== */
 
-@media (max-width: 767px) {
+@media (max-width: 900px) {
   .jnr-promo-grid {
-    gap: 13px;
+    gap: 10px;
   }
 
   .jnr-promo-card {
-    border-radius: 10px;
+    border-radius: 12px;
   }
 }
 
-/* Mobile */
+/* ==========================================
+   MOBILE
+========================================== */
 
-@media (max-width: 550px) {
+@media (max-width: 680px) {
   .jnr-promo-section {
-    margin-block: 21px;
+    margin-top: 15px;
+    margin-bottom: 22px;
   }
 
   .jnr-promo-grid {
-    grid-template-columns: 1fr;
-    gap: 13px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
   }
 
   .jnr-promo-card {
     aspect-ratio: 16 / 7;
+    border-radius: 10px;
   }
 }
 
-/* Reduced Motion */
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 400px) {
+  .jnr-promo-grid {
+    gap: 7px;
+  }
+
+  .jnr-promo-card {
+    border-radius: 8px;
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
 
 @media (prefers-reduced-motion: reduce) {
   .jnr-promo-card,
-  .jnr-promo-image {
+  .jnr-promo-card img {
     transition: none;
   }
 }

@@ -1,0 +1,257 @@
+
+/* ==========================================
+   JNRMART - COMPACT QUICK OFFER SLIDER
+   Full Width | Minimal | Responsive
+========================================== */
+
+.jnr-quick-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  margin: 12px auto 20px;
+  padding: 0;
+
+  overflow: visible;
+}
+
+/* ==========================================
+   SLIDER TRACK
+========================================== */
+
+.jnr-quick-track {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  min-width: 0;
+
+  gap: 10px;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  padding: 2px 0 5px;
+
+  cursor: grab;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+.jnr-quick-track::-webkit-scrollbar {
+  display: none;
+}
+
+.jnr-quick-track.is-dragging {
+  cursor: grabbing;
+  scroll-behavior: auto;
+  scroll-snap-type: none;
+}
+
+/* ==========================================
+   BANNER CARD
+========================================== */
+
+.jnr-quick-card {
+  position: relative;
+  display: block;
+
+  flex: 0 0 calc((100% - 50px) / 6);
+
+  min-width: 0;
+
+  aspect-ratio: 1280 / 495;
+
+  overflow: hidden;
+
+  border: none;
+  border-radius: 7px;
+
+  background: transparent;
+
+  scroll-snap-align: start;
+
+  text-decoration: none;
+  outline-offset: 3px;
+
+  -webkit-user-drag: none;
+  user-select: none;
+
+  transition: opacity 0.2s ease;
+}
+
+/* ==========================================
+   FULL IMAGE DISPLAY
+========================================== */
+
+.jnr-quick-card img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center;
+
+  border: none;
+  border-radius: inherit;
+
+  pointer-events: none;
+  user-select: none;
+
+  -webkit-user-drag: none;
+}
+
+/* Image loading failure */
+
+.jnr-quick-card img.is-image-missing {
+  visibility: hidden;
+}
+
+/* ==========================================
+   HOVER
+========================================== */
+
+.jnr-quick-card:hover {
+  opacity: 0.94;
+}
+
+.jnr-quick-card:focus-visible {
+  outline: 2px solid #e96b5a;
+}
+
+/* ==========================================
+   NAVIGATION ARROWS
+========================================== */
+
+.jnr-quick-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  padding: 0;
+
+  color: #1c2b49;
+
+  background: rgba(255, 255, 255, 0.94);
+
+  border: 1px solid rgba(28, 43, 73, 0.10);
+  border-radius: 50%;
+
+  box-shadow: 0 2px 8px rgba(28, 43, 73, 0.13);
+
+  cursor: pointer;
+
+  transform: translateY(-50%);
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.jnr-quick-arrow:hover:not(:disabled) {
+  color: #fff;
+  background: #e96b5a;
+}
+
+.jnr-quick-arrow:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.jnr-quick-arrow--prev {
+  left: -10px;
+}
+
+.jnr-quick-arrow--next {
+  right: -10px;
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media (max-width: 900px) {
+  .jnr-quick-wrap {
+    margin-block: 10px 17px;
+  }
+
+  .jnr-quick-track {
+    gap: 9px;
+  }
+
+  .jnr-quick-card {
+    flex-basis: calc((100% - 27px) / 4);
+    border-radius: 6px;
+  }
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+  .jnr-quick-wrap {
+    margin-block: 9px 15px;
+  }
+
+  .jnr-quick-track {
+    gap: 8px;
+  }
+
+  .jnr-quick-card {
+    flex-basis: calc((100% - 16px) / 3);
+    border-radius: 5px;
+  }
+
+  .jnr-quick-arrow {
+    width: 26px;
+    height: 26px;
+  }
+
+  .jnr-quick-arrow--prev {
+    left: -5px;
+  }
+
+  .jnr-quick-arrow--next {
+    right: -5px;
+  }
+}
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 380px) {
+  .jnr-quick-card {
+    flex-basis: calc((100% - 10px) / 2);
+  }
+}
+
+/* ==========================================
+   REDUCED MOTION
+========================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .jnr-quick-track {
+    scroll-behavior: auto;
+  }
+
+  .jnr-quick-card,
+  .jnr-quick-arrow {
+    transition: none;
+  }
+}
