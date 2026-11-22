@@ -1,69 +1,88 @@
-
 /* ==========================================
+
    JNRMART - PREMIUM HERO SHOWCASE
+
    Design 2 — Navy + Coral + Soft Peach
+
 ========================================== */
 
 .jnr-hero-section {
   --hero-navy: #1C2B49;
   --hero-navy-dark: #15213A;
-
   --hero-coral: #D95D4F;
+
   --hero-coral-dark: #C94C40;
 
   --hero-text: #202B3D;
+
   --hero-muted: #737D8E;
 
   --hero-soft: #FFF5F1;
+
   --hero-peach: #FAEAE6;
 
   --hero-border: #EADFD9;
+
   --hero-white: #FFFFFF;
 
   --hero-focus: rgba(217, 93, 79, .45);
 
   margin-top: clamp(10px, 1.2vw, 16px);
+
   margin-bottom: clamp(18px, 2.3vw, 30px);
 
   min-width: 0;
+
 }
 
-
 /* ==========================================
+
    MAIN HERO GRID
+
 ========================================== */
 
 .jnr-hero-grid {
+
   display: grid;
 
   grid-template-columns:
+
     minmax(0, 1.84fr)
+
     minmax(0, 1fr);
 
   align-items: stretch;
 
   gap: 14px;
+
 }
 
-
 /* ==========================================
+
    MAIN CAROUSEL
+
 ========================================== */
 
 .jnr-hero-slider {
+
   position: relative;
+
   isolation: isolate;
 
   min-width: 0;
+
   width: 100%;
 
-  aspect-ratio: 1100 / 714;
+  /* Matches the recommended 1540 x 1000 px hero artwork. */
+
+  aspect-ratio: 1540 / 1000;
 
   overflow: hidden;
 
   background: var(--hero-soft);
 
   border: 1px solid var(--hero-border);
+
   border-radius: 15px;
 
   cursor: grab;
@@ -71,81 +90,109 @@
   touch-action: pan-y;
 
   user-select: none;
+
   -webkit-user-select: none;
+
 }
 
 .jnr-hero-slider.is-dragging {
+
   cursor: grabbing;
+
 }
 
-
 /* ==========================================
+
    CAROUSEL TRACK
+
 ========================================== */
 
 .jnr-hero-track {
+
   display: flex;
 
   width: 100%;
+
   height: 100%;
 
   transition:
+
     transform 550ms cubic-bezier(.22, 1, .36, 1);
 
   will-change: transform;
+
 }
 
 .jnr-hero-slider.is-dragging .jnr-hero-track {
+
   transition: none;
+
 }
 
 .jnr-hero-slide {
+
   flex: 0 0 100%;
 
   width: 100%;
+
   min-width: 0;
+
   height: 100%;
+
 }
 
-
 /* ==========================================
+
    BANNER IMAGE
+
 ========================================== */
 
 .jnr-hero-image-link {
+
   display: block;
 
   width: 100%;
+
   height: 100%;
 
   outline-offset: -4px;
+
 }
 
 .jnr-hero-banner-img {
+
   display: block;
 
   width: 100%;
+
   height: 100%;
 
-  object-fit: cover;
+  object-fit: contain;
+
   object-position: center;
 
   -webkit-user-drag: none;
+
   pointer-events: none;
+
 }
 
-
 /* ==========================================
+
    FALLBACK BANNER
+
 ========================================== */
 
 .jnr-hero-image-fallback {
+
   position: relative;
 
   display: flex;
+
   flex-direction: column;
 
   align-items: flex-start;
+
   justify-content: center;
 
   height: 100%;
@@ -157,26 +204,37 @@
   overflow: hidden;
 
   background: linear-gradient(
+
     125deg,
+
     #FFF5F1 0%,
+
     #FAEAE6 55%,
+
     #FBE1DA 100%
+
   );
 
   color: var(--hero-navy-dark);
+
 }
 
 .jnr-hero-image-fallback span {
+
   font-size: clamp(11px, 1vw, 15px);
 
   font-weight: 800;
+
   letter-spacing: .12em;
 
   color: var(--hero-coral);
+
 }
 
 .jnr-hero-image-fallback strong {
+
   position: relative;
+
   z-index: 2;
 
   max-width: 60%;
@@ -184,54 +242,69 @@
   font-size: clamp(22px, 3.7vw, 52px);
 
   line-height: 1.15;
+
   font-weight: 800;
 
   color: var(--hero-navy-dark);
+
 }
 
 .jnr-hero-image-fallback small {
+
   position: relative;
+
   z-index: 2;
 
   font-size: clamp(12px, 1.5vw, 18px);
 
   color: var(--hero-muted);
+
 }
 
 .jnr-hero-image-fallback i {
+
   position: absolute;
 
   right: 10%;
+
   bottom: 16%;
 
   font-size: clamp(78px, 12vw, 170px);
 
   font-style: normal;
+
 }
 
-
 /* ==========================================
+
    SIDE PROMOTIONAL BANNERS
+
 ========================================== */
 
 .jnr-hero-side {
+
   min-width: 0;
 
   display: grid;
 
   grid-template-rows:
+
     minmax(0, 1fr)
+
     minmax(0, 1fr);
 
   gap: 14px;
+
 }
 
 .jnr-hero-side-card {
+
   position: relative;
 
   display: block;
 
   min-width: 0;
+
   min-height: 0;
 
   overflow: hidden;
@@ -239,53 +312,73 @@
   background: var(--hero-soft);
 
   border: 1px solid var(--hero-border);
+
   border-radius: 15px;
 
   outline-offset: 2px;
 
   transition:
+
     box-shadow .25s ease,
+
     border-color .25s ease;
+
 }
 
 .jnr-hero-side-card img {
+
   position: absolute;
+
   inset: 0;
 
   display: block;
 
   width: 100%;
+
   height: 100%;
 
-  object-fit: cover;
+  object-fit: contain;
 
-  transition: transform .35s ease;
+  object-position: center;
+
+  transition: none;
+
 }
 
 .jnr-hero-side-card:hover {
+
   border-color: var(--hero-coral);
 
   box-shadow:
+
     0 8px 24px rgba(28, 43, 73, .12);
+
 }
 
 .jnr-hero-side-card:hover img {
-  transform: scale(1.035);
+
+  transform: none;
+
 }
 
-
 /* ==========================================
+
    MAIN CAROUSEL NAVIGATION BUTTONS
 
    Default:
+
    White Background + Navy Icon
 
    Hover:
+
    Coral Background + White Icon
+
 ========================================== */
 
 .jnr-hero-section .jnr-hero-arrow {
+
   position: absolute;
+
   z-index: 5;
 
   top: 50%;
@@ -293,14 +386,17 @@
   transform: translateY(-50%);
 
   display: grid;
+
   place-items: center;
 
   width: 42px;
+
   height: 42px;
 
   padding: 0;
 
   appearance: none;
+
   -webkit-appearance: none;
 
   color: var(--hero-navy) !important;
@@ -308,52 +404,71 @@
   background: rgba(255, 255, 255, .96) !important;
 
   border: 1px solid var(--hero-border) !important;
+
   border-radius: 50% !important;
 
   box-shadow:
+
     0 4px 14px rgba(28, 43, 73, .16) !important;
 
   backdrop-filter: blur(8px);
 
   opacity: 1;
+
   visibility: visible;
+
   pointer-events: auto;
 
   cursor: pointer;
 
   transition:
+
     background .22s ease,
+
     color .22s ease,
+
     border-color .22s ease,
+
     transform .22s ease,
+
     box-shadow .22s ease;
+
 }
 
 .jnr-hero-section .jnr-hero-arrow svg {
+
   width: 22px;
+
   height: 22px;
 
   color: var(--hero-navy) !important;
+
   stroke: var(--hero-navy) !important;
 
   stroke-width: 2.2;
+
 }
 
 /* Previous Button */
 
 .jnr-hero-arrow--prev {
+
   left: 14px;
+
 }
 
 /* Next Button */
 
 .jnr-hero-arrow--next {
+
   right: 14px;
+
 }
 
 /* Button Hover */
 
 .jnr-hero-section .jnr-hero-arrow:hover {
+
   color: #FFFFFF !important;
 
   background: var(--hero-coral) !important;
@@ -363,83 +478,111 @@
   transform: translateY(-50%) scale(1.08);
 
   box-shadow:
+
     0 5px 15px rgba(217, 93, 79, .28) !important;
+
 }
 
 .jnr-hero-section .jnr-hero-arrow:hover svg {
+
   color: #FFFFFF !important;
+
   stroke: #FFFFFF !important;
+
 }
 
 /* Button Active */
 
 .jnr-hero-section .jnr-hero-arrow:active {
+
   background: var(--hero-coral-dark) !important;
 
   border-color: var(--hero-coral-dark) !important;
 
   transform: translateY(-50%) scale(.96);
+
 }
 
-
 /* ==========================================
+
    CAROUSEL DOTS
+
 ========================================== */
 
 .jnr-hero-dots {
+
   position: absolute;
+
   z-index: 5;
 
   bottom: 17px;
+
   left: 50%;
 
   display: flex;
+
   align-items: center;
 
   gap: 8px;
 
   transform: translateX(-50%);
+
 }
 
 .jnr-hero-dot {
+
   width: 9px;
+
   height: 9px;
 
   padding: 0;
 
   appearance: none;
+
   -webkit-appearance: none;
 
   border: 1px solid rgba(28, 43, 73, .18);
+
   border-radius: 20px;
 
   background: rgba(255, 255, 255, .95);
 
   box-shadow:
+
     0 1px 5px rgba(28, 43, 73, .16);
 
   cursor: pointer;
 
   transition:
+
     width .25s ease,
+
     background .25s ease,
+
     border-color .25s ease;
+
 }
 
 .jnr-hero-dot.is-active {
+
   width: 27px;
 
   background: var(--hero-coral);
+
   border-color: var(--hero-coral);
+
 }
 
-
 /* ==========================================
+
    QUICK OFFER SLIDER
+
 ========================================== */
 
 .jnr-quick-wrap {
+
   --jnr-quick-gap: 9px;
+
   --jnr-quick-visible: 6;
 
   position: relative;
@@ -451,18 +594,23 @@
   background: #FFFFFF;
 
   border: 1px solid var(--hero-border);
+
   border-radius: 12px;
 
   box-shadow:
+
     0 4px 16px rgba(28, 43, 73, .06);
+
 }
 
-
 /* ==========================================
+
    QUICK OFFER TRACK
+
 ========================================== */
 
 .jnr-quick-track {
+
   display: flex;
 
   gap: var(--jnr-quick-gap);
@@ -474,6 +622,7 @@
   scroll-snap-type: x mandatory;
 
   scrollbar-width: none;
+
   -ms-overflow-style: none;
 
   padding: 2px;
@@ -481,39 +630,55 @@
   cursor: grab;
 
   touch-action: auto;
+
 }
 
 .jnr-quick-track::-webkit-scrollbar {
+
   display: none;
+
 }
 
 .jnr-quick-track.is-dragging {
+
   scroll-snap-type: none;
 
   cursor: grabbing;
 
   user-select: none;
+
   -webkit-user-select: none;
+
 }
 
-
 /* ==========================================
+
    QUICK OFFER CARD
+
 ========================================== */
 
 .jnr-quick-card {
+
   flex: 0 0 calc(
+
     (
+
       100% -
+
       (var(--jnr-quick-visible) - 1) *
+
       var(--jnr-quick-gap)
+
     ) / var(--jnr-quick-visible)
+
   );
 
   min-width: 0;
+
   min-height: 74px;
 
   display: flex;
+
   align-items: center;
 
   gap: 10px;
@@ -523,69 +688,89 @@
   background: #FFFFFF;
 
   border: 1px solid var(--hero-border);
+
   border-radius: 9px;
 
   scroll-snap-align: start;
 
   color: var(--hero-text);
+
   text-decoration: none;
 
   transition:
+
     border-color .2s ease,
+
     box-shadow .2s ease,
+
     transform .2s ease;
+
 }
 
 .jnr-quick-card:hover {
+
   border-color: var(--hero-coral);
 
   box-shadow:
+
     0 4px 14px rgba(217, 93, 79, .12);
 
   transform: translateY(-2px);
+
 }
 
-
 /* ==========================================
+
    QUICK OFFER THUMBNAIL
+
 ========================================== */
 
 .jnr-quick-thumb {
+
   flex: 0 0 56px;
 
   width: 56px;
+
   height: 56px;
 
   overflow: hidden;
 
   display: grid;
+
   place-items: center;
 
   background: var(--hero-soft);
 
   border-radius: 8px;
+
 }
 
 .jnr-quick-thumb img {
+
   display: block;
 
   width: 100%;
+
   height: 100%;
 
   object-fit: contain;
 
   pointer-events: none;
+
 }
 
-
 /* ==========================================
+
    QUICK OFFER TEXT
+
 ========================================== */
 
 .jnr-quick-text {
+
   display: -webkit-box;
 
   -webkit-box-orient: vertical;
+
   -webkit-line-clamp: 3;
 
   overflow: hidden;
@@ -593,18 +778,23 @@
   font-size: clamp(10px, .84vw, 12px);
 
   font-weight: 700;
+
   line-height: 1.45;
 
   color: var(--hero-navy);
+
 }
 
-
 /* ==========================================
+
    QUICK OFFER NAVIGATION BUTTONS
+
 ========================================== */
 
 .jnr-hero-section .jnr-quick-arrow {
+
   position: absolute;
+
   z-index: 5;
 
   top: 50%;
@@ -612,14 +802,17 @@
   transform: translateY(-50%);
 
   width: 32px;
+
   height: 32px;
 
   display: grid;
+
   place-items: center;
 
   padding: 0;
 
   appearance: none;
+
   -webkit-appearance: none;
 
   color: #FFFFFF !important;
@@ -627,297 +820,526 @@
   background: var(--hero-coral) !important;
 
   border: 2px solid #FFFFFF !important;
+
   border-radius: 50% !important;
 
   box-shadow:
+
     0 3px 12px rgba(217, 93, 79, .22) !important;
 
   cursor: pointer;
 
   opacity: 0;
+
   pointer-events: none;
 
   transition:
+
     opacity .2s ease,
+
     background .2s ease,
+
     transform .2s ease;
+
 }
 
 .jnr-hero-section .jnr-quick-arrow svg {
+
   color: #FFFFFF !important;
+
   stroke: #FFFFFF !important;
+
 }
 
 .jnr-quick-arrow--prev {
+
   left: -12px;
+
 }
 
 .jnr-quick-arrow--next {
+
   right: -12px;
+
 }
 
-.jnr-quick-wrap:hover .jnr-quick-arrow:not(:disabled),
-.jnr-quick-wrap:focus-within .jnr-quick-arrow:not(:disabled) {
+.jnr-quick-wrap:hover .jnr-quick-arrow:not(*:disabled*),
+
+.jnr-quick-wrap:focus-within .jnr-quick-arrow:not(*:disabled*) {
+
   opacity: 1;
+
   pointer-events: auto;
+
 }
 
 .jnr-hero-section .jnr-quick-arrow:hover {
+
   background: var(--hero-coral-dark) !important;
 
   transform: translateY(-50%) scale(1.08);
+
 }
 
 .jnr-quick-arrow:disabled {
+
   display: none;
+
 }
 
-
 /* ==========================================
+
    ACCESSIBILITY
+
 ========================================== */
 
 .jnr-hero-slider:focus-visible,
+
 .jnr-hero-image-link:focus-visible,
+
 .jnr-hero-arrow:focus-visible,
+
 .jnr-hero-dot:focus-visible,
+
 .jnr-hero-side-card:focus-visible,
+
 .jnr-quick-card:focus-visible,
+
 .jnr-quick-arrow:focus-visible {
+
   outline: 3px solid var(--hero-focus);
+
   outline-offset: 3px;
+
 }
 
-
 /* ==========================================
+
    RESPONSIVE - LAPTOP
+
 ========================================== */
 
 @media (max-width: 1199px) {
+
   .jnr-quick-wrap {
+
     --jnr-quick-visible: 4;
+
   }
 
   .jnr-quick-text {
+
     font-size: 12px;
+
   }
+
 }
 
-
 /* ==========================================
+
    RESPONSIVE - TABLET
+
 ========================================== */
 
 @media (max-width: 900px) {
+
   .jnr-hero-grid {
+
     gap: 10px;
 
     grid-template-columns: 1fr;
+
   }
 
   .jnr-hero-side {
+
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
     grid-template-rows: none;
 
     gap: 10px;
+
   }
 
   .jnr-hero-side-card {
-    aspect-ratio: 1.72;
+
+    aspect-ratio: 1.7;
+
   }
 
   .jnr-hero-slider,
+
   .jnr-hero-side-card {
+
     border-radius: 12px;
+
   }
 
   .jnr-quick-wrap {
+
     --jnr-quick-visible: 3;
 
     margin-top: 11px;
+
   }
+
 }
 
-
 /* ==========================================
+
    RESPONSIVE - MOBILE
+
 ========================================== */
 
 @media (max-width: 680px) {
+
   .jnr-hero-section {
+
     margin-top: 8px;
+
   }
 
   .jnr-hero-grid {
+
     grid-template-columns: 1fr;
 
     gap: 9px;
+
   }
 
   .jnr-hero-slider {
+
     aspect-ratio: 1.54;
 
     border-radius: 11px;
+
   }
 
   .jnr-hero-side {
+
     grid-template-columns: repeat(2, minmax(0, 1fr));
 
     grid-template-rows: none;
 
     gap: 8px;
+
   }
 
   .jnr-hero-side-card {
-    aspect-ratio: 1.72;
+
+    aspect-ratio: 1.7;
 
     min-height: 0;
 
     border-radius: 10px;
+
   }
 
   .jnr-hero-side-card img {
+
     position: absolute;
+
   }
 
   .jnr-hero-arrow {
+
     display: none !important;
+
   }
 
   .jnr-hero-dots {
+
     bottom: 10px;
+
   }
 
   .jnr-hero-dot {
+
     width: 7px;
+
     height: 7px;
+
   }
 
   .jnr-hero-dot.is-active {
+
     width: 20px;
+
   }
 
   .jnr-quick-wrap {
+
     --jnr-quick-visible: 2.15;
 
     margin-top: 9px;
 
     padding: 6px;
+
   }
 
   .jnr-quick-card {
+
     min-height: 64px;
+
   }
 
   .jnr-quick-thumb {
+
     flex-basis: 47px;
 
     width: 47px;
+
     height: 47px;
+
   }
 
   .jnr-quick-text {
+
     font-size: 10px;
+
   }
 
   .jnr-quick-arrow {
+
     display: none !important;
+
   }
+
 }
 
-
 /* ==========================================
+
    SMALL MOBILE
+
 ========================================== */
 
 @media (max-width: 400px) {
+
   .jnr-quick-wrap {
+
     --jnr-quick-visible: 1.75;
+
   }
 
   .jnr-quick-thumb {
+
     flex-basis: 44px;
 
     width: 44px;
+
     height: 44px;
+
   }
+
 }
 
-
 /* ==========================================
+
    TOUCH DEVICES
+
 ========================================== */
 
 @media (hover: none) and (pointer: coarse) {
+
   .jnr-hero-arrow,
+
   .jnr-quick-arrow {
+
     display: none !important;
+
   }
+
 }
 
-
 /* ==========================================
+
    REDUCED MOTION
+
 ========================================== */
 
 @media (prefers-reduced-motion: reduce) {
+
   .jnr-hero-track,
+
   .jnr-hero-dot,
+
   .jnr-hero-side-card img,
+
   .jnr-quick-card,
+
   .jnr-hero-arrow,
+
   .jnr-quick-arrow {
+
     transition: none;
+
   }
+
 }
 
 /* ==========================================
+
    HERO ARROWS — SHOW ON HOVER ONLY
+
 ========================================== */
 
 /* Default: Hidden */
+
 .jnr-hero-section .jnr-hero-arrow {
+
   opacity: 0 !important;
+
   visibility: hidden;
+
   pointer-events: none;
 
   transition:
+
     opacity .25s ease,
+
     visibility .25s ease,
+
     background .2s ease,
+
     transform .2s ease;
+
 }
 
 /* Show when hovering over slider */
+
 .jnr-hero-slider:hover .jnr-hero-arrow,
+
 .jnr-hero-slider:focus-within .jnr-hero-arrow {
+
   opacity: .80 !important;
+
   visibility: visible;
+
   pointer-events: auto;
+
 }
 
 /* Button hover */
+
 .jnr-hero-slider .jnr-hero-arrow:hover {
+
   opacity: .95 !important;
+
 }
 
 /* Quick offer arrows */
+
 .jnr-hero-section .jnr-quick-wrap:hover .jnr-quick-arrow,
+
 .jnr-hero-section .jnr-quick-wrap:focus-within .jnr-quick-arrow {
+
   opacity: .80 !important;
+
   visibility: visible;
+
   pointer-events: auto;
+
 }
 
 .jnr-hero-section .jnr-quick-arrow:hover {
+
   opacity: .95 !important;
+
 }
 
 /* Touch devices */
+
 @media (hover: none) and (pointer: coarse) {
+
   .jnr-hero-section .jnr-hero-arrow,
+
   .jnr-hero-section .jnr-quick-arrow {
+
     display: none !important;
+
+  }
+
+}
+
+/* ==========================================
+   DYNAMIC BANNER LAYOUTS
+   ========================================== */
+
+/* Hero banner without promotions: use the complete available width. */
+.jnr-hero-grid--hero-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/*
+ * Keep a full-width hero from becoming excessively tall.
+ * The wider ratio compensates for the extra width when the side
+ * promotion column is absent. Images remain fully visible because
+ * the banner image uses object-fit: contain.
+ */
+.jnr-hero-grid--hero-only .jnr-hero-slider {
+  aspect-ratio: 2.35 / 1;
+}
+
+/* Promotion-only layouts also use the complete available width. */
+.jnr-hero-grid--promos-only,
+.jnr-hero-grid--promos-slider {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* A promotion-only carousel uses the promotion artwork ratio. */
+.jnr-hero-slider--promos-only {
+  /* Match the full-width hero height when promotion banners are standalone. */
+  aspect-ratio: 2.35 / 1;
+}
+
+/* One side promotion fills the complete side column beside the hero. */
+.jnr-hero-side--single {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr);
+}
+
+/* With no hero and exactly two promotions, show them side by side. */
+.jnr-hero-side--two-only {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: none;
+}
+
+.jnr-hero-side--two-only .jnr-hero-side-card {
+  aspect-ratio: 17 / 10;
+}
+
+/* On tablet/mobile, a single side promotion becomes a full-width row. */
+@media (max-width: 900px) {
+  .jnr-hero-grid--hero-only .jnr-hero-slider,
+  .jnr-hero-slider--promos-only {
+    aspect-ratio: 2 / 1;
+  }
+
+  .jnr-hero-side--single {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+  }
+
+  .jnr-hero-side--single .jnr-hero-side-card {
+    aspect-ratio: 17 / 10;
+  }
+}
+
+/* Keep promotion-only layouts consistent on small screens. */
+@media (max-width: 680px) {
+  .jnr-hero-grid--hero-only .jnr-hero-slider {
+    aspect-ratio: 1.8 / 1;
+  }
+
+  .jnr-hero-slider--promos-only {
+    aspect-ratio: 1.8 / 1;
+  }
+
+  .jnr-hero-side--two-only {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .jnr-hero-side--two-only .jnr-hero-side-card {
+    aspect-ratio: 17 / 10;
   }
 }

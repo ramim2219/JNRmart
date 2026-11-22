@@ -3,19 +3,29 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import {
+
   ChevronDown,
+
   ChevronRight,
+
   Search,
+
   X,
+
   Heart,
+
   ClipboardList,
+
   UserRound,
+
 } from 'lucide-react';
+
 import { useStoreUI } from '../../context/StoreUIContext';
 
 import { fetchPublicCategories } from '../../services/categoryServices';
 
 import '../../styles/category-navigation.css';
+import '../../styles/offers-navigation.css';
 
 const makeSlug = (name) =>
 
@@ -196,6 +206,7 @@ export default function CategoryNavigation() {
   const sidebarRef = useRef(null);
 
   const location = useLocation();
+
   const { panel, openPanel, closePanel, wishlistCount } = useStoreUI();
 
   useEffect(() => {
@@ -310,18 +321,26 @@ export default function CategoryNavigation() {
 
   }, [location.pathname, location.search]);
 
-  
-
   // The mobile bottom Menu button opens this same All Categories sidebar.
+
   useEffect(() => {
+
     if (panel === 'menu') {
+
       setQuery('');
+
       setHoveredCategoryId(null);
+
       setSidebarOpen(true);
+
     } else {
+
       setSidebarOpen(false);
+
     }
+
   }, [panel]);
+
 // Lock page scrolling and keep keyboard focus inside the open sidebar.
 
   useEffect(() => {
@@ -337,10 +356,15 @@ export default function CategoryNavigation() {
     const onKeyDown = (event) => {
 
       if (event.key === 'Escape') {
+
         event.preventDefault();
+
         setSidebarOpen(false);
+
         if (panel === 'menu') closePanel();
+
         return;
+
       }
 
       if (event.key !== 'Tab' || !sidebarRef.current) return;
@@ -382,9 +406,13 @@ export default function CategoryNavigation() {
       document.removeEventListener('keydown', onKeyDown);
 
       if (openButtonRef.current?.getClientRects().length) {
+
         openButtonRef.current.focus();
+
       } else {
+
         document.querySelector('[data-mobile-menu-trigger="true"]')?.focus();
+
       }
 
     };
@@ -426,13 +454,19 @@ export default function CategoryNavigation() {
   };
 
   const closeSidebar = () => {
+
     setSidebarOpen(false);
+
     if (panel === 'menu') closePanel();
+
   };
 
   const openWishlistFromSidebar = () => {
+
     closeSidebar();
+
     openPanel('wishlist');
+
   };
 
   return (
@@ -475,6 +509,15 @@ export default function CategoryNavigation() {
 
                 Home
 
+              </Link>
+
+              {/* Offers opens the existing ShopPage offer-zone view. */}
+              <Link
+                to="/category/offer-zone"
+                className="jnr-scroll-nav__offers"
+                aria-label="Shop offers and discounted products"
+              >
+                Offers
               </Link>
 
               {rootCategories.map((category) => {
@@ -721,6 +764,15 @@ export default function CategoryNavigation() {
 
               </Link>
 
+              <Link
+                to="/category/offer-zone"
+                onClick={closeSidebar}
+                className="jnr-cat-sidebar__offers"
+              >
+                <span>Offers</span>
+                <ChevronRight size={16} />
+              </Link>
+
               {loading && <p role="status">Loading categories...</p>}
 
               {!loading && error && (
@@ -786,32 +838,53 @@ export default function CategoryNavigation() {
               )}
 
               <div className="jnr-cat-sidebar__quick-links">
+
                 <h3>Quick Links</h3>
 
                 <button type="button" onClick={openWishlistFromSidebar}>
+
                   <span>
+
                     <Heart size={17} aria-hidden="true" />
+
                     Wishlist
+
                     {wishlistCount > 0 && <small>{wishlistCount}</small>}
+
                   </span>
+
                   <ChevronRight size={16} aria-hidden="true" />
+
                 </button>
 
                 <Link to="/track-order" onClick={closeSidebar}>
+
                   <span>
+
                     <ClipboardList size={17} aria-hidden="true" />
+
                     Track Order
+
                   </span>
+
                   <ChevronRight size={16} aria-hidden="true" />
+
                 </Link>
 
                 <Link to="/account" onClick={closeSidebar}>
+
                   <span>
+
                     <UserRound size={17} aria-hidden="true" />
+
                     My Account
+
                   </span>
+
                   <ChevronRight size={16} aria-hidden="true" />
+
                 </Link>
+
               </div>
 
             </div>

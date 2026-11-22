@@ -1,0 +1,56 @@
+/* Offers: text-only link beside Home, with a faster light-color cycle. */
+.jnr-scroll-nav__list > .jnr-scroll-nav__offers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  align-self: center;
+  margin-inline: 4px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.15;
+  font-weight: 800;
+  letter-spacing: 0.015em;
+  white-space: nowrap;
+  color: #fb7185;
+  animation: jnr-offers-color-cycle 1.5s linear infinite;
+}
+
+.jnr-scroll-nav__list > .jnr-scroll-nav__offers:hover {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+/* Accessible keyboard focus without a persistent border. */
+.jnr-scroll-nav__list > .jnr-scroll-nav__offers:focus-visible,
+.jnr-cat-sidebar__items > .jnr-cat-sidebar__offers:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Soft pink -> light violet -> light amber, repeat. */
+@keyframes jnr-offers-color-cycle {
+  0%, 100% { color: #df1d3a; }
+  33% { color: #7a58ff; }
+  67% { color: #fdd03c; }
+}
+
+/* Same text animation in the mobile categories sidebar. */
+.jnr-cat-sidebar__items > .jnr-cat-sidebar__offers {
+  font-weight: 800;
+  color: #fb7185;
+  animation: jnr-offers-color-cycle 1.5s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jnr-scroll-nav__list > .jnr-scroll-nav__offers,
+  .jnr-cat-sidebar__items > .jnr-cat-sidebar__offers {
+    animation: none;
+  }
+}

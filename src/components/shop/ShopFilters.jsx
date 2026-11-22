@@ -1,86 +1,265 @@
-import { useState } from 'react';
-import { ChevronDown, RotateCcw } from 'lucide-react';
-import { moneyBDT } from '../../data/shopDemoData';
+import { useState } from "react";
+import { ChevronDown, RotateCcw } from "lucide-react";
+
+function formatBDT(value) {
+  return `৳ ${new Intl.NumberFormat("en-BD", {
+    maximumFractionDigits: 0,
+  }).format(Number(value) || 0)}`;
+}
 
 function FilterGroup({ title, children, initialOpen = true }) {
   const [open, setOpen] = useState(initialOpen);
+
   return (
     <section className="jnr-shop-filter-group">
-      <button type="button" className="jnr-shop-filter-group__toggle" onClick={() => setOpen(!open)} aria-expanded={open}>
-        <span>{title}</span><ChevronDown size={17} className={open ? 'is-open' : ''} aria-hidden="true" />
+      <button
+        type="button"
+        className="jnr-shop-filter-group__toggle"
+        onClick={() => setOpen((current) => !current)}
+        aria-expanded={open}
+      >
+        <span>{title}</span>
+        <ChevronDown
+          size={17}
+          className={open ? "is-open" : ""}
+          aria-hidden="true"
+        />
       </button>
-      {open && <div className="jnr-shop-filter-group__content">{children}</div>}
+
+      {open && (
+        <div className="jnr-shop-filter-group__content">
+          {children}
+        </div>
+      )}
     </section>
   );
 }
 
-/** Controlled filters; desktop and mobile use the exact same state. */
+/**
+ * Controlled filters; desktop and mobile use the exact same state.
+ * No demo-data dependency: options and counts come from the API products.
+ */
 export default function ShopFilters({
-  subCategories,
-  brands,
-  selectedSubCategories,
-  selectedBrands,
+  categories = [],
+  selectedCategoryKey = "",
+  onCategoryChange,
+  subCategories = [],
+  brands = [],
+  selectedSubCategories = new Set(),
+  selectedBrands = new Set(),
   onSubCategoryChange,
   onBrandChange,
-  flags,
+  flags = { bestSelling: false, newArrival: false },
   onFlagsChange,
-  priceMin,
-  priceMax,
-  ceiling,
+  priceMin = 0,
+  priceMax = 500,
+  ceiling = 500,
   onPriceChange,
   onClear,
   showClear = true,
 }) {
   const toggleInSet = (current, name, callback) => {
-    const next = new Set(current);
-    if (next.has(name)) next.delete(name);
-    else next.add(name);
-    callback(next);
+    const next = new Set(current || []);
+
+    if (next.has(name)) {
+      next.delete(name);
+    } else {
+      next.add(name);
+    }
+
+    callback?.(next);
   };
-  const trackStart = ceiling ? (priceMin / ceiling) * 100 : 0;
-  const trackEnd = ceiling ? (priceMax / ceiling) * 100 : 100;
+
+  const safeCeiling = Math.max(1, Number(ceiling) || 1);
+  const safeMin = Math.min(
+    safeCeiling,
+    Math.max(0, Number(priceMin) || 0)
+  );
+  const safeMax = Math.min(
+    safeCeiling,
+    Math.max(safeMin, Number(priceMax) || 0)
+  );
+
+  const trackStart = (safeMin / safeCeiling) * 100;
+  const trackEnd = (safeMax / safeCeiling) * 100;
 
   return (
     <div className="jnr-shop-filters">
       {showClear && (
         <div className="jnr-shop-filter-summary">
           <strong>Filter Products</strong>
-          <button type="button" onClick={onClear}><RotateCcw size={14}/> Reset</button>
+          <button type="button" onClick={onClear}>
+            <RotateCcw size={14} />
+            Reset
+          </button>
         </div>
       )}
+
       <FilterGroup title="Filter by Category">
-        {subCategories.length ? subCategories.map((sub) => (
-          <label className="jnr-shop-filter-choice" key={sub.name}>
-            <input type="checkbox" checked={selectedSubCategories.has(sub.name)} onChange={() => toggleInSet(selectedSubCategories, sub.name, onSubCategoryChange)} />
-            <span>{sub.name}</span>
-            <small>{sub.count}</small>
-          </label>
-        )) : <p className="jnr-shop-filter-empty">No subcategories</p>}
+        <label className="jnr-shop-filter-choice">
+          <input
+            type="radio"
+            name="jnr-shop-category-filter"
+            checked={!selectedCategoryKey}
+            onChange={() => onCategoryChange?.("")}
+          />
+          <span>All Categories</span>
+        </label>
+
+        {categories.length ? (
+          categories.map((category) => (
+            <label
+              className="jnr-shop-filter-choice"
+              key={category.key}
+            >
+              <input
+                type="radio"
+                name="jnr-shop-category-filter"
+                checked={selectedCategoryKey === category.key}
+                onChange={() => onCategoryChange?.(category.key)}
+              />
+              <span>{category.name}</span>
+              <small>{category.count}</small>
+            </label>
+          ))
+        ) : (
+          <p className="jnr-shop-filter-empty">
+            No categories with products
+          </p>
+        )}
       </FilterGroup>
+
+      <FilterGroup title="Subcategories">
+        {subCategories.length ? (
+          subCategories.map((sub) => (
+            <label
+              className="jnr-shop-filter-choice"
+              key={sub.name}
+            >
+              <input
+                type="checkbox"
+                checked={selectedSubCategories.has(sub.name)}
+                onChange={() =>
+                  toggleInSet(
+                    selectedSubCategories,
+                    sub.name,
+                    onSubCategoryChange
+                  )
+                }
+              />
+              <span>{sub.name}</span>
+              <small>{sub.count}</small>
+            </label>
+          ))
+        ) : (
+          <p className="jnr-shop-filter-empty">
+            No subcategories available
+          </p>
+        )}
+      </FilterGroup>
+
       <FilterGroup title="Price Range">
-        <div className="jnr-shop-price-labels"><span>{moneyBDT(priceMin)}</span><span>{moneyBDT(priceMax)}</span></div>
-        <div className="jnr-shop-price-range" style={{ '--range-from': `${trackStart}%`, '--range-to': `${trackEnd}%` }}>
-          <div className="jnr-shop-price-range__track"/>
-          <input type="range" min="0" max={ceiling} step="10" value={priceMin} onChange={e => onPriceChange(Math.min(Number(e.target.value), priceMax), priceMax)} aria-label="Minimum price" />
-          <input type="range" min="0" max={ceiling} step="10" value={priceMax} onChange={e => onPriceChange(priceMin, Math.max(Number(e.target.value), priceMin))} aria-label="Maximum price" />
+        <div className="jnr-shop-price-labels">
+          <span>{formatBDT(safeMin)}</span>
+          <span>{formatBDT(safeMax)}</span>
+        </div>
+
+        <div
+          className="jnr-shop-price-range"
+          style={{
+            "--range-from": `${trackStart}%`,
+            "--range-to": `${trackEnd}%`,
+          }}
+        >
+          <div className="jnr-shop-price-range__track" />
+
+          <input
+            type="range"
+            min="0"
+            max={safeCeiling}
+            step="10"
+            value={safeMin}
+            onChange={(event) =>
+              onPriceChange?.(
+                Math.min(Number(event.target.value), safeMax),
+                safeMax
+              )
+            }
+            aria-label="Minimum price"
+          />
+
+          <input
+            type="range"
+            min="0"
+            max={safeCeiling}
+            step="10"
+            value={safeMax}
+            onChange={(event) =>
+              onPriceChange?.(
+                safeMin,
+                Math.max(Number(event.target.value), safeMin)
+              )
+            }
+            aria-label="Maximum price"
+          />
         </div>
       </FilterGroup>
+
       <FilterGroup title="Brands">
-        {brands.map((brand) => (
-          <label className="jnr-shop-filter-choice" key={brand.name}>
-            <input type="checkbox" checked={selectedBrands.has(brand.name)} onChange={() => toggleInSet(selectedBrands, brand.name, onBrandChange)} />
-            <span>{brand.name}</span>
-            <small>{brand.count}</small>
-          </label>
-        ))}
+        {brands.length ? (
+          brands.map((brand) => (
+            <label
+              className="jnr-shop-filter-choice"
+              key={brand.name}
+            >
+              <input
+                type="checkbox"
+                checked={selectedBrands.has(brand.name)}
+                onChange={() =>
+                  toggleInSet(
+                    selectedBrands,
+                    brand.name,
+                    onBrandChange
+                  )
+                }
+              />
+              <span>{brand.name}</span>
+              <small>{brand.count}</small>
+            </label>
+          ))
+        ) : (
+          <p className="jnr-shop-filter-empty">
+            No brands available
+          </p>
+        )}
       </FilterGroup>
+
       <FilterGroup title="Product Flag">
         <label className="jnr-shop-filter-choice">
-          <input type="checkbox" checked={flags.bestSelling} onChange={e => onFlagsChange({ ...flags, bestSelling: e.target.checked })}/>
+          <input
+            type="checkbox"
+            checked={Boolean(flags.bestSelling)}
+            onChange={(event) =>
+              onFlagsChange?.({
+                ...flags,
+                bestSelling: event.target.checked,
+              })
+            }
+          />
           <span>Best Selling</span>
         </label>
+
         <label className="jnr-shop-filter-choice">
-          <input type="checkbox" checked={flags.newArrival} onChange={e => onFlagsChange({ ...flags, newArrival: e.target.checked })}/>
+          <input
+            type="checkbox"
+            checked={Boolean(flags.newArrival)}
+            onChange={(event) =>
+              onFlagsChange?.({
+                ...flags,
+                newArrival: event.target.checked,
+              })
+            }
+          />
           <span>New Arrival</span>
         </label>
       </FilterGroup>
