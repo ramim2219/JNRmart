@@ -20,6 +20,7 @@ import {
   getVariantPricing,
   getDescription,
   priceBDT,
+  priceWithCurrency,
 } from "../../utils/productHelpers";
 
 import "../../styles/product-details-api.css";
@@ -104,6 +105,8 @@ export default function ProductPurchasePanel({
       variant_id: selectedVariant?.id ?? null,
       sku: selectedVariant?.sku ?? null,
       selectedVariant,
+      currency_code: pricing.currency?.code ?? "BDT",
+      currency_symbol: pricing.currency?.symbol ?? "৳",
       attributes: selectedVariant?.attributes ?? [],
     };
 
@@ -191,7 +194,7 @@ export default function ProductPurchasePanel({
                     {getVariantLabel(variant, index)}
                     {" — "}
                     {variantPricing.price > 0
-                      ? priceBDT(variantPricing.price)
+                      ? priceWithCurrency(variantPricing.price, variantPricing.currency)
                       : "Price unavailable"}
                   </option>
                 );
@@ -235,16 +238,21 @@ export default function ProductPurchasePanel({
         </div>
       )}
 
+      {pricing.appliedOffer && (
+        <p className="jnr-pd-purchase__eyebrow">
+          Offer applied: {pricing.appliedOffer.name}
+        </p>
+      )}
       <div className="jnr-pd-purchase__price-row">
         <strong className="jnr-pd-purchase__price">
-          {priceAvailable ? priceBDT(price) : "Price unavailable"}
+          {priceAvailable ? priceWithCurrency(price, pricing.currency) : "Price unavailable"}
         </strong>
 
         {oldPrice > price && (
           <>
-            <del>{priceBDT(oldPrice)}</del>
+            <del>{priceWithCurrency(oldPrice, pricing.currency)}</del>
             <span className="jnr-pd-purchase__save">
-              Save {priceBDT(savings)}
+              Save {priceWithCurrency(savings, pricing.currency)}
             </span>
           </>
         )}

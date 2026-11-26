@@ -4,7 +4,9 @@ import { useToast } from '../components/common/ToastProvider';
 const StoreUIContext = createContext(null);
 const WISHLIST_KEY = 'jnrmart:wishlist:v1';
 const CART_KEY = 'jnrmart:cart:v1';
-const formatMoney = (value) => `৳${Number(value || 0).toLocaleString('en-BD', { maximumFractionDigits: 2 })}`;
+const formatMoney = (value, symbol = '৳') => `${symbol}${Number(value || 0).toLocaleString('en-BD', { maximumFractionDigits: 2 })}`;
+// Legacy cart rows use id; new rows use id + variant to avoid merging sizes.
+const cartKey = (id, variantId = null) => `${String(id)}:${variantId == null || variantId === '' ? 'default' : String(variantId)}`;
 
 function readItems(key) {
   if (typeof window === 'undefined') return [];
@@ -21,6 +23,10 @@ function loadCart() {
     .filter(item => item && item.id != null && typeof item.name === 'string')
     .map(item => ({
       id: item.id,
+      variant_id: item.variant_id ?? null,
+      cart_key: cartKey(item.id, item.variant_id),
+      currency_code: typeof item.currency_code === 'string' ? item.currency_code : 'BDT',
+      currency_symbol: typeof item.currency_symbol === 'string' ? item.currency_symbol : '৳',
       slug: typeof item.slug === 'string' ? item.slug : '',
       name: item.name,
       price: Number.isFinite(Number(item.price)) && Number(item.price) >= 0 ? Number(item.price) : 0,
@@ -80,15 +86,22 @@ export function StoreUIProvider({ children }) {
       return false;
     }
     const amount = Number.isFinite(Number(quantity)) ? Math.min(999, Math.max(1, Math.floor(Number(quantity)))) : 1;
+    const key = cartKey(product.id, product.variant_id);
     setCart(previous => {
-      const existing = previous.find(item => String(item.id) === String(product.id));
-      if (existing) return previous.map(item => String(item.id) === String(product.id)
-        ? { ...item, quantity: Math.min(999, item.quantity + amount) } : item);
+      const existing = previous.find(item => item.cart_key === key);
+      if (existing) return previous.map(item => item.cart_key === key
+        ? { ...item, quantity: Math.min(999, item.quantity + amount), price }
+        : item);
       return [...previous, {
-        id: product.id, slug: product.slug || '',
+        id: product.id,
+        variant_id: product.variant_id ?? null,
+        cart_key: key,
+        currency_code: product.currency_code || 'BDT',
+        currency_symbol: product.currency_symbol || '৳',
+        slug: product.slug || '',
         name: product.name || product.title || 'Product',
         price, image: product.image || product.thumbnail || '', quantity: amount,
-        selected: true, // every newly added product participates in checkout by default
+        selected: true,
       }];
     });
     toast.success(`${amount} × ${product.name || product.title || 'Product'} added to cart.`, {
@@ -98,10 +111,10 @@ export function StoreUIProvider({ children }) {
   }, [openPanel, toast]);
 
   const changeQuantity = useCallback((id, delta) => {
-    const item = cart.find(entry => String(entry.id) === String(id));
+    const item = cart.find(entry => entry.cart_key === String(id) || (entry.cart_key == null && String(entry.id) === String(id)));
     if (!item || !Number.isInteger(delta) || delta === 0) return;
     const updated = Math.min(999, item.quantity + delta);
-    setCart(previous => previous.map(entry => String(entry.id) === String(id)
+    setCart(previous => previous.map(entry => (entry.cart_key === String(id) || (entry.cart_key == null && String(entry.id) === String(id)))
       ? { ...entry, quantity: Math.min(999, entry.quantity + delta) } : entry)
       .filter(entry => entry.quantity > 0));
     if (updated <= 0) toast.info(`${item.name} removed from cart.`, { id: 'cart-quantity', title: 'Cart Updated' });
@@ -109,15 +122,15 @@ export function StoreUIProvider({ children }) {
   }, [cart, toast]);
 
   const removeItem = useCallback(id => {
-    const item = cart.find(entry => String(entry.id) === String(id));
+    const item = cart.find(entry => entry.cart_key === String(id) || (entry.cart_key == null && String(entry.id) === String(id)));
     if (!item) return;
-    setCart(previous => previous.filter(entry => String(entry.id) !== String(id)));
+    setCart(previous => previous.filter(entry => !(entry.cart_key === String(id) || (entry.cart_key == null && String(entry.id) === String(id)))));
     toast.info(`${item.name} removed from cart.`, { id: 'cart-remove', title: 'Item Removed' });
   }, [cart, toast]);
 
   // Cart selections live in shared state, so the drawer and /checkout stay in sync.
   const toggleCartSelection = useCallback(id => {
-    setCart(previous => previous.map(item => String(item.id) === String(id)
+    setCart(previous => previous.map(item => (item.cart_key === String(id) || (item.cart_key == null && String(item.id) === String(id)))
       ? { ...item, selected: !item.selected } : item));
   }, []);
 
@@ -158,21 +171,27 @@ export function StoreUIProvider({ children }) {
 
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const allCartCurrencies = [...new Set(cart.map(item => item.currency_code || 'BDT'))];
+  const hasMixedCartCurrencies = allCartCurrencies.length > 1;
+  const cartCurrencySymbol = cart[0]?.currency_symbol || '৳';
   const selectedCartItems = cart.filter(item => item.selected !== false);
   const selectedCount = selectedCartItems.reduce((sum, item) => sum + item.quantity, 0);
   const selectedTotal = selectedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const allCartSelected = cart.length > 0 && selectedCartItems.length === cart.length;
+  const cartCurrencies = [...new Set(selectedCartItems.map(item => item.currency_code || 'BDT'))];
+  const hasMixedCurrencies = cartCurrencies.length > 1;
+  const selectedCurrencySymbol = selectedCartItems[0]?.currency_symbol || '৳';
   const wishlistCount = wishlist.length;
 
   const value = useMemo(() => ({
     cart, count, total, panel, openPanel, closePanel, addToCart, changeQuantity,
     removeItem, formatMoney, wishlist, wishlistCount, isWishlisted,
     addToWishlist, removeFromWishlist, toggleWishlist,
-    selectedCartItems, selectedCount, selectedTotal, allCartSelected,
+    selectedCartItems, selectedCount, selectedTotal, allCartSelected, hasMixedCurrencies, selectedCurrencySymbol, hasMixedCartCurrencies, cartCurrencySymbol,
     toggleCartSelection, selectAllCartItems,
   }), [cart, count, total, panel, openPanel, closePanel, addToCart, changeQuantity,
     removeItem, wishlist, wishlistCount, isWishlisted, addToWishlist, removeFromWishlist, toggleWishlist,
-    selectedCartItems, selectedCount, selectedTotal, allCartSelected, toggleCartSelection, selectAllCartItems]);
+    selectedCartItems, selectedCount, selectedTotal, allCartSelected, hasMixedCurrencies, selectedCurrencySymbol, hasMixedCartCurrencies, cartCurrencySymbol, toggleCartSelection, selectAllCartItems]);
 
   return <StoreUIContext.Provider value={value}>{children}</StoreUIContext.Provider>;
 }

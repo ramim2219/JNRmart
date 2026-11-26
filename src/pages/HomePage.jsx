@@ -6,7 +6,6 @@ import {
   electronicsDeals,
 } from '../data/dealsDemoData';
 
-import { featuredProducts } from '../data/featuredProductsDemoData';
 
 import HeroBanner from '../components/common/HeroBanner';
 import CategorySlider from '../components/common/CategorySlider';
@@ -14,20 +13,9 @@ import ProductDealsSection from '../components/common/ProductDealsSection';
 import WelcomePopup from '../components/common/WelcomePopup';
 import PromotionalBannerSection from '../components/common/PromotionalBannerSection';
 import FeaturedProductsSection from '../components/common/FeaturedProductsSection';
+import OfferProductsSection from '../components/common/OfferProductsSection';
 
 export default function HomePage() {
-
-  // Temporary demo Add to Cart handler
-  const handleAddToCart = (product) => {
-    console.log('Demo Cart Product:', product.name);
-  };
-
-  // Temporary demo Wishlist handler
-  const handleWishlist = (product, isWishlisted) => {
-    console.log(
-      `${product.name}: ${isWishlisted ? 'Added to' : 'Removed from'} Wishlist`
-    );
-  };
 
   return (
     <>
@@ -45,12 +33,11 @@ export default function HomePage() {
 
       <PromotionalBannerSection />
 
-      {/* Featured Products - Dummy Data */}
-      <FeaturedProductsSection
-        products={featuredProducts}
-        onAddToCart={handleAddToCart}
-        onToggleWishlist={handleWishlist}
-      />
+      {/* Regular products exclude active offer participants at the API level. */}
+      <FeaturedProductsSection />
+
+      {/* Offer participants appear only in their separate home section. */}
+      <OfferProductsSection />
 
       {/* <section className="container section">
 

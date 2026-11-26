@@ -66,6 +66,7 @@ function buildParams(params = {}) {
     "page",
     "per_page",
     "sort",
+    "offer_filter",
   ];
 
   return Object.fromEntries(
@@ -141,3 +142,17 @@ const publicProductServices = {
 };
 
 export default publicProductServices;
+
+/** Only products attached to this currently active, published offer. */
+export async function getPublicOfferProducts(offerId, params = {}, { signal } = {}) {
+  if (!Number.isSafeInteger(Number(offerId)) || Number(offerId) <= 0) {
+    throw new Error("A valid offer ID is required.");
+  }
+  return unwrap(
+    apiClient.get(`/public/offers/${encodeURIComponent(String(offerId))}/products`, {
+      params: buildParams(params),
+      signal,
+    }),
+    "Public Offer Products"
+  );
+}

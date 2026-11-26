@@ -240,6 +240,8 @@ function getPagination(meta, requestedPage, itemCount, pageSize) {
     hasMore = source.has_more;
   } else if (typeof source.hasMore === "boolean") {
     hasMore = source.hasMore;
+  } else if (typeof source.has_more_pages === "boolean") {
+    hasMore = source.has_more_pages;
   } else if ("next_page_url" in source) {
     hasMore = Boolean(source.next_page_url);
   } else if ("nextPageUrl" in source) {
@@ -419,6 +421,7 @@ export default function FeaturedProductsSection({
       const params = {
         page: 1,
         per_page: pageSize,
+        offer_filter: "exclude",
       };
 
       if (selectedCategoryId != null) {

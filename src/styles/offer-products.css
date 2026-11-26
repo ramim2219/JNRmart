@@ -1,0 +1,13 @@
+/* Storefront-only offer additions; shared ProductCard styles are unchanged. */
+.jnr-offer-products-section { margin-block: 24px 36px; }
+.jnr-offer-page { padding-top: 24px; padding-bottom: 70px; min-height: 50vh; }
+.jnr-offer-page__header { margin-block: 20px 28px; }
+.jnr-offer-page__header h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin-bottom: 8px; }
+.jnr-offer-page__header p { opacity: .75; }
+.jnr-offer-page__header small { opacity: .7; }
+.jnr-offer-back { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.jnr-offer-state { padding: 28px 8px; min-height: 85px; }
+.jnr-offer-state button { cursor: pointer; margin-left: 10px; }
+.jnr-offer-pagination { display:flex; justify-content:center; align-items:center; gap:18px; margin-top:30px; }
+.jnr-offer-pagination button { padding:8px 16px; cursor:pointer; border:1px solid #d9dde2; border-radius:8px; background:transparent; }
+.jnr-offer-pagination button:disabled { opacity: .45; cursor:not-allowed; }

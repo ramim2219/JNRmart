@@ -28,21 +28,52 @@ const extractBannerRows = (response) => {
 
 };
 
+// Use Vite's existing /storage proxy for Laravel-hosted banner images.
+// Kept in this file so there is no additional import or utility to install.
+const resolveBannerImageUrl = (value) => {
+  if (!value) return '';
+
+  const raw = String(value).trim().replace(/\\/g, '/');
+  if (!raw) return '';
+  if (/^(data:|blob:)/i.test(raw)) return raw;
+
+  if (/^https?:\/\//i.test(raw) || raw.startsWith('//')) {
+    try {
+      const url = new URL(raw, window.location.origin);
+      const backendHost = url.hostname.toLowerCase();
+      const websiteHost = window.location.hostname.toLowerCase();
+      const isLocalServer = ['localhost', '127.0.0.1', '::1', '[::1]'].includes(backendHost)
+        || backendHost === websiteHost;
+
+      if (isLocalServer && /^\/storage(?:\/|$)/i.test(url.pathname)) {
+        return `${url.pathname}${url.search}${url.hash}`;
+      }
+      return raw;
+    } catch {
+      return raw;
+    }
+  }
+
+  const clean = raw.replace(/^\/+/, '').replace(/^public\//i, '');
+  if (/^storage\//i.test(clean)) return `/${clean}`;
+  if (/^(images|assets)\//i.test(clean)) return `/${clean}`;
+  if (/^offer-banners\//i.test(clean)) return `/storage/${clean}`;
+  if (raw.startsWith('/')) return raw;
+
+  return `/storage/${clean}`;
+};
+
 const toShowcaseBanner = (banner) => ({
 
   id: banner.id,
 
-  image:
+  image: resolveBannerImageUrl(
+    banner.banner_image_url || banner.image_url || banner.banner_image || banner.image || ''
+  ),
 
-    banner.banner_image_url ||
-
-    banner.image_url ||
-
-    banner.banner_image ||
-
-    '',
-
-  href: banner.href || '/category/offer-zone',
+  href: banner.offer_id
+    ? `/offers/${encodeURIComponent(String(banner.offer_id))}`
+    : (banner.href || '/category/offer-zone'),
 
   alt: banner.alt || banner.offer?.name || 'Explore this offer',
 
@@ -59,80 +90,38 @@ const toShowcaseBanner = (banner) => ({
  */
 
 const removeDuplicateBanners = (banners) => {
-
-  const seenIds = new Set();
-
-  const seenImages = new Set();
+  const ids = new Set();
+  const fallbackImages = new Set();
 
   return banners.filter((banner) => {
-
-    const idKey =
-
-      banner.id !== undefined && banner.id !== null
-
-        ? String(banner.id)
-
-        : null;
-
-    const imageKey = banner.image || null;
-
-    if (
-
-      (idKey !== null && seenIds.has(idKey)) ||
-
-      (imageKey !== null && seenImages.has(imageKey))
-
-    ) {
-
-      return false;
-
+    if (banner.id !== undefined && banner.id !== null) {
+      const key = String(banner.id);
+      if (ids.has(key)) return false;
+      ids.add(key);
+      return true;
     }
 
-    if (idKey !== null) seenIds.add(idKey);
-
-    if (imageKey !== null) seenImages.add(imageKey);
-
+    // When there is no ID, image is a reasonable fallback key.
+    const key = String(banner.image || '');
+    if (!key || fallbackImages.has(key)) return false;
+    fallbackImages.add(key);
     return true;
-
   });
-
 };
 
-/**
-
- * Return a random sample without replacement.
-
- * This guarantees that the same banner cannot be selected twice.
-
- */
-
-const pickRandomBanners = (banners, limit) => {
-
-  const shuffled = [...banners];
-
-  for (let i = shuffled.length - 1; i > 0; i -= 1) {
-
-    const randomIndex = Math.floor(Math.random() * (i + 1));
-
-    [shuffled[i], shuffled[randomIndex]] = [
-
-      shuffled[randomIndex],
-
-      shuffled[i],
-
-    ];
-
-  }
-
-  return shuffled.slice(0, Math.min(limit, shuffled.length));
-
-};
+// All promotion_1 records remain eligible. The two visible slots rotate
+// deterministically so no active promotion is permanently hidden.
 
 export default function HeroBanner({
+
   items,
+
   sideBanners,
+
   interval = 4500,
+
   offersInterval = 3800,
+
 }) {
 
   const [backendBanners, setBackendBanners] = useState([]);
@@ -151,7 +140,7 @@ export default function HeroBanner({
 
         const rows = extractBannerRows(response)
 
-          .filter((banner) => Number(banner?.status) === 1)
+          .filter((banner) => Number(banner?.status ?? 1) === 1)
 
           .filter((banner) =>
 
@@ -161,7 +150,8 @@ export default function HeroBanner({
 
                 banner?.image_url ||
 
-                banner?.banner_image
+                banner?.banner_image ||
+                banner?.image
 
             )
 
@@ -187,7 +177,7 @@ export default function HeroBanner({
 
               (banner) =>
 
-                String(banner?.banner_type || '').toLowerCase() ===
+                String(banner?.banner_type || '').trim().toLowerCase() ===
 
                 'hero_banner'
 
@@ -205,7 +195,7 @@ export default function HeroBanner({
 
               (banner) =>
 
-                String(banner?.banner_type || '').toLowerCase() ===
+                String(banner?.banner_type || '').trim().toLowerCase() ===
 
                 'promotion_1'
 
@@ -214,6 +204,21 @@ export default function HeroBanner({
             .map(toShowcaseBanner)
 
         );
+
+        if (import.meta.env.DEV) {
+          const byType = rows.reduce((counts, row) => {
+            const type = String(row?.banner_type || '').trim().toLowerCase();
+            counts[type] = (counts[type] || 0) + 1;
+            return counts;
+          }, {});
+          console.info('[JNRmart banner counts from public API]', {
+            hero_banner: byType.hero_banner || 0,
+            promotion_1: byType.promotion_1 || 0,
+            promotion_2: byType.promotion_2 || 0,
+            shownHero: heroRows.length,
+            shownPromotion1: promotionRows.length,
+          });
+        }
 
         setBackendBanners(heroRows);
 
@@ -260,6 +265,7 @@ export default function HeroBanner({
     ? sideBanners
 
     : backendPromos;
+
 const hasHeroBanners = banners.length > 0;
 
   const hasPromotionBanners = promos.length > 0;
@@ -290,23 +296,30 @@ const hasHeroBanners = banners.length > 0;
 
   const carouselBanners = hasHeroBanners ? banners : promos;
 
+  const [sidePromoPage, setSidePromoPage] = useState(0);
+  const [sidePromoPaused, setSidePromoPaused] = useState(false);
+
+  useEffect(() => {
+    if (!hasHeroBanners || promos.length <= 2 || offersInterval <= 0 || sidePromoPaused) {
+      return undefined;
+    }
+
+    const timer = window.setInterval(() => {
+      setSidePromoPage((page) => page + 1);
+    }, offersInterval);
+
+    return () => window.clearInterval(timer);
+  }, [hasHeroBanners, promos.length, offersInterval, sidePromoPaused]);
+
   const sidePromoBanners = useMemo(() => {
+    if (!hasHeroBanners) return promosOnlyTwo ? promos : [];
+    if (promos.length <= 2) return promos;
 
-    if (!hasHeroBanners) {
-
-      return promosOnlyTwo ? promos : [];
-
-    }
-
-    if (promos.length <= 2) {
-
-      return promos;
-
-    }
-
-    return pickRandomBanners(promos, 2);
-
-  }, [hasHeroBanners, promosOnlyTwo, promos]);
+    // Rotate two slots through the entire list, including odd list lengths.
+    const first = (sidePromoPage * 2) % promos.length;
+    const second = (first + 1) % promos.length;
+    return [promos[first], promos[second]];
+  }, [hasHeroBanners, promosOnlyTwo, promos, sidePromoPage]);
 
   const gridClassName = hasHeroBanners
 
@@ -696,7 +709,7 @@ const hasHeroBanners = banners.length > 0;
 
                   aria-hidden={slideIndex !== index}
 
-                  inert={slideIndex !== index}
+                  inert={slideIndex !== index ? "" : undefined}
 
                 >
 
@@ -728,19 +741,18 @@ const hasHeroBanners = banners.length > 0;
 
                         className="jnr-hero-banner-img"
 
-                        src={banner.image}
+                        src={resolveBannerImageUrl(banner.image)}
 
                         alt={banner.alt || ''}
 
                         loading={slideIndex === 0 ? 'eager' : 'lazy'}
 
-                        fetchPriority={
-
-                          slideIndex === 0 ? 'high' : 'auto'
-
-                        }
+                        fetchpriority={slideIndex === 0 ? 'high' : undefined}
 
                         draggable="false"
+                        onError={(event) => {
+                          console.error('[HeroBanner] Image failed:', event.currentTarget.currentSrc || banner.image);
+                        }}
 
                       />
 
@@ -889,6 +901,14 @@ const hasHeroBanners = banners.length > 0;
               .join(' ')}
 
             aria-label="Special promotions"
+            onMouseEnter={() => setSidePromoPaused(true)}
+            onMouseLeave={() => setSidePromoPaused(false)}
+            onFocusCapture={() => setSidePromoPaused(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) {
+                setSidePromoPaused(false);
+              }
+            }}
 
           >
 
@@ -910,7 +930,7 @@ const hasHeroBanners = banners.length > 0;
 
                 <img
 
-                  src={banner.image}
+                  src={resolveBannerImageUrl(banner.image)}
 
                   alt={banner.alt || ''}
 

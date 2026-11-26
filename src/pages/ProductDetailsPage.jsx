@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ChevronRight,
@@ -68,6 +68,8 @@ function extractProducts(response) {
 
 export default function ProductDetailsPage() {
   const { slug } = useParams();
+  const [searchParams] = useSearchParams();
+  const preferredVariantId = searchParams.get("variant");
   const productId = Number(slug);
 
   const [product, setProduct] = useState(null);
@@ -112,7 +114,18 @@ export default function ProductDetailsPage() {
           throw new Error("Product not found.");
         }
 
-        const normalizedProduct = normalizePublicProduct(rawProduct);
+        const eligible = Array.isArray(rawProduct?.variants)
+          ? rawProduct.variants.some((v) =>
+              String(v.id) === String(preferredVariantId) &&
+              Array.isArray(v.active_offer_ids) && v.active_offer_ids.length > 0
+            )
+          : false;
+        const normalizedProduct = normalizePublicProduct({
+          ...rawProduct,
+          offer_listing: Boolean(eligible),
+          offer_context_id: null,
+          ...(eligible ? { preferred_offer_variant_id: preferredVariantId } : {}),
+        });
 
         if (!normalizedProduct) {
           throw new Error("Unable to process product data.");
@@ -141,7 +154,7 @@ export default function ProductDetailsPage() {
       active = false;
       controller.abort();
     };
-  }, [productId, retryToken]);
+  }, [productId, retryToken, preferredVariantId]);
 
   useEffect(() => {
     if (!product) return undefined;

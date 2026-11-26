@@ -54,6 +54,10 @@ export default function MobileStoreUI() {
     selectedCartItems,
     selectedCount,
     selectedTotal,
+    hasMixedCurrencies,
+    selectedCurrencySymbol,
+    hasMixedCartCurrencies,
+    cartCurrencySymbol,
     allCartSelected,
     toggleCartSelection,
     selectAllCartItems,
@@ -189,7 +193,7 @@ export default function MobileStoreUI() {
         className="floating-cart-summary"
         type="button"
         onClick={() => openPanel('cart')}
-        aria-label={`Open cart, ${count} items, total ${formatMoney(total)}`}
+        aria-label={`Open cart, ${count} items, total ${hasMixedCartCurrencies ? "Mixed currencies" : formatMoney(total, cartCurrencySymbol)}`}
         title="View Shopping Cart"
       >
         <span className="floating-cart-top">
@@ -205,7 +209,7 @@ export default function MobileStoreUI() {
         </span>
 
         <span className="floating-cart-amount">
-          {formatMoney(total)}
+          {hasMixedCartCurrencies ? "Mixed currencies" : formatMoney(total, cartCurrencySymbol)}
         </span>
       </button>
 
@@ -285,7 +289,7 @@ export default function MobileStoreUI() {
                     className={`store-cart-item jnr-cart-selectable-item${
                       item.selected === false ? ' is-unselected' : ''
                     }`}
-                    key={item.id}
+                    key={item.cart_key ?? item.id}
                   >
                     <label
                       className="jnr-cart-item-check"
@@ -295,7 +299,7 @@ export default function MobileStoreUI() {
                         type="checkbox"
                         checked={item.selected !== false}
                         onChange={() =>
-                          toggleCartSelection(item.id)
+                          toggleCartSelection(item.cart_key ?? item.id)
                         }
                         aria-label={`Include ${item.name} in checkout`}
                       />
@@ -312,14 +316,14 @@ export default function MobileStoreUI() {
                     <div className="store-cart-info">
                       <strong>{item.name}</strong>
 
-                      <span>{formatMoney(item.price)}</span>
+                      <span>{formatMoney(item.price, item.currency_symbol || "৳")}</span>
 
                       <div className="store-cart-controls">
                         <button
                           type="button"
                           aria-label={`Reduce ${item.name}`}
                           onClick={() =>
-                            changeQuantity(item.id, -1)
+                            changeQuantity(item.cart_key ?? item.id, -1)
                           }
                         >
                           <Minus size={15} />
@@ -331,7 +335,7 @@ export default function MobileStoreUI() {
                           type="button"
                           aria-label={`Increase ${item.name}`}
                           onClick={() =>
-                            changeQuantity(item.id, 1)
+                            changeQuantity(item.cart_key ?? item.id, 1)
                           }
                         >
                           <Plus size={15} />
@@ -341,7 +345,7 @@ export default function MobileStoreUI() {
                           type="button"
                           className="remove"
                           aria-label={`Remove ${item.name}`}
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => removeItem(item.cart_key ?? item.id)}
                         >
                           <Trash2 size={16} />
                         </button>
@@ -361,7 +365,7 @@ export default function MobileStoreUI() {
                     </small>
                   </span>
 
-                  <strong>{formatMoney(selectedTotal)}</strong>
+                  <strong>{hasMixedCurrencies ? "Mixed currencies" : formatMoney(selectedTotal, selectedCurrencySymbol)}</strong>
                 </div>
 
                 {selectedCartItems.length === 0 && (
@@ -373,10 +377,16 @@ export default function MobileStoreUI() {
                   </p>
                 )}
 
+                {hasMixedCurrencies && (
+                  <p className="jnr-cart-select-warning" role="alert">
+                    Products in different currencies cannot be combined at checkout.
+                  </p>
+                )}
+
                 <button
                   type="button"
                   className="store-primary-btn jnr-cart-checkout-button"
-                  disabled={selectedCartItems.length === 0}
+                  disabled={selectedCartItems.length === 0 || hasMixedCurrencies}
                   onClick={() => {
                     closePanel();
                     navigate('/checkout');
@@ -493,7 +503,7 @@ export default function MobileStoreUI() {
 
                       {item.brand && <small>{item.brand}</small>}
 
-                      <span>{formatMoney(item.price)}</span>
+                      <span>{formatMoney(item.price, item.currency_symbol || "৳")}</span>
 
                       <div className="jnr-wishlist-item__buttons">
                         <button

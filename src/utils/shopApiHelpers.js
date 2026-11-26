@@ -1,5 +1,4 @@
 import { normalizePublicProduct } from "./productHelpers";
-
 export function slugify(value) {
   return String(value ?? "")
     .trim()
@@ -8,11 +7,9 @@ export function slugify(value) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
-
 function firstArray(...values) {
   return values.find(Array.isArray) || [];
 }
-
 export function extractProductRows(response) {
   const candidates = [
     response?.data?.data,
@@ -26,7 +23,6 @@ export function extractProductRows(response) {
     response?.data,
     response,
   ];
-
   for (const candidate of candidates) {
     if (Array.isArray(candidate)) return candidate;
 
@@ -42,10 +38,8 @@ export function extractProductRows(response) {
       }
     }
   }
-
   return [];
 }
-
 export function extractCategories(response) {
   const candidates = [
     response?.data?.data,
@@ -59,7 +53,6 @@ export function extractCategories(response) {
     response?.data,
     response,
   ];
-
   for (const candidate of candidates) {
     if (Array.isArray(candidate)) return candidate;
 
@@ -75,10 +68,8 @@ export function extractCategories(response) {
       }
     }
   }
-
   return [];
 }
-
 export function getPaginationMeta(response, requestedPerPage = 100) {
   const candidates = [
     response?.data,
@@ -91,7 +82,6 @@ export function getPaginationMeta(response, requestedPerPage = 100) {
     response?.result?.meta,
     response?.result?.pagination,
   ];
-
   const meta = candidates.find(
     (item) =>
       item &&
@@ -104,54 +94,41 @@ export function getPaginationMeta(response, requestedPerPage = 100) {
         item.total != null
       )
   );
-
   if (!meta) return { lastPage: null, total: null };
-
   const total = Number(meta.total ?? meta.total_count);
-
   const explicitLastPage = Number(
     meta.last_page ?? meta.lastPage ?? meta.total_pages
   );
-
   const perPage = Number(
     meta.per_page ?? meta.perPage ?? requestedPerPage
   );
-
   const lastPage =
     Number.isFinite(explicitLastPage) && explicitLastPage > 0
       ? explicitLastPage
       : Number.isFinite(total) && total >= 0 && perPage > 0
         ? Math.max(1, Math.ceil(total / perPage))
         : null;
-
   return {
     lastPage,
     total: Number.isFinite(total) ? total : null,
   };
 }
-
 export function flattenCategories(categories = []) {
   const flattened = [];
-
   const visit = (items, parent = null) => {
     if (!Array.isArray(items)) return;
-
     items.forEach((category) => {
       if (!category || typeof category !== "object") return;
-
       const name =
         category.name ??
         category.category_name ??
         category.title ??
         "";
-
       const id = category.id ?? category.category_id ?? null;
-
       const slug =
         category.slug ||
         category.category_slug ||
         slugify(name);
-
       flattened.push({
         ...category,
         id,
@@ -164,7 +141,6 @@ export function flattenCategories(categories = []) {
           null,
         parentName: parent?.name ?? "",
       });
-
       const children = firstArray(
         category.children,
         category.sub_categories,
@@ -172,18 +148,14 @@ export function flattenCategories(categories = []) {
         category.subCategories,
         category.child_categories
       );
-
       visit(children, { id, name: String(name) });
     });
   };
-
   visit(categories);
   return flattened.filter((category) => category.name);
 }
-
 function readName(value) {
   if (typeof value === "string") return value;
-
   return (
     value?.display_name ??
     value?.name ??
@@ -192,7 +164,6 @@ function readName(value) {
     ""
   );
 }
-
 function toBoolean(value) {
   return (
     value === true ||
@@ -201,27 +172,20 @@ function toBoolean(value) {
     value === "true"
   );
 }
-
 function readCreatedAt(value) {
   if (!value) return 0;
-
   const timestamp = new Date(value).getTime();
   return Number.isFinite(timestamp) ? timestamp : 0;
 }
-
 export function normalizeShopProduct(raw) {
   if (!raw || typeof raw !== "object") return null;
-
   const normalized = normalizePublicProduct(raw);
-
   if (!normalized) return null;
-
   const rawCategory =
     raw.category ??
     raw.product_category ??
     raw.productCategory ??
     null;
-
   const rawSubCategory =
     raw.sub_category ??
     raw.subCategory ??
@@ -229,73 +193,61 @@ export function normalizeShopProduct(raw) {
     raw.sub_category_name ??
     raw.subcategory_name ??
     null;
-
   const categoryName =
     readName(rawCategory) ||
     normalized.category ||
     raw.category_name ||
     "";
-
   const subCategoryName =
     readName(rawSubCategory) ||
     raw.sub_category_name ||
     raw.subcategory_name ||
     "";
-
   const subCategoryId =
     raw.sub_category_id ??
     raw.subcategory_id ??
     rawSubCategory?.id ??
     null;
-
   const brandName =
     readName(raw.brand) ||
     normalized.brand ||
     raw.brand_name ||
     "";
-
   const categoryId =
     raw.category_id ??
     rawCategory?.id ??
     normalized.categoryId ??
     null;
-
   const parentCategory =
     raw.parent_category ??
     rawCategory?.parent ??
     null;
-
   const parentCategoryId =
     raw.parent_category_id ??
     rawCategory?.parent_id ??
     parentCategory?.id ??
     null;
-
   const parentCategoryName =
     readName(parentCategory) ||
     raw.parent_category_name ||
     "";
-
   const categorySlug =
     rawCategory?.slug ||
     raw.category_slug ||
     normalized.categorySlug ||
     slugify(categoryName);
-
   const bestSelling = toBoolean(
     raw.bestSelling ??
       raw.best_selling ??
       raw.is_best_selling ??
       raw.isBestSelling
   );
-
   const newArrival = toBoolean(
     raw.newArrival ??
       raw.new_arrival ??
       raw.is_new_arrival ??
       raw.isNewArrival
   );
-
   return {
     ...normalized,
     category: categoryName,

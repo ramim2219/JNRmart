@@ -1,50 +1,146 @@
+
 // Reusable helpers for public product data.
 // No API requests or hard-coded product records belong in this file.
 
-const FALLBACK_ORIGIN = "http://127.0.0.1:8000";
+// Optional production asset origin.
+// Example: http://192.168.0.174:8000
+// Leave empty during Vite development to use the Vite proxy.
+function getAssetBaseUrl() {
+  const configuredUrl = import.meta.env.VITE_ASSET_BASE_URL?.trim();
 
-function getAssetOrigin() {
-  const configuredUrl =
-    import.meta.env.VITE_ASSET_BASE_URL ||
-    import.meta.env.VITE_API_URL ||
-    FALLBACK_ORIGIN;
+  if (!configuredUrl) return "";
 
   try {
-    return new URL(configuredUrl, FALLBACK_ORIGIN).origin;
+    const url = new URL(configuredUrl);
+
+    if (!["http:", "https:"].includes(url.protocol)) {
+      return "";
+    }
+
+    return `${url.origin}${url.pathname.replace(/\/+$/, "")}`;
   } catch {
-    return FALLBACK_ORIGIN;
+    console.warn("[Product Images] Invalid VITE_ASSET_BASE_URL");
+    return "";
   }
 }
 
-const ASSET_ORIGIN = getAssetOrigin();
+const ASSET_BASE_URL = getAssetBaseUrl();
+
+const isLocalhost = (hostname) => {
+  const host = String(hostname || "").toLowerCase();
+
+  return (
+    host === "localhost" ||
+    host === "127.0.0.1" ||
+    host === "::1" ||
+    host === "[::1]"
+  );
+};
+
+// Add the optional asset base URL.
+function buildAssetUrl(path) {
+  if (!path) return "";
+
+  const normalizedPath = path.startsWith("/")
+    ? path
+    : `/${path}`;
+
+  return `${ASSET_BASE_URL}${normalizedPath}`;
+}
+
+// ======================================================
+// IMAGE URL RESOLVER
+// ======================================================
 
 export function resolveProductImageUrl(path) {
-  if (typeof path !== "string" || !path.trim()) return "";
+  if (typeof path !== "string" || !path.trim()) {
+    return "";
+  }
 
   const src = path.trim();
 
-  if (/^(https?:\/\/|\/\/|data:image\/|blob:)/i.test(src)) {
+  // Base64 and Blob images.
+  if (/^(data:image\/|blob:)/i.test(src)) {
     return src;
   }
 
-  if (src.startsWith("/storage/")) {
-    return `${ASSET_ORIGIN}${src}`;
+  // Absolute HTTP/HTTPS URLs.
+  if (/^https?:\/\//i.test(src)) {
+    try {
+      const url = new URL(src);
+
+      // Rewrite localhost URLs.
+      // This is essential when opening the website
+      // from another device on the same network.
+      if (isLocalhost(url.hostname)) {
+        return buildAssetUrl(
+          `${url.pathname}${url.search}${url.hash}`
+        );
+      }
+
+      // Keep valid external or public backend URLs.
+      return src;
+    } catch {
+      return "";
+    }
   }
 
+  // Protocol-relative URLs.
+  if (src.startsWith("//")) {
+    try {
+      const url = new URL(`http:${src}`);
+
+      if (isLocalhost(url.hostname)) {
+        return buildAssetUrl(
+          `${url.pathname}${url.search}${url.hash}`
+        );
+      }
+
+      return src;
+    } catch {
+      return "";
+    }
+  }
+
+  // Normalize Windows-style paths.
+  let cleanPath = src.replace(/\\/g, "/");
+
+  cleanPath = cleanPath.replace(/^\/+/, "");
+
+  // Laravel public storage path normalization.
+  if (cleanPath.startsWith("public/storage/")) {
+    cleanPath = cleanPath.replace(/^public\//, "");
+  }
+
+  if (cleanPath.startsWith("storage/app/public/")) {
+    cleanPath = cleanPath.replace(
+      "storage/app/public/",
+      "storage/"
+    );
+  }
+
+  // Already a Laravel storage path.
+  if (cleanPath.startsWith("storage/")) {
+    return buildAssetUrl(`/${cleanPath}`);
+  }
+
+  // Other root-relative paths.
   if (src.startsWith("/")) {
-    return `${ASSET_ORIGIN}${src}`;
+    return buildAssetUrl(`/${cleanPath}`);
   }
 
-  const cleanPath = src.replace(/^\/+/, "");
-  const storagePath = cleanPath.startsWith("storage/")
-    ? cleanPath
-    : `storage/${cleanPath}`;
-
-  return `${ASSET_ORIGIN}/${storagePath}`;
+  // Relative image paths are assumed to belong to Laravel storage.
+  return buildAssetUrl(`/storage/${cleanPath}`);
 }
 
+// ======================================================
+// PRODUCT IMAGE COLLECTION
+// ======================================================
+
 export function getProductImages(product) {
-  if (!product || typeof product !== "object") return [];
+  if (!product || typeof product !== "object") {
+    return [];
+  }
 
   const parentImages = Array.isArray(product.images)
     ? product.images
@@ -55,7 +151,9 @@ export function getProductImages(product) {
     : [];
 
   const variantImages = variants.flatMap((variant) =>
-    Array.isArray(variant.images) ? variant.images : []
+    Array.isArray(variant.images)
+      ? variant.images
+      : []
   );
 
   const directImages = [
@@ -80,11 +178,18 @@ export function getProductImages(product) {
           : image?.src ??
             image?.url ??
             image?.images ??
-            image?.path;
+            image?.path ??
+            image?.image_url ??
+            image?.image ??
+            image?.image_path ??
+            image?.file_path ??
+            "";
 
       const src = resolveProductImageUrl(path);
 
-      if (!src || seen.has(src)) return null;
+      if (!src || seen.has(src)) {
+        return null;
+      }
 
       seen.add(src);
 
@@ -98,6 +203,10 @@ export function getProductImages(product) {
     })
     .filter(Boolean);
 }
+
+// ======================================================
+// HTML DESCRIPTION
+// ======================================================
 
 export function htmlToText(value) {
   if (typeof value !== "string") return "";
@@ -122,9 +231,22 @@ export function getDescription(product) {
   return description || "No description available for this product.";
 }
 
+// ======================================================
+// COMMON BOOLEAN HELPER
+// ======================================================
+
 function isTrue(value) {
-  return value === true || value === 1 || value === "1" || value === "true";
+  return (
+    value === true ||
+    value === 1 ||
+    value === "1" ||
+    value === "true"
+  );
 }
+
+// ======================================================
+// VARIANT PRICING
+// ======================================================
 
 export function getVariantPricing(variant) {
   const prices = Array.isArray(variant?.prices)
@@ -132,7 +254,8 @@ export function getVariantPricing(variant) {
     : [];
 
   const activePrices = prices.filter(
-    (price) => price?.is_active == null || isTrue(price.is_active)
+    (price) =>
+      price?.is_active == null || isTrue(price.is_active)
   );
 
   const selectedPrice =
@@ -148,7 +271,10 @@ export function getVariantPricing(variant) {
     };
   }
 
+  // Storefront's offer calculation is authoritative. The old effective_price
+  // stays available for management / POS compatibility.
   const effectivePrice =
+    selectedPrice.final_price ??
     selectedPrice.effective_price ??
     (isTrue(selectedPrice.is_flash_active) &&
     selectedPrice.flash_sale_price != null
@@ -164,24 +290,43 @@ export function getVariantPricing(variant) {
           0
       ) || 0,
     priceRecord: selectedPrice,
+    appliedOffer: selectedPrice.applied_offer ?? null,
+    offerDiscount: Number(selectedPrice.offer_discount) || 0,
+    currency: selectedPrice.currency ?? null,
   };
 }
 
-export function getDefaultVariant(variants = []) {
-  if (!Array.isArray(variants) || variants.length === 0) return null;
+// ======================================================
+// DEFAULT VARIANT
+// ======================================================
 
+export function getDefaultVariant(variants = []) {
+  if (!Array.isArray(variants) || variants.length === 0) {
+    return null;
+  }
+
+  // If only one specific variant is covered by an offer, prefer it as the
+  // initial storefront selection so the offer landing page opens on the
+  // discounted variant instead of an unrelated default variant.
   return (
     variants.find((variant) => {
       const pricing = getVariantPricing(variant);
-      return (
-        pricing.price > 0 &&
-        isTrue(pricing.priceRecord?.is_default)
-      );
+      return pricing.price > 0 && Boolean(pricing.appliedOffer);
     }) ||
-    variants.find((variant) => getVariantPricing(variant).price > 0) ||
+    variants.find((variant) => {
+      const pricing = getVariantPricing(variant);
+      return pricing.price > 0 && isTrue(pricing.priceRecord?.is_default);
+    }) ||
+    variants.find(
+      (variant) => getVariantPricing(variant).price > 0
+    ) ||
     variants[0]
   );
 }
+
+// ======================================================
+// VARIANT LABEL
+// ======================================================
 
 export function getVariantLabel(variant, index = 0) {
   if (!variant) return `Variant ${index + 1}`;
@@ -209,8 +354,16 @@ export function getVariantLabel(variant, index = 0) {
     })
     .filter(Boolean);
 
-  return values.join(" / ") || variant.sku || `Variant ${index + 1}`;
+  return (
+    values.join(" / ") ||
+    variant.sku ||
+    `Variant ${index + 1}`
+  );
 }
+
+// ======================================================
+// PRODUCT SPECIFICATIONS
+// ======================================================
 
 export function getSpecifications(product) {
   if (!product) return [];
@@ -253,7 +406,8 @@ export function getSpecifications(product) {
     : [];
 
   variants.forEach((variant, index) => {
-    const prefix = variants.length > 1 ? `Variant ${index + 1} ` : "";
+    const prefix =
+      variants.length > 1 ? `Variant ${index + 1} ` : "";
 
     if (variant.sku) {
       specifications.push({
@@ -288,7 +442,9 @@ export function getSpecifications(product) {
       }
     });
 
-    const variantSpecifications = htmlToText(variant.specifications);
+    const variantSpecifications = htmlToText(
+      variant.specifications
+    );
 
     if (variantSpecifications) {
       specifications.push({
@@ -305,7 +461,11 @@ export function getSpecifications(product) {
       ["Width", packageInfo.width],
       ["Height", packageInfo.height],
     ].forEach(([label, value]) => {
-      if (value !== null && value !== undefined && value !== "") {
+      if (
+        value !== null &&
+        value !== undefined &&
+        value !== ""
+      ) {
         specifications.push({
           label: `${prefix}${label}`,
           value: String(value),
@@ -324,10 +484,16 @@ export function getSpecifications(product) {
   return specifications;
 }
 
+// ======================================================
+// NORMALIZE PUBLIC PRODUCT
+// ======================================================
+
 export function normalizePublicProduct(raw) {
   if (!raw || typeof raw !== "object") return null;
 
-  const variants = Array.isArray(raw.variants) ? raw.variants : [];
+  const variants = Array.isArray(raw.variants)
+    ? raw.variants
+    : [];
 
   const categoryName =
     typeof raw.category === "string"
@@ -344,7 +510,25 @@ export function normalizePublicProduct(raw) {
       ? raw.unit
       : raw.unit?.name ?? "";
 
-  const defaultVariant = getDefaultVariant(variants);
+  // An offer listing may show a parent product with several variants.
+  // Select an actually participating variant, not an unrelated default size.
+  const offerContextId = raw.offer_context_id ?? null;
+  const matchedVariant = raw.offer_listing
+    ? variants.find((variant) => {
+        if (raw.preferred_offer_variant_id != null &&
+            String(variant.id) !== String(raw.preferred_offer_variant_id)) {
+          return false;
+        }
+        const ids = Array.isArray(variant.active_offer_ids)
+          ? variant.active_offer_ids
+          : [];
+        const matches = offerContextId == null
+          ? ids.length > 0
+          : ids.some((id) => String(id) === String(offerContextId));
+        return matches && getVariantPricing(variant).price > 0;
+      })
+    : null;
+  const defaultVariant = matchedVariant || getDefaultVariant(variants);
   const pricing = getVariantPricing(defaultVariant);
   const images = getProductImages(raw);
 
@@ -369,8 +553,22 @@ export function normalizePublicProduct(raw) {
   };
 }
 
+// ======================================================
+// PRICE FORMATTER
+// ======================================================
+
 export function priceBDT(value) {
   return `৳ ${new Intl.NumberFormat("en-BD", {
     maximumFractionDigits: 2,
   }).format(Number(value) || 0)}`;
+}
+
+/** Formats selected variant currency; falls back to the old BDT display. */
+export function priceWithCurrency(value, currency) {
+  const number = new Intl.NumberFormat("en-BD", {
+    maximumFractionDigits: 2,
+  }).format(Number(value) || 0);
+  const symbol = currency?.symbol || (currency?.code === "BDT" ? "৳" : "");
+  if (symbol) return `${symbol} ${number}`;
+  return currency?.code ? `${number} ${currency.code}` : `৳ ${number}`;
 }

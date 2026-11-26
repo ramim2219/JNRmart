@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 
 import {
+  getDefaultVariant,
   getProductImages,
   getVariantPricing,
 } from "../../utils/productHelpers";
@@ -28,11 +29,7 @@ export default function ProductGallery({ product }) {
     ? product.variants
     : [];
 
-  const defaultVariant = variants.find((variant) =>
-    variant.prices?.some(
-      (price) => price.is_default && price.is_active
-    )
-  ) || variants[0];
+  const defaultVariant = getDefaultVariant(variants);
 
   const pricing = getVariantPricing(defaultVariant);
   const price = pricing.price;
