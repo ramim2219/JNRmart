@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import MainLayout from './layouts/MainLayout';
 import Preloader from './components/common/Preloader';
 import { StoreUIProvider } from './context/StoreUIContext';
@@ -7,6 +7,7 @@ import { StoreUIProvider } from './context/StoreUIContext';
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ShopPage = lazy(() => import('./pages/ShopPage'));
 const ProductDetailsPage = lazy(() => import('./pages/ProductDetailsPage'));
+const ComboDetailsPage = lazy(() => import('./pages/ComboDetailsPage'));
 const OfferProductsPage = lazy(() => import('./pages/OfferProductsPage'));
 const CheckoutPage = lazy(() => import('./pages/CheckoutPage'));
 const AccountPage = lazy(() => import('./pages/AccountPage'));
@@ -14,7 +15,7 @@ const PlaceholderPage = lazy(() => import('./pages/PlaceholderPage'));
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <StoreUIProvider>
         <Suspense fallback={<Preloader />}>
           <Routes>
@@ -25,8 +26,10 @@ export default function App() {
               <Route path="category/:slug" element={<ShopPage />} />
               <Route path="search" element={<ShopPage />} />
               <Route path="product/:slug" element={<ProductDetailsPage />} />
+              <Route path="product/combo/:comboId" element={<ComboDetailsPage />} />
               <Route path="offers" element={<OfferProductsPage />} />
               <Route path="offers/:offerId" element={<OfferProductsPage />} />
+              <Route path="combos" element={<Navigate to="/shop?category=combo" replace />} />
               <Route path="checkout" element={<CheckoutPage />} />
               <Route path="account/*" element={<AccountPage />} />
               {['cart', 'wishlist', 'about', 'contact', 'faq', 'track-order', 'privacy-policy', 'terms'].map(path => (

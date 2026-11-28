@@ -41,6 +41,14 @@ function FilterGroup({ title, children, initialOpen = true }) {
  */
 export default function ShopFilters({
   categories = [],
+  comboMode = false,
+  runningOffers = [],
+  selectedOfferId = "",
+  onlyRunningOffers = false,
+  offersLoading = false,
+  offersError = "",
+  onOfferChange,
+  onRetryOffers,
   selectedCategoryKey = "",
   onCategoryChange,
   subCategories = [],
@@ -95,6 +103,56 @@ export default function ShopFilters({
         </div>
       )}
 
+      {!comboMode && <FilterGroup title="Offer Zone">
+        <label className="jnr-shop-filter-choice">
+          <input
+            type="radio"
+            name="jnr-shop-offer-zone"
+            checked={!selectedOfferId && !onlyRunningOffers}
+            onChange={() => onOfferChange?.("")}
+          />
+          <span>All Products</span>
+        </label>
+        <label className="jnr-shop-filter-choice">
+          <input
+            type="radio"
+            name="jnr-shop-offer-zone"
+            checked={onlyRunningOffers}
+            onChange={() => onOfferChange?.("all-running")}
+          />
+          <span>All Running Offers</span>
+        </label>
+
+        {offersLoading ? (
+          <p className="jnr-shop-filter-empty" role="status">
+            Loading running offers...
+          </p>
+        ) : offersError ? (
+          <div className="jnr-shop-filter-empty" role="alert">
+            <p>{offersError}</p>
+            <button type="button" onClick={onRetryOffers}>
+              Try again
+            </button>
+          </div>
+        ) : runningOffers.length ? (
+          runningOffers.map((offer) => (
+            <label className="jnr-shop-filter-choice" key={offer.id}>
+              <input
+                type="radio"
+                name="jnr-shop-offer-zone"
+                checked={String(selectedOfferId) === String(offer.id)}
+                onChange={() => onOfferChange?.(String(offer.id))}
+              />
+              <span>{offer.name}</span>
+            </label>
+          ))
+        ) : (
+          <p className="jnr-shop-filter-empty">
+            No running offers available
+          </p>
+        )}
+      </FilterGroup>}
+
       <FilterGroup title="Filter by Category">
         <label className="jnr-shop-filter-choice">
           <input
@@ -119,7 +177,7 @@ export default function ShopFilters({
                 onChange={() => onCategoryChange?.(category.key)}
               />
               <span>{category.name}</span>
-              <small>{category.count}</small>
+              {category.count != null && <small>{category.count}</small>}
             </label>
           ))
         ) : (
@@ -129,7 +187,7 @@ export default function ShopFilters({
         )}
       </FilterGroup>
 
-      <FilterGroup title="Subcategories">
+      {!comboMode && <FilterGroup title="Subcategories">
         {subCategories.length ? (
           subCategories.map((sub) => (
             <label
@@ -156,9 +214,9 @@ export default function ShopFilters({
             No subcategories available
           </p>
         )}
-      </FilterGroup>
+      </FilterGroup>}
 
-      <FilterGroup title="Price Range">
+      {!comboMode && <FilterGroup title="Price Range">
         <div className="jnr-shop-price-labels">
           <span>{formatBDT(safeMin)}</span>
           <span>{formatBDT(safeMax)}</span>
@@ -203,9 +261,9 @@ export default function ShopFilters({
             aria-label="Maximum price"
           />
         </div>
-      </FilterGroup>
+      </FilterGroup>}
 
-      <FilterGroup title="Brands">
+      {!comboMode && <FilterGroup title="Brands">
         {brands.length ? (
           brands.map((brand) => (
             <label
@@ -232,9 +290,9 @@ export default function ShopFilters({
             No brands available
           </p>
         )}
-      </FilterGroup>
+      </FilterGroup>}
 
-      <FilterGroup title="Product Flag">
+      {!comboMode && <FilterGroup title="Product Flag">
         <label className="jnr-shop-filter-choice">
           <input
             type="checkbox"
@@ -262,7 +320,7 @@ export default function ShopFilters({
           />
           <span>New Arrival</span>
         </label>
-      </FilterGroup>
+      </FilterGroup>}
     </div>
   );
 }

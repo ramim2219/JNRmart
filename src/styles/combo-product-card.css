@@ -1,0 +1,14 @@
+/* Combo uses the exact ProductCard structure and shared product-card.css. */
+.jnr-combo-product-card { text-decoration: none; color: inherit; }
+.jnr-combo-product-card:hover .jnr-product-name { color: var(--product-coral); }
+.jnr-combo-product-card__contents { color: var(--product-muted); }
+.jnr-combo-product-card__view { pointer-events: none; }
+.jnr-combo-product-card:focus-visible { outline: 3px solid #e66b58; outline-offset: 3px; }
+.jnr-combo-product-card .jnr-product-tag { top: 9px; }
+.jnr-combo-product-card .jnr-product-discount + .jnr-product-tag { top: 36px; }
+/* Shared Product Card frame retained: distinct buttons are never nested in a link. */
+.jnr-combo-product-card .jnr-combo-card-link { flex: 1; min-width: 0; display: flex; flex-direction: column; color: inherit; text-decoration: none; }
+.jnr-combo-product-card .jnr-combo-card-link:focus-visible { outline: 2px solid var(--product-coral); outline-offset: -2px; }
+.jnr-combo-product-card .jnr-combo-card-rating { display: flex; align-items: center; gap: 5px; color: #d8901e; font-size: 12px; }
+.jnr-combo-product-card .jnr-combo-card-rating small { color: #716d6b; }
+.jnr-combo-product-card .jnr-combo-card-add { width: calc(100% - 20px); margin: 0 10px 10px; }

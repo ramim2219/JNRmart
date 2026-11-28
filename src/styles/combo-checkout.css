@@ -1,0 +1,21 @@
+.jnr-combo-checkout { padding-block: 35px 75px; max-width: 900px; }
+.jnr-combo-checkout h1 { font-size: clamp(24px, 4vw, 34px); margin-bottom: 22px; }
+.jnr-combo-checkout h2 { font-size: 19px; margin-bottom: 16px; }
+.jnr-combo-checkout__card { background: #fff; border: 1px solid #eadbd6; border-radius: 12px; padding: 22px; margin-block: 14px; }
+.jnr-combo-checkout__items { list-style: none; padding: 0; margin: 0; }
+.jnr-combo-checkout__items li { display: flex; gap: 16px; justify-content: space-between; padding: 13px 0; border-bottom: 1px solid #eee5e0; }
+.jnr-combo-checkout__items small { display: block; color: #777; }
+.jnr-combo-checkout__total { margin-top: 16px; font-size: 18px; font-weight: 700; }
+.jnr-combo-checkout__hint, .jnr-combo-checkout__form > p { display: flex; gap: 8px; align-items: center; color: #64748b; font-size: 13px; margin-top: 14px; }
+.jnr-combo-checkout__form { display: grid; gap: 14px; }
+.jnr-combo-checkout__form label { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 13px; }
+.jnr-combo-checkout__form input { padding: 11px; border: 1px solid #d8dbdd; border-radius: 7px; font: inherit; }
+.jnr-combo-checkout__form button, .jnr-combo-checkout__link { padding: 12px 20px; border: 0; border-radius: 8px; background: #d85a49; color: white; font-weight: 700; cursor: pointer; text-decoration: none; }
+.jnr-combo-checkout__form button:disabled { opacity: .6; cursor: not-allowed; }
+.jnr-combo-checkout__error { padding: 14px; background: #fff4f2; color: #9a2f24; border-radius: 9px; }
+.jnr-combo-checkout__notice { padding: 18px; background: #fff7e8; border-radius: 10px; line-height: 1.6; }
+.jnr-combo-checkout__success { padding: 35px; border-radius: 12px; background: #effaf3; line-height: 1.8; }
+.jnr-combo-checkout__success svg { color: #16a34a; }
+.jnr-combo-checkout__link { display: inline-block; margin-top: 18px; }
+.jnr-checkout-honeypot { position: absolute !important; left: -9999px !important; height: 0 !important; width: 0 !important; }
+@media(max-width: 600px) { .jnr-combo-checkout__card { padding: 15px; } .jnr-combo-checkout__items li { font-size: 13px; } }

@@ -520,6 +520,14 @@ export default function CategoryNavigation() {
                 Offers
               </Link>
 
+              <Link
+                to="/shop?category=combo"
+                className="jnr-scroll-nav__combo"
+                aria-label="Browse available combo deals"
+              >
+                Combo
+              </Link>
+
               {rootCategories.map((category) => {
 
                 const hasChildren = category.children?.length > 0;
@@ -770,6 +778,15 @@ export default function CategoryNavigation() {
                 className="jnr-cat-sidebar__offers"
               >
                 <span>Offers</span>
+                <ChevronRight size={16} />
+              </Link>
+
+              <Link
+                to="/shop?category=combo"
+                onClick={closeSidebar}
+                className="jnr-cat-sidebar__combo"
+              >
+                <span>Combo</span>
                 <ChevronRight size={16} />
               </Link>
 

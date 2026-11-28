@@ -6,7 +6,10 @@ const WISHLIST_KEY = 'jnrmart:wishlist:v1';
 const CART_KEY = 'jnrmart:cart:v1';
 const formatMoney = (value, symbol = '৳') => `${symbol}${Number(value || 0).toLocaleString('en-BD', { maximumFractionDigits: 2 })}`;
 // Legacy cart rows use id; new rows use id + variant to avoid merging sizes.
-const cartKey = (id, variantId = null) => `${String(id)}:${variantId == null || variantId === '' ? 'default' : String(variantId)}`;
+const cartKey = (id, variantId = null, itemType = 'product') =>
+  itemType === 'combo'
+    ? `combo:${String(id)}`
+    : `${String(id)}:${variantId == null || variantId === '' ? 'default' : String(variantId)}`;
 
 function readItems(key) {
   if (typeof window === 'undefined') return [];
@@ -23,8 +26,12 @@ function loadCart() {
     .filter(item => item && item.id != null && typeof item.name === 'string')
     .map(item => ({
       id: item.id,
-      variant_id: item.variant_id ?? null,
-      cart_key: cartKey(item.id, item.variant_id),
+      item_type: item.item_type === 'combo' ? 'combo' : 'product',
+      combo_id: item.item_type === 'combo' ? item.id : null,
+      company_id: item.company_id ?? null,
+      currency_id: item.currency_id ?? null,
+      variant_id: item.item_type === 'combo' ? null : (item.variant_id ?? null),
+      cart_key: cartKey(item.id, item.variant_id, item.item_type),
       currency_code: typeof item.currency_code === 'string' ? item.currency_code : 'BDT',
       currency_symbol: typeof item.currency_symbol === 'string' ? item.currency_symbol : '৳',
       slug: typeof item.slug === 'string' ? item.slug : '',
@@ -86,7 +93,8 @@ export function StoreUIProvider({ children }) {
       return false;
     }
     const amount = Number.isFinite(Number(quantity)) ? Math.min(999, Math.max(1, Math.floor(Number(quantity)))) : 1;
-    const key = cartKey(product.id, product.variant_id);
+    const itemType = product.item_type === 'combo' ? 'combo' : 'product';
+    const key = cartKey(product.id, product.variant_id, itemType);
     setCart(previous => {
       const existing = previous.find(item => item.cart_key === key);
       if (existing) return previous.map(item => item.cart_key === key
@@ -94,7 +102,11 @@ export function StoreUIProvider({ children }) {
         : item);
       return [...previous, {
         id: product.id,
-        variant_id: product.variant_id ?? null,
+        item_type: itemType,
+        combo_id: itemType === 'combo' ? product.id : null,
+        company_id: product.company_id ?? null,
+        currency_id: product.currency_id ?? null,
+        variant_id: itemType === 'combo' ? null : (product.variant_id ?? null),
         cart_key: key,
         currency_code: product.currency_code || 'BDT',
         currency_symbol: product.currency_symbol || '৳',
@@ -171,16 +183,19 @@ export function StoreUIProvider({ children }) {
 
   const count = cart.reduce((sum, item) => sum + item.quantity, 0);
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const allCartCurrencies = [...new Set(cart.map(item => item.currency_code || 'BDT'))];
+  const allCartCurrencies = [...new Set(cart.map(item => item.currency_id ?? item.currency_code ?? 'BDT'))];
   const hasMixedCartCurrencies = allCartCurrencies.length > 1;
   const cartCurrencySymbol = cart[0]?.currency_symbol || '৳';
   const selectedCartItems = cart.filter(item => item.selected !== false);
   const selectedCount = selectedCartItems.reduce((sum, item) => sum + item.quantity, 0);
   const selectedTotal = selectedCartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const allCartSelected = cart.length > 0 && selectedCartItems.length === cart.length;
-  const cartCurrencies = [...new Set(selectedCartItems.map(item => item.currency_code || 'BDT'))];
+  const cartCurrencies = [...new Set(selectedCartItems.map(item => item.currency_id ?? item.currency_code ?? 'BDT'))];
   const hasMixedCurrencies = cartCurrencies.length > 1;
   const selectedCurrencySymbol = selectedCartItems[0]?.currency_symbol || '৳';
+  const selectedComboItems = selectedCartItems.filter(item => item.item_type === 'combo');
+  const canCheckoutCombosOnly = selectedCartItems.length > 0 && selectedComboItems.length === selectedCartItems.length && !hasMixedCurrencies;
+  const clearSelectedCartItems = useCallback(() => setCart(previous => previous.filter(item => item.selected === false)), []);
   const wishlistCount = wishlist.length;
 
   const value = useMemo(() => ({
@@ -188,10 +203,10 @@ export function StoreUIProvider({ children }) {
     removeItem, formatMoney, wishlist, wishlistCount, isWishlisted,
     addToWishlist, removeFromWishlist, toggleWishlist,
     selectedCartItems, selectedCount, selectedTotal, allCartSelected, hasMixedCurrencies, selectedCurrencySymbol, hasMixedCartCurrencies, cartCurrencySymbol,
-    toggleCartSelection, selectAllCartItems,
+    toggleCartSelection, selectAllCartItems, selectedComboItems, canCheckoutCombosOnly, clearSelectedCartItems,
   }), [cart, count, total, panel, openPanel, closePanel, addToCart, changeQuantity,
     removeItem, wishlist, wishlistCount, isWishlisted, addToWishlist, removeFromWishlist, toggleWishlist,
-    selectedCartItems, selectedCount, selectedTotal, allCartSelected, hasMixedCurrencies, selectedCurrencySymbol, hasMixedCartCurrencies, cartCurrencySymbol, toggleCartSelection, selectAllCartItems]);
+    selectedCartItems, selectedCount, selectedTotal, allCartSelected, hasMixedCurrencies, selectedCurrencySymbol, hasMixedCartCurrencies, cartCurrencySymbol, selectedComboItems, canCheckoutCombosOnly, clearSelectedCartItems]);
 
   return <StoreUIContext.Provider value={value}>{children}</StoreUIContext.Provider>;
 }

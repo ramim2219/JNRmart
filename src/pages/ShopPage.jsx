@@ -23,8 +23,14 @@ import {
   getPublicProducts,
 
 } from "../services/productServices";
+import {
+  getPublicOfferShopProducts,
+  getRunningPublicOffers,
+} from "../services/offerZoneServices";
 
 import ShopProductCard from "../components/shop/ShopProductCard";
+import ShopComboCard from "../components/shop/ShopComboCard";
+import { getPublicCombos } from "../services/publicComboServices";
 
 import ShopFilters from "../components/shop/ShopFilters";
 
@@ -45,12 +51,15 @@ import {
 } from "../utils/shopApiHelpers";
 
 import "../styles/shop-page.css";
+import "../styles/combo-list-page.css";
 
 const PAGE_SIZES = [12, 24, 36];
 
 const API_PAGE_SIZE = 48;
 
 const MAX_API_PAGES = 100;
+const COMBO_CATEGORY_KEY = "__combo__";
+const COMBO_PAGE_SIZE = 30;
 
 const emptyFlags = {
 
@@ -666,7 +675,7 @@ function Pagination({ page, pages, onChange }) {
 
  */
 
-async function fetchAllPublicProducts({ search, signal }) {
+async function fetchAllPublicProducts({ search, signal, offerId, offerFilter }) {
 
   const allRows = [];
 
@@ -678,21 +687,15 @@ async function fetchAllPublicProducts({ search, signal }) {
 
   while (page <= lastPage && page <= MAX_API_PAGES) {
 
-    const response = await getPublicProducts(
-
-      {
-
-        ...(search ? { search } : {}),
-
-        page,
-
-        per_page: API_PAGE_SIZE,
-
-      },
-
-      { signal }
-
-    );
+    const params = {
+      ...(search ? { search } : {}),
+      ...(!offerId && offerFilter === "only" ? { offer_filter: "only" } : {}),
+      page,
+      per_page: API_PAGE_SIZE,
+    };
+    const response = offerId
+      ? await getPublicOfferShopProducts(offerId, params, { signal })
+      : await getPublicProducts(params, { signal });
 
     const rows = extractProductRows(response);
 
@@ -736,13 +739,44 @@ async function fetchAllPublicProducts({ search, signal }) {
 
 }
 
+// Uses the same read-only public combo endpoint as the original /combos page.
+// Keep combo IDs separate from product IDs; combo cards do not use ProductCard/cart.
+async function fetchAllPublicCombos(signal) {
+  const rows = [];
+  const seen = new Set();
+  let page = 1;
+  let lastPage = 1;
+  while (page <= lastPage && page <= MAX_API_PAGES) {
+    const response = await getPublicCombos({ page, perPage: COMBO_PAGE_SIZE, signal });
+    for (const combo of response.data || []) {
+      const key = String(combo?.id ?? "");
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      rows.push(combo);
+    }
+    lastPage = Math.max(page, Number(response?.meta?.last_page) || page);
+    if (!response.data?.length) break;
+    page += 1;
+  }
+  return rows;
+}
+
 export default function ShopPage() {
 
   const { slug } = useParams();
 
   const location = useLocation();
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedCombo = searchParams.get("category") === "combo";
+  // Persistent shareable filter, e.g. /shop?offerId=2.
+  const requestedOfferId = searchParams.get("offerId") || "";
+  const selectedOfferId = /^[1-9]\d*$/.test(requestedOfferId)
+    ? requestedOfferId
+    : "";
+  // /shop?offerFilter=only displays every product in a currently running offer.
+  // A specific offerId takes precedence if both parameters exist in a shared URL.
+  const onlyRunningOffers = !selectedOfferId && searchParams.get("offerFilter") === "only";
 
   const searchText = (searchParams.get("q") || "").trim();
 
@@ -763,6 +797,10 @@ export default function ShopPage() {
   const [products, setProducts] = useState([]);
 
   const [categories, setCategories] = useState([]);
+  const [runningOffers, setRunningOffers] = useState([]);
+  const [offersLoading, setOffersLoading] = useState(true);
+  const [offersError, setOffersError] = useState("");
+  const [offersRetry, setOffersRetry] = useState(0);
 
   const [loading, setLoading] = useState(true);
 
@@ -770,7 +808,14 @@ export default function ShopPage() {
 
   const [retryKey, setRetryKey] = useState(0);
 
-  const [selectedCategoryKey, setSelectedCategoryKey] = useState("");
+  const [selectedCategoryKey, setSelectedCategoryKey] = useState(
+    () => requestedCombo ? COMBO_CATEGORY_KEY : ""
+  );
+  const isComboMode = selectedCategoryKey === COMBO_CATEGORY_KEY;
+  const [combos, setCombos] = useState([]);
+  const [comboLoading, setComboLoading] = useState(false);
+  const [comboError, setComboError] = useState("");
+  const [comboRetry, setComboRetry] = useState(0);
 
   const [selectedSubCategories, setSelectedSubCategories] = useState(
 
@@ -801,6 +846,32 @@ export default function ShopPage() {
   const resultsRef = useRef(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    let active = true;
+
+    async function loadOffers() {
+      setOffersLoading(true);
+      setOffersError("");
+      try {
+        const activeOffers = await getRunningPublicOffers({ signal: controller.signal });
+        if (active) setRunningOffers(activeOffers);
+      } catch (requestError) {
+        if (!active || controller.signal.aborted) return;
+        setRunningOffers([]);
+        setOffersError(requestError?.message || "Unable to load offers.");
+      } finally {
+        if (active) setOffersLoading(false);
+      }
+    }
+
+    void loadOffers();
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [offersRetry]);
+
+  useEffect(() => {
 
     const controller = new AbortController();
 
@@ -823,6 +894,8 @@ export default function ShopPage() {
             search: isSearch && searchText ? searchText : "",
 
             signal: controller.signal,
+            offerId: selectedOfferId,
+            offerFilter: onlyRunningOffers ? "only" : "all",
 
           }),
 
@@ -890,7 +963,42 @@ export default function ShopPage() {
 
     };
 
-  }, [isSearch, searchText, retryKey]);
+  }, [isSearch, searchText, retryKey, selectedOfferId, onlyRunningOffers]);
+
+  // Fetch actual Combo bundles only while the Combo category is selected.
+  // Cancellation keeps stale requests from replacing a newer category selection.
+  useEffect(() => {
+    if (!isComboMode) return undefined;
+    const controller = new AbortController();
+    let active = true;
+    async function loadCombos() {
+      setComboLoading(true);
+      setComboError("");
+      try {
+        const results = await fetchAllPublicCombos(controller.signal);
+        if (active) setCombos(results);
+      } catch (requestError) {
+        if (!active || controller.signal.aborted || requestError?.code === "ERR_CANCELED") return;
+        setComboError(requestError?.message || "Unable to load combo deals.");
+        setCombos([]);
+      } finally {
+        if (active) setComboLoading(false);
+      }
+    }
+    void loadCombos();
+    return () => { active = false; controller.abort(); };
+  }, [isComboMode, comboRetry]);
+
+  const comboCatalog = useMemo(() => combos.map((combo) => ({
+    id: `combo-${combo.id}`,
+    name: combo.name || "Combo deal",
+    price: Number(combo.pricing?.final_price ?? combo.pricing?.current_price) || 0,
+    oldPrice: Number(combo.pricing?.actual_price) || 0,
+    createdAt: Number(combo.id) || 0,
+    bestSelling: false,
+    newArrival: false,
+    rawCombo: combo,
+  })), [combos]);
 
   const catalogProducts = useMemo(
 
@@ -914,7 +1022,7 @@ export default function ShopPage() {
     }
 
     // Keep the existing Offer Zone behavior: show every discounted product.
-    if (isOffer) {
+    if (isOffer && !selectedOfferId) {
       result = result.filter(
         (item) =>
           Number(item.oldPrice) > Number(item.price) &&
@@ -936,6 +1044,7 @@ export default function ShopPage() {
     isSearch,
     searchText,
     isOffer,
+    selectedOfferId,
     isDiscountFilter,
     minDiscount,
   ]);
@@ -947,11 +1056,11 @@ export default function ShopPage() {
   const categoryProducts = catalogProducts;
 
   const availableCategories = useMemo(
-
-    () => buildAvailableCategories(categoryProducts, categories),
-
-    [categoryProducts, categories]
-
+    () => [
+      ...buildAvailableCategories(categoryProducts, categories),
+      { key: COMBO_CATEGORY_KEY, name: "Combo", count: combos.length || null },
+    ],
+    [categoryProducts, categories, combos.length]
   );
 
   // Resolve a category route (for example /category/mens-shoes) to the
@@ -1002,16 +1111,19 @@ export default function ShopPage() {
 
   );
 
-  const title = isSearch
+  const title = isComboMode
+    ? "Combo Deals"
+    : isSearch
     ? "Search Results"
     : isDiscountFilter
       ? `More than ${minDiscount}% Off`
-      : isOffer
+      : selectedOfferId || onlyRunningOffers || isOffer
         ? "Offer Zone"
         : selectedCategory?.name || "Shop All Products";
 
   const categoryFilteredProducts = useMemo(() => {
 
+    if (isComboMode) return comboCatalog;
     if (!selectedCategory) return baseProducts;
 
     return baseProducts.filter((product) =>
@@ -1020,7 +1132,7 @@ export default function ShopPage() {
 
     );
 
-  }, [baseProducts, selectedCategory]);
+  }, [baseProducts, selectedCategory, isComboMode, comboCatalog]);
 
   const ceiling = useMemo(() => {
 
@@ -1028,13 +1140,13 @@ export default function ShopPage() {
 
       0,
 
-      ...baseProducts.map((product) => Number(product.price) || 0)
+      ...(isComboMode ? comboCatalog : baseProducts).map((product) => Number(product.price) || 0)
 
     );
 
     return Math.max(500, Math.ceil(maximum / 500) * 500);
 
-  }, [baseProducts]);
+  }, [baseProducts, isComboMode, comboCatalog]);
 
   // Category options always come from the full route product collection.
 
@@ -1062,8 +1174,28 @@ export default function ShopPage() {
 
   );
 
-  const clearFilters = () => {
+  const changeSelectedOffer = (offerId) => {
+    const next = new URLSearchParams(searchParams);
+    next.delete("offerId");
+    next.delete("offerFilter");
+    // Offer zone and Combo are independent product catalogues.
+    next.delete("category");
+    if (isComboMode) setSelectedCategoryKey("");
+    if (offerId === "all-running") {
+      next.set("offerFilter", "only");
+    } else if (offerId) {
+      next.set("offerId", String(offerId));
+    }
+    setSearchParams(next);
+    setPage(1);
+  };
 
+  const clearFilters = () => {
+    const next = new URLSearchParams(searchParams);
+    next.delete("offerId");
+    next.delete("offerFilter");
+    next.delete("category");
+    setSearchParams(next);
     setSelectedCategoryKey("");
 
     setSelectedSubCategories(new Set());
@@ -1086,7 +1218,7 @@ export default function ShopPage() {
 
   useEffect(() => {
 
-    setSelectedCategoryKey(routeCategory?.key ?? "");
+    setSelectedCategoryKey(requestedCombo ? COMBO_CATEGORY_KEY : (routeCategory?.key ?? ""));
 
     setSelectedSubCategories(new Set());
 
@@ -1121,6 +1253,23 @@ export default function ShopPage() {
     routeCategory?.key,
 
   ]);
+
+  // Header navigation to/from Combo should not clear a regular category
+  // explicitly chosen from the sidebar.
+  useEffect(() => {
+    setSelectedCategoryKey((current) =>
+      requestedCombo ? COMBO_CATEGORY_KEY :
+      current === COMBO_CATEGORY_KEY ? "" : current
+    );
+    if (requestedCombo) {
+      setSelectedSubCategories(new Set());
+      setSelectedBrands(new Set());
+      setFlags({ ...emptyFlags });
+      setPriceMin(0);
+      setSort("default");
+      setPage(1);
+    }
+  }, [requestedCombo]);
 
   // Keep the price slider ceiling in sync with the loaded catalog without
 
@@ -1238,7 +1387,7 @@ export default function ShopPage() {
 
       const price = Number(item.price) || 0;
 
-      if (price < priceMin || price > priceMax) {
+      if (!isComboMode && (price < priceMin || price > priceMax)) {
 
         return false;
 
@@ -1260,13 +1409,13 @@ export default function ShopPage() {
 
     });
 
-    if (sort === "low-price") {
+    if (!isComboMode && sort === "low-price") {
 
       filtered.sort((a, b) => a.price - b.price);
 
     }
 
-    if (sort === "high-price") {
+    if (!isComboMode && sort === "high-price") {
 
       filtered.sort((a, b) => b.price - a.price);
 
@@ -1309,6 +1458,7 @@ export default function ShopPage() {
     priceMax,
 
     flags,
+    isComboMode,
 
     sort,
 
@@ -1348,6 +1498,8 @@ export default function ShopPage() {
 
   const hasFilters =
 
+    Boolean(selectedOfferId) ||
+    onlyRunningOffers ||
     Boolean(selectedCategoryKey) ||
 
     selectedSubCategories.size > 0 ||
@@ -1368,6 +1520,8 @@ export default function ShopPage() {
 
   }, [
 
+    selectedOfferId,
+    onlyRunningOffers,
     selectedCategoryKey,
 
     selectedSubCategories,
@@ -1408,20 +1562,43 @@ export default function ShopPage() {
 
   };
 
+  const listingLoading = isComboMode ? comboLoading : loading;
+  const listingError = isComboMode ? comboError : error;
+  const retryListing = () => {
+    if (isComboMode) setComboRetry((value) => value + 1);
+    else setRetryKey((value) => value + 1);
+  };
+
   const filterProps = {
+    comboMode: isComboMode,
+    runningOffers,
+    selectedOfferId,
+    onlyRunningOffers,
+    offersLoading,
+    offersError,
+    onOfferChange: changeSelectedOffer,
+    onRetryOffers: () => setOffersRetry((value) => value + 1),
 
     categories: availableCategories,
 
     selectedCategoryKey,
 
     onCategoryChange: (categoryKey) => {
-
+      const next = new URLSearchParams(searchParams);
+      next.delete("category");
+      if (categoryKey === COMBO_CATEGORY_KEY) {
+        next.set("category", "combo");
+        next.delete("offerId");
+        next.delete("offerFilter");
+      }
+      setSearchParams(next);
       setSelectedCategoryKey(categoryKey);
-
       setSelectedSubCategories(new Set());
-
+      setSelectedBrands(new Set());
+      setFlags({ ...emptyFlags });
+      setPriceMin(0);
+      setSort("default");
       setPage(1);
-
     },
 
     subCategories,
@@ -1476,6 +1653,17 @@ export default function ShopPage() {
             {isDiscountFilter && (
               <p>Showing products with more than {minDiscount}% discount.</p>
             )}
+            {selectedOfferId && (
+              <p>
+                Offer Zone: {runningOffers.find((offer) => String(offer.id) === selectedOfferId)?.name || "Selected Offer"}
+              </p>
+            )}
+            {onlyRunningOffers && !isComboMode && (
+              <p>Products participating in all current offers.</p>
+            )}
+            {isComboMode && (
+              <p>Explore currently available online combo bundles and their included products.</p>
+            )}
 
           </div>
 
@@ -1497,29 +1685,29 @@ export default function ShopPage() {
 
         </div>
 
-        {loading ? (
+        {listingLoading ? (
 
           <div className="jnr-shop-no-products" role="status">
 
-            <p>Loading products...</p>
+            <p>{isComboMode ? "Loading combo deals..." : "Loading products..."}</p>
 
           </div>
 
-        ) : error ? (
+        ) : listingError ? (
 
           <div className="jnr-shop-no-products" role="alert">
 
             <SlidersHorizontal size={40} strokeWidth={1.3} />
 
-            <h2>Unable to load products</h2>
+            <h2>{isComboMode ? "Unable to load combo deals" : "Unable to load products"}</h2>
 
-            <p>{error}</p>
+            <p>{listingError}</p>
 
             <button
 
               type="button"
 
-              onClick={() => setRetryKey((current) => current + 1)}
+              onClick={retryListing}
 
             >
 
@@ -1599,9 +1787,9 @@ export default function ShopPage() {
 
                     <option value="newest">Newest First</option>
 
-                    <option value="low-price">Price: Low to High</option>
+                    {!isComboMode && <option value="low-price">Price: Low to High</option>}
 
-                    <option value="high-price">Price: High to Low</option>
+                    {!isComboMode && <option value="high-price">Price: High to Low</option>}
 
                     <option value="az">Name: A to Z</option>
 
@@ -1668,21 +1856,12 @@ export default function ShopPage() {
               )}
 
               {currentProducts.length ? (
-
                 <div className="jnr-shop-products">
-
                   {currentProducts.map((product, index) => (
-
-                    <ShopProductCard
-
-                      key={product.id ?? product.slug ?? index}
-
-                      product={product}
-
-                    />
-
+                    isComboMode
+                      ? <ShopComboCard key={product.id} combo={product.rawCombo} />
+                      : <ShopProductCard key={product.id ?? product.slug ?? index} product={product} />
                   ))}
-
                 </div>
 
               ) : (
@@ -1691,11 +1870,13 @@ export default function ShopPage() {
 
                   <SlidersHorizontal size={40} strokeWidth={1.3} />
 
-                  <h2>No products found</h2>
+                  <h2>{isComboMode ? "No combo deals found" : "No products found"}</h2>
 
                   <p>
 
-                    {isDiscountFilter
+                    {isComboMode
+                      ? "No available combo bundles match your filters."
+                      : isDiscountFilter
                       ? `No products found with more than ${minDiscount}% discount.`
                       : isSearch
                         ? "Try another search or remove a filter."
@@ -1743,7 +1924,7 @@ export default function ShopPage() {
 
       </div>
 
-      {mobileFiltersOpen && !loading && !error && (
+      {mobileFiltersOpen && !listingLoading && !listingError && (
 
         <div className="jnr-shop-mobile-filter-layer">
 

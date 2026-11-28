@@ -1,0 +1,27 @@
+.jnr-combos-page { min-height: 55vh; padding: 34px 0 56px; }
+.jnr-combos-page__header { margin-bottom: 26px; }
+.jnr-combos-page__back { display: inline-flex; align-items: center; gap: 7px; color: #475569; text-decoration: none; font-size: 13px; margin-bottom: 14px; }
+.jnr-combos-page__back:hover { color: #e66b58; }
+.jnr-combos-page__header h1 { font-size: clamp(25px, 3vw, 38px); margin: 0 0 7px; color: #192844; }
+.jnr-combos-page__header p { margin: 0; color: #64748b; }
+.jnr-combos-page__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 285px), 1fr)); gap: 20px; }
+.jnr-combo-card { border: 1px solid #e6eaf0; border-radius: 14px; overflow: hidden; background: #fff; box-shadow: 0 4px 18px rgba(30,41,59,.05); min-width: 0; }
+.jnr-combo-card__media { height: 190px; display: flex; justify-content: center; align-items: center; background: #f1f5f9; color: #94a3b8; overflow: hidden; }
+.jnr-combo-card__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.jnr-combo-card__body { padding: 17px; }
+.jnr-combo-card__body h2 { font-size: 18px; line-height: 1.35; margin: 0 0 8px; color: #192844; }
+.jnr-combo-card__description { margin: 0 0 12px; font-size: 13px; color: #64748b; line-height: 1.5; overflow-wrap: anywhere; }
+.jnr-combo-card__prices { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; margin-top: 12px; }
+.jnr-combo-card__prices strong { font-size: 23px; color: #137f69; }
+.jnr-combo-card__prices del { color: #94a3b8; font-size: 13px; }
+.jnr-combo-card__save { display: inline-block; color: #0d846b; font-size: 12px; font-weight: 700; margin-top: 4px; }
+.jnr-combo-card__items-title { margin-top: 16px; margin-bottom: 7px; font-weight: 700; font-size: 13px; }
+.jnr-combo-card__items { margin: 0; padding: 0; list-style: none; font-size: 13px; color: #475569; }
+.jnr-combo-card__items li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
+.jnr-combo-card__items li span:first-child { overflow-wrap: anywhere; }
+.jnr-combo-card__items li span:last-child { white-space: nowrap; }
+.jnr-combos-page__state { display: flex; flex-direction: column; gap: 12px; align-items: center; padding: 48px 14px; text-align: center; color: #64748b; }
+.jnr-combos-page__state button, .jnr-combos-page__pagination button { background: #192844; color: #fff; border: 0; border-radius: 7px; padding: 9px 16px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+.jnr-combos-page__pagination { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 28px 0 4px; }
+.jnr-combos-page__pagination button:disabled { opacity: .42; cursor: not-allowed; }
+@media (max-width: 600px) { .jnr-combos-page { padding: 20px 0 40px; } .jnr-combos-page__grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; } .jnr-combo-card__media { height: 130px; } .jnr-combo-card__body { padding: 11px; } .jnr-combo-card__body h2 { font-size: 15px; } .jnr-combo-card__prices strong { font-size: 18px; } .jnr-combo-card__items { font-size: 12px; } }

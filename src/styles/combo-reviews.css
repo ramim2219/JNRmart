@@ -1,0 +1,15 @@
+.jnr-combo-reviews { margin: 40px 0 70px; border: 1px solid #eadbd6; background: #fff; border-radius: 12px; padding: clamp(16px,3vw,25px); }
+.jnr-combo-reviews h2 { font-size: 22px; margin-bottom: 12px; }
+.jnr-combo-reviews__summary { display: flex; align-items: center; gap: 8px; color: #a4670e; font-weight: 700; margin-bottom: 17px; }
+.jnr-combo-reviews__list article { padding: 18px 0; border-bottom: 1px solid #eee; }
+.jnr-combo-reviews__list article span { color: #d99a1e; display: block; letter-spacing: 2px; padding: 4px 0; }
+.jnr-combo-reviews__list article p { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; }
+.jnr-combo-reviews__list article small { color: #64748b; }
+.jnr-combo-reviews__pages { display: flex; gap: 15px; align-items: center; padding: 20px 0; }
+.jnr-combo-reviews__form { display: grid; gap: 12px; max-width: 660px; padding-top: 28px; }
+.jnr-combo-reviews__form h3 { font-size: 18px; }
+.jnr-combo-reviews__form > p { color: #606772; line-height: 1.6; }
+.jnr-combo-reviews__form label { display: grid; gap: 5px; font-size: 13px; font-weight: 650; }
+.jnr-combo-reviews__form input,.jnr-combo-reviews__form textarea,.jnr-combo-reviews__form select { padding: 11px; border: 1px solid #d8dbdd; border-radius: 7px; font: inherit; }
+.jnr-combo-reviews button { padding: 11px 17px; border: 0; border-radius: 7px; background: #192844; color: white; cursor: pointer; font-weight: 700; }
+.jnr-combo-reviews button:disabled { opacity: .5; cursor: not-allowed; }

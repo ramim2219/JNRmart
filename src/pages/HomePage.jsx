@@ -32,12 +32,11 @@ export default function HomePage() {
       />
 
       <PromotionalBannerSection />
-
-      {/* Regular products exclude active offer participants at the API level. */}
-      <FeaturedProductsSection />
-
       {/* Offer participants appear only in their separate home section. */}
       <OfferProductsSection />
+      {/* Regular products exclude active offer participants at the API level. */}
+      <FeaturedProductsSection />
+      
 
       {/* <section className="container section">
 

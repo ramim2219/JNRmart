@@ -54,3 +54,33 @@
     animation: none;
   }
 }
+
+/* Combo: adjacent to Offers on desktop, accessible in mobile sidebar. */
+.jnr-scroll-nav__list > .jnr-scroll-nav__combo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  align-self: center;
+  margin-inline: 4px;
+  padding: 0 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+  white-space: nowrap;
+  color: #b5f0d4;
+  transition: color .18s ease;
+}
+.jnr-scroll-nav__list > .jnr-scroll-nav__combo:hover,
+.jnr-scroll-nav__list > .jnr-scroll-nav__combo:focus-visible {
+  color: #ffffff;
+}
+.jnr-scroll-nav__list > .jnr-scroll-nav__combo:focus-visible,
+.jnr-cat-sidebar__items > .jnr-cat-sidebar__combo:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.jnr-cat-sidebar__items > .jnr-cat-sidebar__combo {
+  color: #137f69;
+  font-weight: 800;
+}

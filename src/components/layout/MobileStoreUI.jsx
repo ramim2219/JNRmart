@@ -314,7 +314,11 @@ export default function MobileStoreUI() {
                     )}
 
                     <div className="store-cart-info">
-                      <strong>{item.name}</strong>
+                      <strong>
+                        {item.item_type === 'combo' ? (
+                          <Link to={`/product/combo/${item.id}`} onClick={closePanel}>{item.name} · Combo</Link>
+                        ) : item.name}
+                      </strong>
 
                       <span>{formatMoney(item.price, item.currency_symbol || "৳")}</span>
 
@@ -498,7 +502,11 @@ export default function MobileStoreUI() {
                           {item.name}
                         </Link>
                       ) : (
-                        <strong>{item.name}</strong>
+                        <strong>
+                        {item.item_type === 'combo' ? (
+                          <Link to={`/product/combo/${item.id}`} onClick={closePanel}>{item.name} · Combo</Link>
+                        ) : item.name}
+                      </strong>
                       )}
 
                       {item.brand && <small>{item.brand}</small>}

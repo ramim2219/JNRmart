@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, RefreshCw } from "lucide-react";
+import { RefreshCw } from "lucide-react";
 import { getPublicProducts } from "../../services/productServices";
 import ProductDealsSection from "./ProductDealsSection";
 import "../../styles/offer-products.css";
@@ -53,7 +52,7 @@ export default function OfferProductsSection() {
           title="Special Offer Products"
           subtitle="Products participating in current offers"
           products={products}
-          viewAllHref="/offers"
+          viewAllHref="/shop?offerFilter=only"
           viewAllLabel="See All Offers"
           withContainer
         />
